@@ -6,7 +6,7 @@ import App from './App';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import artistsReducer from './reducers/artistReducer.js';
+import artistsReducer from './reducers/artistsReducer'
  
 const store = createStore(artistsReducer, applyMiddleware(thunk))
  

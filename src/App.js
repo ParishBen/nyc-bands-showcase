@@ -1,12 +1,16 @@
-import logo from './logo.svg';
 import './App.css';
 import React, { Component } from 'react';
 import nycBands from './nycBands.js';
 import ArtistContainer from './containers/artistContainer'
 import Navbar from './components/Navbar'
 import {  BrowserRouter as Router, Route} from 'react-router-dom';
+//import Artist from './components/Artist'
 
-let codeIntake = window.location.href.split('=')[1]  // AFTER login is initiated the Spotify API puts parameters in URL 'code' & 'access token'. This grabs the AccessToken info.
+const codeIntake = () => {
+  if(window.location.href !== 'http://localhost:3000/' || 'http://localhost:3000'){
+   return  window.location.href.split('=')[1]  }  // AFTER login is initiated the Spotify API puts parameters in URL 'code' & 'access token'. This grabs the AccessToken info.
+}
+
 
 const properCase = // this goes through the imported list of Bands formed in NYC. Then URI encodes the non-alphabetical characters for the Fetch Request.
   
@@ -29,14 +33,23 @@ class App extends Component {
     this.state = {
       artists: [],
       artistsObjArr: [],
+      token: '',
       logged_in: window.location.href === 'http://localhost:3000/' ? false : true // if the Spotify access token info isn't present then User isn't logged in yet.  
     }
   }
 
+setToken(){
+ if (!this.state.logged_in ) return
+ this.setState({
+   token: codeIntake()
+ })
+
+}
 
 componentDidMount(){
-  //this.allNycBandsFetch()
+  this.allNycBandsFetch()
   console.log("we mounted!")
+  this.setToken()
 
 }
 
@@ -50,16 +63,16 @@ allNycBandsFetch(){
       headers: {
           'Content-Type':'application/json',
            Accept:'application/json',
-           "Authorization": `Bearer ${codeIntake}`    //  codeIntake=> accesstoken auth
+           "Authorization": `Bearer ${codeIntake()}`    //  codeIntake=> accesstoken auth
       }
      })
      .then(resp=> resp.json())
      .then(artObjs=> {    // going to put this artist obj(s) response into another function which returns correct artist obj from results
         let foundArtist = artObjs.artists.items   // this returns artist(s) item's array.
         
-        if (foundArtist !== null && foundArtist.length){  // if response isn't undef & has any length
+        if (foundArtist !== undefined && foundArtist.length){  // if response isn't undef & has any length
             let realArtist = foundArtist.find( artist => artist.name === decodeURI(properCase[i])) // find artist in array of objects with name matching the initial search
-          if (realArtist !== null){  // if we have a hit on name matches in the objects & fetch search
+          if (realArtist !== undefined){  // if we have a hit on name matches in the objects & fetch search
             artistsObjArr.push(realArtist)  // pushing the artist obj into array (possible for duplicates)
           }
         }
@@ -79,22 +92,25 @@ allNycBandsFetch(){
   render(){
     console.log(this.state)
   return (
-
-    <Router>
-      <div id="App info div">
-   {!this.state.logged_in ? <div className="not-logged-in-App">
-      <header className="App-header">        
+        <Router>
+      
+     
+      {!this.state.logged_in ? <div className="not-logged-in-App">
+      <header className="App-header"> <div><p>Hey there, please sign in below to get started!</p></div>      
       <button id="Login-Spotify" onClick={()=> window.location= "http://localhost:8888/login"}>Log in With Spotify</button>
-      </header></div> : <div className="logged-in-App"> <Navbar token={codeIntake}/>
-      <Route exact path={`/${codeIntake}`} render={() => <div><p>HEY</p></div>}/>
-      <Route path='/artists' render={ routerProps => <ArtistContainer {...routerProps} artists={this.state.artistsObjArr} token={codeIntake}/>}/>
+      </header></div>: <div className="logged-in-App">
+      <Navbar token={codeIntake()} />
+      <Route exact path={`/`} render={() => <div><p>HEY dingles</p></div>}/>
+      <Route path='/artists' render={ routerProps => <ArtistContainer {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}/>}/>
       </div>}
-    </div>
-    </Router>
+   
+    </Router> 
+   
   );
  }
 }
 
 
 export default App;
- 
+
+  
