@@ -45,7 +45,7 @@ const ArtistContainer = ({match, artists, token}) =>  {
     
     // const topTrackFetcher = () => {
     //     //artists.forEach( art => {
-    //         console.log(artists[100], artists[100].href)
+    //         `console.log(artists[100], artists[100].href)
     //         fetch(`${artists[100].href}/top-tracks?market=US`, {
     //             headers: {
     //                 "Content-type": "Application/json",
@@ -85,7 +85,7 @@ const ArtistContainer = ({match, artists, token}) =>  {
     // }
 
 
-
+      
    
 
     
@@ -93,14 +93,12 @@ const ArtistContainer = ({match, artists, token}) =>  {
         return (
 
             
-
-            `${window.location.href}` === "http://localhost:3000/artists" ? <div>
-               <ArtistList artists={artists} />
-                <Route exact path={match.url} render={() => <h3>Choose an NYC artist from the list above</h3> }/> </div> : <div>
                 
-                <Route path={`${match.url}/:artistId`} render={routerProps => <Artist {...routerProps} artists={artists}  /> }/>
-            </div>     
-           
+               `${window.location.href}` === 'http://localhost:3000/artists' ?  <div> {document.getElementById('thisDiv') ? document.getElementById('thisDiv').remove(): ''}
+               <ArtistList artists={artists} token={token} /> 
+                 </div> :
+                <div><Route path={`${match.url}/:artistId`} render={routerProps => <Artist {...routerProps} artists={artists} token={token}  /> }/>
+                </div>
           
       
               
@@ -114,3 +112,6 @@ const ArtistContainer = ({match, artists, token}) =>  {
 }
 
 export default ArtistContainer
+// `${window.location.href === "http://localhost:3000/artists/" || "http://localhost:3000/artists"}` ?
+
+//<Route exact path={match.url} render={() => <h3>Click 'Artists' above to get things started</h3> }/>

@@ -4,7 +4,12 @@ import nycBands from './nycBands.js';
 import ArtistContainer from './containers/artistContainer'
 import Navbar from './components/Navbar'
 import {  BrowserRouter as Router, Route} from 'react-router-dom';
+import {connect} from 'react-redux';
+//import { fetchArtists } from './actions/artistActions'
 //import Artist from './components/Artist'
+import Home from './components/Home'
+import Favorites from './components/Favorites'
+
 
 const codeIntake = () => {
   if(window.location.href !== 'http://localhost:3000/' || 'http://localhost:3000'){
@@ -26,14 +31,33 @@ const uniqBy = (arr, key) => {
   })
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let imgArr = [];
+
+
+
 class App extends Component {
 
   constructor(){
     super();
     this.state = {
-      artists: [],
+      //artists: [],
       artistsObjArr: [],
-      token: '',
+      token: null,
       logged_in: window.location.href === 'http://localhost:3000/' ? false : true // if the Spotify access token info isn't present then User isn't logged in yet.  
     }
   }
@@ -46,12 +70,25 @@ setToken(){
 
 }
 
+
+componentDidUpdate(){
+  //handleTokenToProps()
+}
 componentDidMount(){
   this.allNycBandsFetch()
   console.log("we mounted!")
   this.setToken()
+  // this.handleTokenToProps()
 
 }
+// handleLoading = () => {
+//   console.log(this.props.loading)
+//   if(this.props.loading) {
+//     return <div>Loading...</div>
+//   } else {
+//     return <p>HHAHHAHHAHAHHAHHAHAHAHHAHAHHA</p>
+//   }
+// }
 
 allNycBandsFetch(){
   let artistsObjArr = []; // this will hold EVERY artist object return
@@ -89,6 +126,96 @@ allNycBandsFetch(){
   }
 }
 
+
+
+componentDidUpdate(){
+  this.randomFetches()
+}
+
+
+randomFetches(){
+  if(this.state.artistsObjArr.length >=140){
+  let stuck = this.state.artistsObjArr[Math.floor(Math.random()*140)]
+  let stringified= JSON.stringify(stuck)
+  //console.log(stringified)
+
+    
+    let objHref = stringified.substring(stringified.indexOf("\"href\"\:\"")+8, stringified.indexOf("\",\"id\""))
+    
+    console.log(objHref)
+    // let strObj= stringified.substring(1, stringified.length-1)
+    //console.log(stringified.substring(1, stringified.length-1))
+    fetch(`${objHref}`, {
+      //fetch(`${this.state.artistsObjArr[2]}`.href, {
+      
+      headers: {
+        'Content-Type':'application/json',
+        Accept:'application/json',
+        "Authorization": `Bearer ${codeIntake()}`    //  codeIntake=> accesstoken auth
+      }
+    })
+    
+    .then(resp=> resp.json())
+    .then(artist => {
+            console.log( artist.images[1].url)
+            let imgSrc= artist.images[1].url
+            if(imgSrc){
+              let myImg = document.createElement('img')
+               {myImg.src= imgSrc}
+               {myImg.alt = artist.name}
+            let imgholder= document.getElementById('thisDiv')
+            console.log(imgholder, myImg)
+            imgholder.append(myImg)}
+          }).catch(err=> console.log(err))
+        
+        }
+        
+      // console.log( "YOURE FUCKING BULLSHIT" + stringified)
+      // console.log(stringified.substring(1, stringified.length-1))
+      // let realObj = stringified.substring(1, stringified.length-1)
+      //console.log(typeof(realObj))
+      //console.log(this.state.artistsObjArr[4])
+      //let fifff = this.state.artistsObjArr[4]
+     // console.log(fifff)
+      //console.log(realObj.substring(realObj.indexOf("\"href\"\:\"")+7, realObj.indexOf(",\"id\"")))
+      } 
+     
+   hotdamn= () => { 
+  console.log(this.randomFetches(), this.randomImager(), this.randomImager(this.randomFetches()))
+   }
+
+
+  randomImager=(anyImg) =>{      
+            
+              
+              
+          return <img src={`${anyImg}`} alt={`${anyImg}`}/>
+            
+  }
+   
+
+
+
+
+
+
+
+   removeThatDiv = () =>{
+    let myDiv = document.getElementById('thisDiv')
+    console.log(myDiv)
+    myDiv.remove()
+    
+}
+
+
+
+// handleTokenToProps = () => {
+// this.props.dispatch({type: 'ADD_TOKEN', token: this.state.token})
+// }
+
+
+
+
   render(){
     console.log(this.state)
   return (
@@ -98,19 +225,30 @@ allNycBandsFetch(){
       {!this.state.logged_in ? <div className="not-logged-in-App">
       <header className="App-header"> <div><p>Hey there, please sign in below to get started!</p></div>      
       <button id="Login-Spotify" onClick={()=> window.location= "http://localhost:8888/login"}>Log in With Spotify</button>
-      </header></div>: <div className="logged-in-App">
-      <Navbar token={codeIntake()} />
-      <Route exact path={`/`} render={() => <div><p>HEY dingles</p></div>}/>
+      </header></div>: <div> 
+      <Navbar token={codeIntake()} /><div id="thisDiv"></div> 
+      <Route exact path="/" render= {() => <div><p> Random Generated NYC Band(s) Above. Use the Navbar up top to check out more!</p> </div> }/> 
+      
       <Route path='/artists' render={ routerProps => <ArtistContainer {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}/>}/>
-      </div>}
-   
+      <Route exact path='/favorites' component={Favorites}/>
+      </div>} 
+      
+
     </Router> 
    
   );
  }
 }
+// const mapStateToProps = state => {
+//   return {
+//     artistsObjArr: state.artistsObjArr,
+//     loading: state.loading,
+//     token: state.token
+//   }
+// }
 
+const mapStateToProps = state => ({ artists: state.artistsObjArr})
 
-export default App;
+export default connect(mapStateToProps)(App);
 
-  
+// {`${!window.location.href === 'http://localhost:3000' ? this.removeThatDiv() : ''}`} 

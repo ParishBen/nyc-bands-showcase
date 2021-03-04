@@ -1,68 +1,154 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import TopTracks from './TopTracks'
 
 
 
 
-const Artist = ({match, artists}) => {
-    
-    const findArtist = () => {
-        let art = artists.find(artist=> artist.id === match.params.artistId)
-        return art
+class Artist extends React.Component{
+    constructor(){
+        super()
+        this.state = {
+            toptracks: []
+        }
     }
+// = ({match, artists, token}) => {
+
+     findArtist = () => {
+    let art = this.props.artists.find(art=> art.id === window.location.href.split('/')[4])
+    return art
+    }
+
     
-    const grabThemImages = findArtist().images.map((pics) => {
-        return <img src={pics.url} alt={findArtist.id} />
-    })
-    // let art = findArtist()
-    // return art.images.map(pic => {
-        //     <img src={pic.url} alt={art.id}/>
-        // })
+
+ handleClick = (event) => {
+    let song = event.target.preview_url;
+    song = new Audio(song)
+    song.play()
+}
+
+
+
+ trackRenderer = () => {
+     let myArr = [];
+     myArr = this.state.toptracks;
+
+    console.log(myArr)
+    if(this.state.toptracks.length > 0){
+    this.state.toptracks.map(track => {
         
-    // "Authorization": `Bearer ${this.props.token}`
         
-          const fetchTopTracks = () => {
-              fetch(`${findArtist().href}/top-tracks?market=US`, {
+       let but= <button onClick={(event)=> this.handleClick(event)}>{track.name}</button>
+        
+        return but
+    }
+        //<button onClick={(event)=> this.handleClick(event)}>{track.name}</button>)
+    )}
+}
+     fetchTopTracks = () => {
+        
+        fetch(`${this.findArtist().href}/top-tracks?market=US`, {
              
                             headers: {
                                 "Content-type": "Application/json",
-                                Accept: "Application/json"
+                                Accept: "Application/json",
+                                "Authorization": `Bearer ${this.props.token}`
                             }
                         })
                         .then(resp=> resp.json())
                         .then(res=> {
-                           let topTrack1= res.tracks[0].preview_url
-                           let song = new Audio (topTrack1)
-                            song.play()
+                           
+                           console.log(res)
+                           this.setState({
+                               toptracks: res.tracks
+                           }, this.trackRenderer)
+                            // toptrackerarray.push(res.tracks)
+                            // TopTracksArr.push(res.tracks)
+                            // console.log(toptrackerarray)
+                            // let buttonizr = toptrackerarray[0].map(track=> {
+                            //     return <button onClick={(event)=> this.handleClick(event)}>{track.name}</button>
+                            //  })
+                            //  return buttonizrarr.push(buttonizr)
+                            //  this.trackRenderer(TopTracksArr)
+                            //  console.log(buttonizrarr)
+                        //    let song = new Audio (topTrack1)
+                        //     song.play()
                         })
-                            //console.log(res.tracks.album.images)})
                         .catch(err=> console.log(err))
+                        
                     }
+
+
+    
        
-    const grabThemImagee = () => {
-        return <img src={findArtist().images[1].url}
-        alt={findArtist().id} />
+     grabThemImagee = () => {
+        //console.log(this)
+        return <img src={this.findArtist().images[1].url}
+            alt={this.findArtist().id} />;
+    }
+    
+    componentDidUpdate(){
+        //this.trackRenderer()
+        // document.getElementById('artist-div').innerHTML += this.trackRenderer()
+        //`${this.state.toptracks[0].name}`
     }
 
-const componentDidMount = () => {
-            fetchTopTracks()
-            console.log("we mounted!")
-          
-          }
+     componentDidMount(){
+         this.findArtist()
+        this.fetchTopTracks()
+        console.log("we mounted!")
+        //console.log(this.trackRenderer())
 
-    console.log(match.params.artistId, grabThemImagee(), findArtist())
+       // console.log(this.fetchTopTracks())
+    }
+    //  checkcheckExist = () => {
+    //      let interval = setInterval(function() {
+    //     if (this.state.toptracks.length) {
+    //        console.log("Exists!");
+    //        clearInterval(this.interval);
+    //     }
+    //  }, 10000)
+    // }
+
+render(){
+    
         return(
-            <div>
-                <h1> {findArtist().name}</h1>
-                <>{grabThemImagee()}</>
-                {componentDidMount()}
-                  
-                
-
-                
+                     <div id="artist-div">
+                         
+                    <h2 id="artist-title">{this.findArtist().name}</h2>
+                   {this.findArtist() !== undefined ? <div> {this.grabThemImagee()}</div> : ''} 
+                   <TopTracks toptracks={this.state.toptracks}/>
             </div>
         )
     }
+}
+//     };
+//   };
+const mapStateToProps = ({toptracks }) => ({toptracks})
 
-export default Artist
 
-//  <p>{findArtist().followers} Followers</p>
+export default connect(mapStateToProps)(Artist)
+
+
+
+//  <p>{findArtist().followers} Followers</p> 
+//     {this.componentDidMount()}
+//     {this.fetchTopTracks()}
+//     <h1> {this.findArtist().name}</h1>
+//     <div>{this.grabThemImagee()}</div>
+//      {this.CmonMan}
+//        <div> {buttonizrarr}</div>
+//     <div>{"bullshit"}</div>
+//     <div>{this.onloadeddata()}</div> 
+// {console.log(this.props.token, this.props.artists)}
+
+
+
+// {/* <h3>HI ARTIST {`${this.props.token}`}</h3>   
+//  <ul><li>{this.trackRenderer()}</li></ul>
+// {console.log( this.trackRenderer())} */}
+// {/* {this.state.toptracks.length >=1 ? `${this.state.toptracks.map(track=> <li>{track.name}</li>)}` : <div>No artists tracks in state</div>}  */}
+// <ul>{this.trackRenderer()}</ul>
+//  mapStateToProps = (state) => {
+//         return {
+//           token: state.token

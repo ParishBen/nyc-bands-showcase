@@ -3,30 +3,28 @@ import { Link } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import Artist from '../components/Artist'
 
-const ArtistList = ({  artists }) => {
+const ArtistList = ({  artists, token }) => {
 
     
     // let index = (obj, arr) => {
     //     arr.findIndex(e => e.id === obj.id )
     // }
-    let index = (intake) => artists.map(function(e) { return e.id; }).indexOf(`${intake.id}`);
+    let index = (intake) => artists.map(e => e.id).indexOf(`${intake.id}`);
 
     
     const renderArtists = artists.map((artistId) => {
-        return <Link key={artistId.id} to={`/artists/${artistId.id}`} style={{marginRight: '15px'}}>{artists[index(artistId)].name}</Link>
+        return <Link  token={token} key={artistId.id} to={`/artists/${artistId.id}`} style={{marginRight: '15px'}}>{artists[index(artistId)].name}</Link>
         //console.log(artistId.id + "should be able to access id!")
     })
     
-    //console.log(artists)
-   const ballin = artists.map((artistId) => {
-        return <li>{artistId.name}</li> })
+   
     
 
 
       //  <Route path={`artists/:artistId`} render={routerProps => <Artist {...routerProps} artists={artists}  /> }/>
     return (
       <div>
-
+        <h2>Choose a local NYC artist from the list below</h2>
         {renderArtists}
 
       </div>

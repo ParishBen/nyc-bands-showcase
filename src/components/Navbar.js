@@ -9,7 +9,7 @@ const NavBar = () => {
     <div style={{ borderBottom: '2px solid black', paddingBottom: '10px', marginBottom: '12px' }}>
       <NavLink 
         style={{ marginRight: '10px' }} 
-        activeStyle={{background: 'darkblue', color: 'white'}}
+        //activeStyle={{background: 'darkblue', color: 'white'}}
         to={`/?access_token=${codeIntake}`}
       >
         Home
@@ -21,6 +21,15 @@ const NavBar = () => {
         exact
       >
         Artists
+      </NavLink>
+      <NavLink
+        style={{ marginRight: '10px' }} 
+        activeStyle={{background: 'darkblue', color: 'white'}}
+        style={{ marginRight: '10px' }} 
+        to="/favorites"
+        exact
+        >
+        Favorites
       </NavLink>
     </div>
   );
