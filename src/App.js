@@ -7,7 +7,6 @@ import {  BrowserRouter as Router, Route} from 'react-router-dom';
 import {connect} from 'react-redux';
 //import { fetchArtists } from './actions/artistActions'
 //import Artist from './components/Artist'
-import Home from './components/Home'
 import Favorites from './components/Favorites'
 
 
@@ -72,23 +71,14 @@ setToken(){
 
 
 componentDidUpdate(){
-  //handleTokenToProps()
 }
 componentDidMount(){
   this.allNycBandsFetch()
   console.log("we mounted!")
   this.setToken()
-  // this.handleTokenToProps()
 
 }
-// handleLoading = () => {
-//   console.log(this.props.loading)
-//   if(this.props.loading) {
-//     return <div>Loading...</div>
-//   } else {
-//     return <p>HHAHHAHHAHAHHAHHAHAHAHHAHAHHA</p>
-//   }
-// }
+
 
 allNycBandsFetch(){
   let artistsObjArr = []; // this will hold EVERY artist object return
@@ -135,12 +125,12 @@ componentDidUpdate(){
 
 randomFetches(){
   if(this.state.artistsObjArr.length >=140){
-  let stuck = this.state.artistsObjArr[Math.floor(Math.random()*140)]
-  let stringified= JSON.stringify(stuck)
+  let strObj = this.state.artistsObjArr[Math.floor(Math.random()*140)]    // pulling object straight from state didn't allow for direct URL fetch so this workaround allowed it
+  let stringified= JSON.stringify(strObj)
   //console.log(stringified)
 
     
-    let objHref = stringified.substring(stringified.indexOf("\"href\"\:\"")+8, stringified.indexOf("\",\"id\""))
+    let objHref = stringified.substring(stringified.indexOf("\"href\"\:\"")+8, stringified.indexOf("\",\"id\""))  
     
     console.log(objHref)
     // let strObj= stringified.substring(1, stringified.length-1)
@@ -180,9 +170,7 @@ randomFetches(){
       //console.log(realObj.substring(realObj.indexOf("\"href\"\:\"")+7, realObj.indexOf(",\"id\"")))
       } 
      
-   hotdamn= () => { 
-  console.log(this.randomFetches(), this.randomImager(), this.randomImager(this.randomFetches()))
-   }
+  
 
 
   randomImager=(anyImg) =>{      
@@ -225,13 +213,15 @@ randomFetches(){
       {!this.state.logged_in ? <div className="not-logged-in-App">
       <header className="App-header"> <div><p>Hey there, please sign in below to get started!</p></div>      
       <button id="Login-Spotify" onClick={()=> window.location= "http://localhost:8888/login"}>Log in With Spotify</button>
-      </header></div>: <div> 
-      <Navbar token={codeIntake()} /><div id="thisDiv"></div> 
-      <Route exact path="/" render= {() => <div><p> Random Generated NYC Band(s) Above. Use the Navbar up top to check out more!</p> </div> }/> 
-      
+      </header></div>: <div>
+      <Navbar token={codeIntake()} />   
+      <Route path="/" render= {() => <div id='welcome'><p>Welcome to NYC Bands Showcase ~ Have fun discovering all this local talent! </p> </div> }/> 
+
+      <div id="thisDiv">  <p> Rad {'&'} Random Generated NYC Bands Below. Use the Navbar up top to check out more!</p></div> 
       <Route path='/artists' render={ routerProps => <ArtistContainer {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}/>}/>
       <Route exact path='/favorites' component={Favorites}/>
-      </div>} 
+     </div>} 
+
       
 
     </Router> 

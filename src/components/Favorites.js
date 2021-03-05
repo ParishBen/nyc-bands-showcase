@@ -52,7 +52,10 @@ faveFetcher(){
     render(){
         return(
             <div>
-            <h1 id="head">NYC FAVES</h1>
+             {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : ''}
+
+            
+            <h1 id="head">NYC FAVES 💛 </h1>
             {this.faveFetcher()}
             <ul id='faveList'></ul>
         </div>
