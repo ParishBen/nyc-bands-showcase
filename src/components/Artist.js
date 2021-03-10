@@ -15,7 +15,8 @@ class Artist extends React.Component{
 // = ({match, artists, token}) => {
 
      findArtist = () => {
-    let art = this.props.artists.find(art=> art.id === window.location.href.split('/')[4])
+   let art = this.props.artists.find(art=> art.id === window.location.href.split('/')[4])
+   console.log(this.props)
     return art
     }
 
@@ -27,28 +28,43 @@ class Artist extends React.Component{
     song.play()
 }
 
-
-
- trackRenderer = () => {
-     let myArr = [];
-     myArr = this.state.toptracks;
-
-    console.log(myArr)
-    if(this.state.toptracks.length > 0){
-    this.state.toptracks.map(track => {
+fetchTopTracks1 = () => {
         
-        
-       let but= <button onClick={(event)=> this.handleClick(event)}>{track.name}</button>
-        
-        return but
+    fetch("https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl", {
+        headers: {
+            "Content-type": "Application/json",
+            Accept: "Application/json",
+            "Authorization": `Bearer ${this.props.token}`
+        },
+    })
+    .then(resp=> resp.json())
+    .then(res=> {
+        console.log(res.album, res.album.href)
+        this.setState({ 
+            toptracks: this.state.toptracks.concat( res.album.href)
+         })
+         }).catch(err=> console.log(err))
     }
-        //<button onClick={(event)=> this.handleClick(event)}>{track.name}</button>)
-    )}
-}
+
+//  trackRenderer = () => {
+//      let myArr = [];
+//      myArr = this.state.toptracks;
+
+//     console.log(myArr)
+//     if(this.state.toptracks.length > 0){
+//     this.state.toptracks.map(track => {
+        
+        
+//        let but= <button onClick={(event)=> this.handleClick(event)}>{track.name}</button>
+        
+//         return but
+//     }
+//     )}
+// }
      fetchTopTracks = () => {
         
         fetch(`${this.findArtist().href}/top-tracks?market=US`, {
-             
+            
                             headers: {
                                 "Content-type": "Application/json",
                                 Accept: "Application/json",
@@ -58,10 +74,10 @@ class Artist extends React.Component{
                         .then(resp=> resp.json())
                         .then(res=> {
                            
-                           console.log(res)
+                            console.log(res)
                            this.setState({
                                toptracks: res.tracks
-                           }, this.trackRenderer)
+                            })
                             // toptrackerarray.push(res.tracks)
                             // TopTracksArr.push(res.tracks)
                             // console.log(toptrackerarray)
@@ -78,41 +94,42 @@ class Artist extends React.Component{
                         
                     }
 
-
+                    
     
        
-     grabThemImagee = () => {
+                    grabThemImagee = () => {
         //console.log(this)
         return <img src={this.findArtist().images[1].url}
             alt={this.findArtist().id} />;
-    }
-    
-    componentDidUpdate(){
-        //this.trackRenderer()
-        // document.getElementById('artist-div').innerHTML += this.trackRenderer()
+        }
+        
+        componentDidUpdate(){
+            //this.trackRenderer()
+            // document.getElementById('artist-div').innerHTML += this.trackRenderer()
         //`${this.state.toptracks[0].name}`
     }
-
+    
      componentDidMount(){
          this.findArtist()
         this.fetchTopTracks()
+        this.fetchTopTracks1()
         console.log("we mounted!")
         //console.log(this.trackRenderer())
-
+        
        // console.log(this.fetchTopTracks())
     }
     //  checkcheckExist = () => {
-    //      let interval = setInterval(function() {
-    //     if (this.state.toptracks.length) {
-    //        console.log("Exists!");
+        //      let interval = setInterval(function() {
+            //     if (this.state.toptracks.length) {
+                //        console.log("Exists!");
     //        clearInterval(this.interval);
     //     }
     //  }, 10000)
     // }
-
+    
 render(){
     
-        return(
+    return(
                      <div id="artist-div">
                          
                     <h2 id="artist-title">{this.findArtist().name}</h2>
@@ -120,6 +137,7 @@ render(){
                    <TopTracks toptracks={this.state.toptracks}/>
             </div>
         )
+            //<button onClick={(event)=> this.handleClick(event)}>{track.name}</button>)
     }
 }
 //     };

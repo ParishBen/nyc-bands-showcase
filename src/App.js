@@ -6,9 +6,9 @@ import Navbar from './components/Navbar'
 import {  BrowserRouter as Router, Route} from 'react-router-dom';
 import {connect} from 'react-redux';
 //import { fetchArtists } from './actions/artistActions'
-//import Artist from './components/Artist'
+import Artist from './components/Artist'
 import Favorites from './components/Favorites'
-
+import FavoritesContainer from './containers/FavoritesContainer'
 
 const codeIntake = () => {
   if(window.location.href !== 'http://localhost:3000/' || 'http://localhost:3000'){
@@ -31,7 +31,7 @@ const uniqBy = (arr, key) => {
 }
 
 
-
+const stagnantToken = window.location.href.split('=')[1]
 
 
 
@@ -70,13 +70,16 @@ setToken(){
 }
 
 
-componentDidUpdate(){
-}
-componentDidMount(){
-  this.allNycBandsFetch()
-  console.log("we mounted!")
-  this.setToken()
 
+componentDidMount(){
+  // this.allNycBandsFetch()
+  console.log("we mounted!")
+  // this.setToken()
+  this.allNycBandsFetch()
+  //this.setToken()
+  this.setState({
+    token: stagnantToken
+  })
 }
 
 
@@ -119,13 +122,16 @@ allNycBandsFetch(){
 
 
 componentDidUpdate(){
-  this.randomFetches()
+  //this.randomFetches()
+  console.log('we updated!')
+ 
+
 }
 
 
 randomFetches(){
-  if(this.state.artistsObjArr.length >=140){
-  let strObj = this.state.artistsObjArr[Math.floor(Math.random()*140)]    // pulling object straight from state didn't allow for direct URL fetch so this workaround allowed it
+  if(this.state.artistsObjArr.length >=141){
+  let strObj = this.state.artistsObjArr[Math.floor(Math.random()*this.state.artistsObjArr.length)]    // pulling object straight from state didn't allow for direct URL fetch so this workaround allowed it
   let stringified= JSON.stringify(strObj)
   //console.log(stringified)
 
@@ -151,23 +157,17 @@ randomFetches(){
             let imgSrc= artist.images[1].url
             if(imgSrc){
               let myImg = document.createElement('img')
+              let myImgH2 = document.createElement('h2')
+              myImgH2.innerText = artist.name
                {myImg.src= imgSrc}
                {myImg.alt = artist.name}
             let imgholder= document.getElementById('thisDiv')
             console.log(imgholder, myImg)
-            imgholder.append(myImg)}
+            imgholder.append(myImgH2, myImg)}
           }).catch(err=> console.log(err))
         
         }
         
-      // console.log( "YOURE FUCKING BULLSHIT" + stringified)
-      // console.log(stringified.substring(1, stringified.length-1))
-      // let realObj = stringified.substring(1, stringified.length-1)
-      //console.log(typeof(realObj))
-      //console.log(this.state.artistsObjArr[4])
-      //let fifff = this.state.artistsObjArr[4]
-     // console.log(fifff)
-      //console.log(realObj.substring(realObj.indexOf("\"href\"\:\"")+7, realObj.indexOf(",\"id\"")))
       } 
      
   
@@ -215,22 +215,23 @@ randomFetches(){
       <button id="Login-Spotify" onClick={()=> window.location= "http://localhost:8888/login"}>Log in With Spotify</button>
       </header></div>: <div>
       <Navbar token={codeIntake()} />   
+      
       <Route path="/" render= {() => <div id='welcome'><p>Welcome to NYC Bands Showcase ~ Have fun discovering all this local talent! </p> </div> }/> 
 
-      <div id="thisDiv">  <p> Rad {'&'} Random Generated NYC Bands Below. Use the Navbar up top to check out more!</p></div> 
+      <div id="thisDiv">{this.randomFetches()}  <p> Rad {'&'} Random Generated NYC Bands Below. Use the Navbar up top to check out more!</p></div> 
       <Route path='/artists' render={ routerProps => <ArtistContainer {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}/>}/>
-      <Route exact path='/favorites' component={Favorites}/>
+      <Route path='/favorites' render={ routerProps => <FavoritesContainer {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}/>}/>
      </div>} 
 
       
 
     </Router> 
    
-  );
- }
+   );
+  }
 }
 // const mapStateToProps = state => {
-//   return {
+  //   return {
 //     artistsObjArr: state.artistsObjArr,
 //     loading: state.loading,
 //     token: state.token
@@ -242,3 +243,5 @@ const mapStateToProps = state => ({ artists: state.artistsObjArr})
 export default connect(mapStateToProps)(App);
 
 // {`${!window.location.href === 'http://localhost:3000' ? this.removeThatDiv() : ''}`} 
+//* <Route exact path='/favorites' render= { routerProps => <Favorites {...routerProps} artists={this.state.artistObjArr}/>}/> */}
+//<Route path={`artists/:artistId`} render={routerProps => <Artist {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}  /> }/>

@@ -25,7 +25,6 @@ const ArtistContainer = ({match, artists, token}) =>  {
             //     this.artistfetchagain()
             //     console.log("did trackFetcher in container")
             // }
-
            
         
     const artistfetchagain= () => {
@@ -93,7 +92,7 @@ const ArtistContainer = ({match, artists, token}) =>  {
         return (
 
             
-                
+               
                `${window.location.href}` === 'http://localhost:3000/artists' ?  <div> {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '': ''}
                <ArtistList artists={artists} token={token} /> 
                  </div> :

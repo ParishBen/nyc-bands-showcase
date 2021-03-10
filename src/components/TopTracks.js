@@ -8,7 +8,10 @@ const TopTracks = ({toptracks}) => {
 
 const favoriteArtist = (event) => {
     console.log(event.target.innerHTML)
-    let trutrack = toptracks[0].artists[0].name
+    let trutrack = toptracks[0].artists[0]
+    
+    console.log(toptracks[0].artists[0], toptracks[0])
+        
     fetch('http://localhost:9000/artists', {
         method: 'POST',
         headers: {
@@ -16,11 +19,13 @@ const favoriteArtist = (event) => {
             Accept:'application/json'
         },
         body: JSON.stringify({
-            "name": trutrack
+            "name": trutrack.name,
+            "artist_id": trutrack.id
 
         })
     })
     .then(function(){
+        if (!document.getElementById('artist-title').innerHTML.includes("💛"))
         document.getElementById('artist-title').innerHTML +="💛" 
     }).then(function(){
         let favbutton = document.getElementById('favButton')
@@ -34,8 +39,15 @@ const favoriteArtist = (event) => {
         console.log(event.target.innerHTML)
         let trutrack = toptracks.find(track=> track.name === event.target.innerHTML)
        let mp3 = trutrack.preview_url
+       if (mp3){
        let song = new Audio (mp3) 
         song.play()
+       }else {
+           let mp3 = trutrack
+           let song = new Audio (trutrack)
+           song.play()
+       }
+    
         // let song = event.target.preview_url;
         // song = new Audio(song)
         // song.play()
