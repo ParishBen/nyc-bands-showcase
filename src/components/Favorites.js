@@ -80,15 +80,15 @@ this.setState({
     
         index = (intakeId) => this.props.artists.map(e => e.id).indexOf(`${intakeId}`);
        
-      meshTogether = (hey) => {
-        //   let len = hey.length;
-        // while (len > 0){
-            hey.map(artist => {
-       return <Link to={"favorites"/`${artist.artist_id}`} style={{marginRight: '15px'}}> {this.state.stateOfFaves[this.index(`${artist.artist_id}`)]}</Link> 
+    //   meshTogether = (hey) => {
+    //     //   let len = hey.length;
+    //     // while (len > 0){
+    //         hey.map(artist => {
+    //    return <Link to={"favorites"/`${artist.artist_id}`} style={{marginRight: '15px'}}> {this.state.stateOfFaves[this.index(`${artist.artist_id}`)]}</Link> 
       
-            })
-            // len--
-        }
+    //         })
+    //         // len--
+    //     }
     
       
 
@@ -99,7 +99,7 @@ this.setState({
            
             <h1 id="head">NYC FAVES 💛 </h1>
             {this.state.stateOfFaves.length > 0 ? this.state.stateOfFaves.map(artist=> {
-                return <li><Link to={`artists/${artist.artist_id}`} style={{marginRight: '15px'}}>{artist.name}</Link>
+                return <li><Link to={`artists/${artist.artist_id}`} style={{marginRight: '5px', border: 'dashed 1pt gold'}}>{artist.name}</Link>
                 <button id="DelfavButton" onClick={(event) => this.deleteArtist(event)}>Delete</button> </li>  
             }):''}
              {/* <div id='dived'>{this.meshTogether(this.state.stateOfFaves)}</div> */}

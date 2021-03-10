@@ -3,14 +3,16 @@ import { NavLink } from 'react-router-dom';
 
 let codeIntake = window.location.href.split('=')[1]  // AFTER login is initiated the Spotify API puts parameters in URL 'code' & 'access token'. This grabs the AccessToken info.
 
-
+//{`/?access_token=${codeIntake}`}
 const NavBar = () => {
   return (
     <div style={{ borderBottom: '2px solid black', paddingBottom: '10px', marginBottom: '12px' }}>
       <NavLink 
         style={{ marginRight: '10px' }} 
+        activeStyle={{background: 'darkblue', color: 'white'}}
         //activeStyle={{background: 'darkblue', color: 'white'}}
-        to={`/?access_token=${codeIntake}`}
+        to='/'
+        exact
       >
         Home
       </NavLink>

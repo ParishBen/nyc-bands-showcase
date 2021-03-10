@@ -6,10 +6,11 @@ import Navbar from './components/Navbar'
 import {  BrowserRouter as Router, Route} from 'react-router-dom';
 import {connect} from 'react-redux';
 //import { fetchArtists } from './actions/artistActions'
-import Artist from './components/Artist'
-import Favorites from './components/Favorites'
+// import Artist from './components/Artist'
+// import Favorites from './components/Favorites'
 import FavoritesContainer from './containers/FavoritesContainer'
-import Token from './components/Token'
+
+
 const codeIntake = () => {
   if(window.location.href !== 'http://localhost:3000/' || 'http://localhost:3000'){
    return  window.location.href.split('=')[1]  }  // AFTER login is initiated the Spotify API puts parameters in URL 'code' & 'access token'. This grabs the AccessToken info.

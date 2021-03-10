@@ -97,7 +97,7 @@ class Artist extends React.Component{
     // }
     handleTopTracks = () => {
         if (this.props.loading) {
-            return <div>Loading Tracks...</div>
+            return <h2>Loading Tracks...</h2>
              } else {
             return <TopTracks toptracks={this.props.toptracks} />
           }
