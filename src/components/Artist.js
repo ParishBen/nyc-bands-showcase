@@ -1,17 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import TopTracks from './TopTracks'
-
+import {fetchTracks} from '../actions/artistActions'
 
 
 
 class Artist extends React.Component{
-    constructor(){
-        super()
-        this.state = {
-            toptracks: []
-        }
-    }
+    // constructor(){
+    //     super()
+    //     this.state = {
+    //         toptracks: []
+    //     }
+    // }
 // = ({match, artists, token}) => {
 
      findArtist = () => {
@@ -28,39 +28,7 @@ class Artist extends React.Component{
     song.play()
 }
 
-fetchTopTracks1 = () => {
-        
-    fetch("https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl", {
-        headers: {
-            "Content-type": "Application/json",
-            Accept: "Application/json",
-            "Authorization": `Bearer ${this.props.token}`
-        },
-    })
-    .then(resp=> resp.json())
-    .then(res=> {
-        console.log(res.album, res.album.href)
-        this.setState({ 
-            toptracks: this.state.toptracks.concat( res.album.href)
-         })
-         }).catch(err=> console.log(err))
-    }
 
-//  trackRenderer = () => {
-//      let myArr = [];
-//      myArr = this.state.toptracks;
-
-//     console.log(myArr)
-//     if(this.state.toptracks.length > 0){
-//     this.state.toptracks.map(track => {
-        
-        
-//        let but= <button onClick={(event)=> this.handleClick(event)}>{track.name}</button>
-        
-//         return but
-//     }
-//     )}
-// }
      fetchTopTracks = () => {
         
         fetch(`${this.findArtist().href}/top-tracks?market=US`, {
@@ -97,7 +65,7 @@ fetchTopTracks1 = () => {
                     
     
        
-                    grabThemImagee = () => {
+                    grabArtImage = () => {
         //console.log(this)
         return <img src={this.findArtist().images[1].url}
             alt={this.findArtist().id} />;
@@ -111,10 +79,11 @@ fetchTopTracks1 = () => {
     
      componentDidMount(){
          this.findArtist()
-        this.fetchTopTracks()
-        this.fetchTopTracks1()
+        //this.fetchTopTracks()
+        let token = this.props.token
+        this.props.fetchTracks({token})
         console.log("we mounted!")
-        //console.log(this.trackRenderer())
+        console.log(this.props, token)
         
        // console.log(this.fetchTopTracks())
     }
@@ -126,6 +95,14 @@ fetchTopTracks1 = () => {
     //     }
     //  }, 10000)
     // }
+    handleTopTracks = () => {
+        if (this.props.loading) {
+            return <div>Loading Tracks...</div>
+             } else {
+            return <TopTracks toptracks={this.props.toptracks} />
+          }
+      }
+    
     
 render(){
     
@@ -133,8 +110,8 @@ render(){
                      <div id="artist-div">
                          
                     <h2 id="artist-title">{this.findArtist().name}</h2>
-                   {this.findArtist() !== undefined ? <div> {this.grabThemImagee()}</div> : ''} 
-                   <TopTracks toptracks={this.state.toptracks}/>
+                   {this.findArtist() !== undefined ? <div> {this.grabArtImage()}</div> : ''} 
+                   {this.handleTopTracks()}
             </div>
         )
             //<button onClick={(event)=> this.handleClick(event)}>{track.name}</button>)
@@ -142,10 +119,22 @@ render(){
 }
 //     };
 //   };
-const mapStateToProps = ({toptracks }) => ({toptracks})
+const mapStateToProps = state => {
+    return {
+      toptracks: state.toptracks,
+      loading: state.loading
+    }
+  }
+  
+  const mapDispatchToProps = dispatch => {
+    return {
+      fetchTracks: (anyProp) => dispatch(fetchTracks(anyProp))
+    }
+  }
 
 
-export default connect(mapStateToProps)(Artist)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Artist)
 
 
 

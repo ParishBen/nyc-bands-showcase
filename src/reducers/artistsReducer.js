@@ -1,26 +1,46 @@
-const artistsReducer = (state = { artists: [], loading: false, token: null }, action) => {
+const artistsReducer = (state = { toptracks: [], loading: false }, action) => {
     switch(action.type) {
-      case 'LOADING_ARTISTS':
+      case 'LOADING_TRACKS':
         return {
           ...state,
-          artists: [...state.artists],
+          toptracks: [...state.toptracks],
           loading: true
         }
-      case 'ADD_ARTIST':
+      case 'ADD_TRACKS':
         return {
           ...state,
-          artists: [...state.artists, action.artist],
+          toptracks: action.toptracks,
           loading: false
         }
-        case 'ADD_TOKEN':
-            return {
-                ...state,
-                token: action.token
-            }
+        // case 'ADD_TOKEN':
+        //     return {
+        //         ...state,
+        //         token: action.token
+        //     }
 
       default:
         return state;
     }
  }
    
+// const catsReducer = (state = { cats: [], loading: false }, action) => {
+//   switch(action.type) {
+//     case 'LOADING_CATS':
+//       return {
+//         ...state,
+//         cats: [...state.cats],
+//         loading: true
+//       }
+//     case 'ADD_CATS':
+//       return {
+//         ...state,
+//         cats: action.cats,
+//         loading: false
+//       }
+//     default:
+//       return state;
+//   }
+// }
+ 
+// export default catsReducer;
   export default artistsReducer;

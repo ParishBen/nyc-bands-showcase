@@ -9,7 +9,7 @@ import {connect} from 'react-redux';
 import Artist from './components/Artist'
 import Favorites from './components/Favorites'
 import FavoritesContainer from './containers/FavoritesContainer'
-
+import Token from './components/Token'
 const codeIntake = () => {
   if(window.location.href !== 'http://localhost:3000/' || 'http://localhost:3000'){
    return  window.location.href.split('=')[1]  }  // AFTER login is initiated the Spotify API puts parameters in URL 'code' & 'access token'. This grabs the AccessToken info.
@@ -173,7 +173,7 @@ randomFetches(){
   
 
 
-  randomImager=(anyImg) =>{      
+  randomImager=(anyImg) => {      
             
               
               
@@ -197,9 +197,12 @@ randomFetches(){
 
 
 
-// handleTokenToProps = () => {
-// this.props.dispatch({type: 'ADD_TOKEN', token: this.state.token})
-// }
+handleDivIt = () => {
+  let theDiv = document.getElementById('thisDiv')
+  let theP = <p>Rad {'&'} Random Generated NYC Bands Below. Use the Navbar up top to check out more!</p>
+if (theDiv && theDiv.children.length >= 1) {
+theDiv.append(theP)}
+}
 
 
 
@@ -218,7 +221,7 @@ randomFetches(){
       
       <Route path="/" render= {() => <div id='welcome'><p>Welcome to NYC Bands Showcase ~ Have fun discovering all this local talent! </p> </div> }/> 
 
-      <div id="thisDiv">{this.randomFetches()}  <p> Rad {'&'} Random Generated NYC Bands Below. Use the Navbar up top to check out more!</p></div> 
+      {<div id="thisDiv">{this.randomFetches()}</div>}  {this.handleDivIt() }
       <Route path='/artists' render={ routerProps => <ArtistContainer {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}/>}/>
       <Route path='/favorites' render={ routerProps => <FavoritesContainer {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}/>}/>
      </div>} 
