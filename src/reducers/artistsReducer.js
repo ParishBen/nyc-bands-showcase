@@ -1,4 +1,4 @@
-const artistsReducer = (state = { toptracks: [], loading: false }, action) => {
+const artistsReducer = (state = { toptracks: [], loading: false, favorites: [] }, action) => {
     switch(action.type) {
       case 'LOADING_TRACKS':
         return {
@@ -12,11 +12,18 @@ const artistsReducer = (state = { toptracks: [], loading: false }, action) => {
           toptracks: action.toptracks,
           loading: false
         }
-        // case 'ADD_TOKEN':
-        //     return {
-        //         ...state,
-        //         token: action.token
-        //     }
+      case 'LOADING_FAVES':
+        return {
+          ...state,
+          favorites: [...state.favorites],
+          loading: true
+        }
+      case 'ADD_FAVES':
+        return {
+            ...state,
+            favorites: action.favorites,
+            loading: false
+      }
 
       default:
         return state;
