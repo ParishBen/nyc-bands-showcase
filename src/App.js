@@ -5,6 +5,7 @@ import ArtistContainer from './containers/artistContainer'
 import Navbar from './components/Navbar'
 import {  BrowserRouter as Router, Route} from 'react-router-dom';
 import {connect} from 'react-redux';
+import Home from './components/Home'
 //import { fetchArtists } from './actions/artistActions'
 // import Artist from './components/Artist'
 // import Favorites from './components/Favorites'
@@ -130,46 +131,46 @@ componentDidUpdate(){
 }
 
 
-randomFetches(){
-  if(this.state.artistsObjArr.length >=141){
-  let strObj = this.state.artistsObjArr[Math.floor(Math.random()*this.state.artistsObjArr.length)]    // pulling object straight from state didn't allow for direct URL fetch so this workaround allowed it
-  let stringified= JSON.stringify(strObj)
-  //console.log(stringified)
+// randomFetches(){
+//   if(this.state.artistsObjArr.length >=141){
+//   let strObj = this.state.artistsObjArr[Math.floor(Math.random()*this.state.artistsObjArr.length)]    // pulling object straight from state didn't allow for direct URL fetch so this workaround allowed it
+//   let stringified= JSON.stringify(strObj)
+//   //console.log(stringified)
 
     
-    let objHref = stringified.substring(stringified.indexOf("\"href\"\:\"")+8, stringified.indexOf("\",\"id\""))  
+//     let objHref = stringified.substring(stringified.indexOf("\"href\"\:\"")+8, stringified.indexOf("\",\"id\""))  
     
-    console.log(objHref)
-    // let strObj= stringified.substring(1, stringified.length-1)
-    //console.log(stringified.substring(1, stringified.length-1))
-    fetch(`${objHref}`, {
-      //fetch(`${this.state.artistsObjArr[2]}`.href, {
+//     console.log(objHref)
+//     // let strObj= stringified.substring(1, stringified.length-1)
+//     //console.log(stringified.substring(1, stringified.length-1))
+//     fetch(`${objHref}`, {
+//       //fetch(`${this.state.artistsObjArr[2]}`.href, {
       
-      headers: {
-        'Content-Type':'application/json',
-        Accept:'application/json',
-        "Authorization": `Bearer ${codeIntake()}`    //  codeIntake=> accesstoken auth
-      }
-    })
+//       headers: {
+//         'Content-Type':'application/json',
+//         Accept:'application/json',
+//         "Authorization": `Bearer ${codeIntake()}`    //  codeIntake=> accesstoken auth
+//       }
+//     })
     
-    .then(resp=> resp.json())
-    .then(artist => {
-            console.log( artist.images[1].url)
-            let imgSrc= artist.images[1].url
-            if(imgSrc){
-              let myImg = document.createElement('img')
-              let myImgH2 = document.createElement('h2')
-              myImgH2.innerText = artist.name
-               {myImg.src= imgSrc}
-               {myImg.alt = artist.name}
-            let imgholder= document.getElementById('thisDiv')
-            console.log(imgholder, myImg)
-            imgholder.append(myImgH2, myImg)}
-          }).catch(err=> console.log(err))
+//     .then(resp=> resp.json())
+//     .then(artist => {
+//             console.log( artist.images[1].url)
+//             let imgSrc= artist.images[1].url
+//             if(imgSrc){
+//               let myImg = document.createElement('img')
+//               let myImgH2 = document.createElement('h2')
+//               myImgH2.innerText = artist.name
+//                {myImg.src= imgSrc}
+//                {myImg.alt = artist.name}
+//             let imgholder= document.getElementById('thisDiv')
+//             console.log(imgholder, myImg)
+//             imgholder.append(myImgH2, myImg)}
+//           }).catch(err=> console.log(err))
         
-        }
+//         }
         
-      } 
+//       } 
      
   
 
@@ -220,9 +221,10 @@ theDiv.append(theP)}
       </header></div>: <div>
       <Navbar token={codeIntake()} />   
       
-      <Route path="/" render= {() => <div id='welcome'><p>Welcome to NYC Bands Showcase ~ Have fun discovering all this local talent! </p> </div> }/> 
-
-      {<div id="thisDiv">{this.randomFetches()}</div>}  {this.handleDivIt() }
+      {/* <Route path="/" render= {() => <div id='welcome'><p>Welcome to NYC Bands Showcase ~ Have fun discovering all this local talent! </p> </div> }/>  */}
+       <Route exact path="/" render= {routerProps=> <Home {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}/> }/>  
+      
+      {/* {<div id="thisDiv">{this.randomFetches()}</div>}  {this.handleDivIt() } */}
       <Route path='/artists' render={ routerProps => <ArtistContainer {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}/>}/>
       <Route path='/favorites' render={ routerProps => <FavoritesContainer {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}/>}/>
      </div>} 

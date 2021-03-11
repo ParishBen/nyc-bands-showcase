@@ -24,6 +24,7 @@ const ArtistList = ({  artists, token }) => {
       //  <Route path={`artists/:artistId`} render={routerProps => <Artist {...routerProps} artists={artists}  /> }/>
     return (
       <div>
+        {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : ''}
         <h2>Choose a local NYC artist from the list below</h2>
         {renderArtists}
 

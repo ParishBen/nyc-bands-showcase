@@ -47,7 +47,9 @@ findArtist = () => {
 render(){
     
     return(
-          <div id="artist-div">         
+        
+          <div id="artist-div">   
+            {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : ''}
             <h2 id="artist-title">{this.findArtist().name}</h2>
             {this.findArtist() !== undefined ? <div> {this.grabArtImage()}</div> : ''} 
             {this.handleTopTracks()}

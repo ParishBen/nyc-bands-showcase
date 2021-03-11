@@ -41,7 +41,7 @@ componentDidMount(){
                     {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : ''}
                     <h1 id="head">NYC FAVES 💛 </h1>
                     { `${this.props.loading}`=== true ? <div>LOADING FAVORITES...</div> : `${this.props.favorites.length > 0}` ? this.props.favorites.map(artist=> {
-                    return <li><Link to={`artists/${artist.artist_id}`} style={{marginRight: '5px', border: 'dashed 1pt gold', color: 'brown', fontWeight: 'bold'}}>{artist.name}</Link>
+                    return <li key={artist.artist_id}><Link to={`artists/${artist.artist_id}`} key={artist.artist_id} style={{marginRight: '5px', border: 'dashed 1pt gold', color: 'brown', fontWeight: 'bold'}}>{artist.name}</Link>
                     <button id="DelfavButton" onClick={(event) => this.deleteArtist(event)}>Delete</button> </li> }) : <div>Go Add Some Favorites!</div> }
                 </div>
                 )   
