@@ -16,16 +16,24 @@ findArtist = () => {
 
     
 
- handleClick = (event) => {
-    let song = event.target.preview_url;
-    song = new Audio(song)
-    song.play()
-    }
+//  handleClick = (event) => {
+//     let song = event.target.preview_url;
+//     song = new Audio(song)
+//     song.play()
+//     }
       
     grabArtImage = () => {
-        return <img src={this.findArtist().images[1].url}
-        alt={this.findArtist().id} />;
-    }
+      if (`${this.findArtist().images}`==[]){
+        return <h3 style={{color:'red', textDecoration: 'underline dashed'}}>No Artist Image</h3>
+      } if (`${this.findArtist().images}`.length === 1) {
+        return <img src={this.findArtist().images[0].url}                 
+        alt={this.findArtist().id}/>;
+       } else {
+        return <img src={this.findArtist().images[1].url}                 
+        alt={this.findArtist().id}/>;
+       }     
+      }
+    
         
     
      componentDidMount(){

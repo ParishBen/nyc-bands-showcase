@@ -4,7 +4,7 @@ import React from 'react'
 const TopTracks = ({toptracks}) => {
    
     const renderTracks = toptracks.map((track, index) => {
-       if (track !== undefined)  return   <li> <button key={index} onClick={(event)=> handleClick(event)}>{track.name}</button></li>
+       if (track !== undefined)  return   <li key={track.name}> <button key={index} onClick={(event)=> handleClick(event)}>{track.name}</button></li>
         
     })
 
@@ -38,21 +38,19 @@ const favoriteArtist = (event) => {
 }
 
    const handleClick = (event) => {
-        console.log(event.target.innerHTML)
-        let trutrack = toptracks.find(track=> track.name === event.target.innerHTML)
+       let trutrack = toptracks.find(track=> track.name === event.target.innerHTML.replace('&amp;', "&"))
+       //console.log(event.target.innerHTML,trutrack.name)
+        if (trutrack.preview_url !==undefined){
        let mp3 = trutrack.preview_url
-       if (mp3){
+       
        let song = new Audio (mp3) 
         song.play()
        }else {
-           let mp3 = trutrack
-           let song = new Audio (trutrack)
+           let mp3 = trutrack.href
+           console.log(mp3)
+           let song = new Audio (mp3)
            song.play()
-       }
-    
-        // let song = event.target.preview_url;
-        // song = new Audio(song)
-        // song.play()
+       } 
     }
     return(
         <div>

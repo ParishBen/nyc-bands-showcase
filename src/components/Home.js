@@ -62,14 +62,15 @@ const codeIntake = () => {
                     p.innerText = "Rad & Random Generated Band Above!"
                     //myImgH2.innerHTML += `<a href= "artists/${artist.id}">${artist.name}</a>`
                     
-                    
+                      {myImg.id = 'random-image'}
                      {myImg.src= imgSrc}
                      {myImg.alt = artist.name}
                   console.log(imgholder, myImg)
+                  if(!document.getElementById('random-image')){
                   imgholder.append( myImg, p)
                   this.setState({artId: artist.id})
                   this.setState({artTitle: artist.name})
-               } else { imgholder.innerText+= "<p>Unable to Grab a Band</p>"
+               }} else { imgholder.innerText+= "<p>Unable to Grab a Band</p>"
                 }
             }
           ).catch(err=> console.log(err))
@@ -88,9 +89,7 @@ const codeIntake = () => {
        }
 
      componentDidUpdate(){
-        // for(let i=1; i>0; i--){
-        //     this.randomFetches()
-        //     }
+        
        
      }
      
@@ -98,7 +97,7 @@ const codeIntake = () => {
         return(
             <div id='Home-Div'>
                 <p>Welcome to NYC Bands Showcase ~ Have fun discovering all this local talent! </p>
-                {<div id="thisDiv">{ <Link  token={this.props.token}  to={`/artists/${this.state.artId}`} style={{marginRight: '15px', fontSize: '20pt', fontWeight: 'bold', color:'teal'}}>{`${this.state.artTitle}` }</Link>}</div>}
+                {<div id="thisDiv">{ <Link  token={this.props.token}  to={`/artists/${this.state.artId}`} style={{marginRight: '15px', fontSize: '20pt', fontWeight: 'bold', color:'teal'}}>{`${this.state.artTitle}` }</Link>}{document.getElementById('random-image') ? '' : this.randomFetches()}</div>}
                 
 
                 {/* {<Link to="/artists/2x9SpqnPi8rlE9pjHBwmSC"></Link>}{`/artists/${artistId.id}`}key={artistId.id} */}
