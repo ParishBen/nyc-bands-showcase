@@ -7,7 +7,7 @@ import {  BrowserRouter as Router, Route} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Home from './components/Home'
 //import { fetchArtists } from './actions/artistActions'
-// import Artist from './components/Artist'
+ import Artist from './components/Artist'
 // import Favorites from './components/Favorites'
 import FavoritesContainer from './containers/FavoritesContainer'
 
@@ -223,7 +223,8 @@ theDiv.append(theP)}
       
       {/* <Route path="/" render= {() => <div id='welcome'><p>Welcome to NYC Bands Showcase ~ Have fun discovering all this local talent! </p> </div> }/>  */}
        <Route exact path="/" render= {routerProps=> <Home {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}/> }/>  
-      
+       <Route path={`artists/:artistId`} render={routerProps => <Artist {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}  /> }/>
+
       {/* {<div id="thisDiv">{this.randomFetches()}</div>}  {this.handleDivIt() } */}
       <Route path='/artists' render={ routerProps => <ArtistContainer {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}/>}/>
       <Route path='/favorites' render={ routerProps => <FavoritesContainer {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}/>}/>
