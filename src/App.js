@@ -190,32 +190,37 @@ componentDidUpdate(){
    
 
 
-
-
-
-
-
-   removeThatDiv = () =>{
-    let myDiv = document.getElementById('thisDiv')
-    console.log(myDiv)
-    myDiv.remove()
-    
-}
-
-
-
-handleDivIt = () => {
-  let theDiv = document.getElementById('thisDiv')
-  let theP = <p>Rad {'&'} Random Generated NYC Bands Below. Use the Navbar up top to check out more!</p>
-if (theDiv && theDiv.children.length >= 1) {
-theDiv.append(theP)}
-}
-
-reFetcher = () => {
-  while (`${this.state.artistsObjArr}`.length < 140){
+delayFetch = () => {
+setTimeout(() => {
+  if(this.state.artistsObjArr.length < 140){
     this.allNycBandsFetch()
   }
-}
+}, 10000);}
+
+
+
+//    removeThatDiv = () =>{
+//     let myDiv = document.getElementById('thisDiv')
+//     console.log(myDiv)
+//     myDiv.remove()
+    
+// }
+
+
+
+// handleDivIt = () => {
+//   let theDiv = document.getElementById('thisDiv')
+//   let theP = <p>Rad {'&'} Random Generated NYC Bands Below. Use the Navbar up top to check out more!</p>
+// if (theDiv && theDiv.children.length >= 1) {
+// theDiv.append(theP)}
+// }
+
+reFetcher = () => {
+ setTimeout(() => {
+  if(this.state.artistsObjArr.length < 140){
+    this.allNycBandsFetch()
+  }
+}, 13000);}
 
 
   render(){
@@ -229,7 +234,7 @@ reFetcher = () => {
       <button id="Login-Spotify" onClick={()=> window.location= "http://localhost:8888/login"}>Log in With Spotify</button>
       </header></div>: <div>
       <Navbar token={codeIntake()} />   
-      {/* {`${this.state.artistsObjArr}`.length < 140 ? this.reFetcher(): ''} */}
+      {this.delayFetch()}{this.reFetcher()}
        <Route exact path="/" render= {routerProps=> <Home {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}/> }/>  
 
       <Route path='/artists' render={ routerProps => <ArtistContainer {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}/>}/>
