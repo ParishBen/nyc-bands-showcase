@@ -21,7 +21,7 @@ const codeIntake = () => {
 const properCase = // this goes through the imported list of Bands formed in NYC. Then URI encodes the non-alphabetical characters for the Fetch Request.
   
 nycBands.map(artist => {
-    return artist.replaceAll(' ','%20').replaceAll("'","%27").replaceAll(":", "%3A")
+    return artist.replaceAll(' ','%20').replaceAll("'","%27").replaceAll(":", "%3A").replaceAll('.',"+.")
   })
 
 const uniqBy = (arr, key) => {
@@ -102,27 +102,27 @@ allNycBandsFetch(){
      .then(artObjs=> {    // going to put this artist obj(s) response into another function which returns correct artist obj from results
         let foundArtist = artObjs.artists.items   // this returns artist(s) item's array.
         
-        if (foundArtist !== undefined && foundArtist.length){  // if response isn't undef & has any length
+        if (foundArtist !== undefined && `${foundArtist.length}` > 0){  // if response isn't undef & has any length
             let realArtist = foundArtist.find( artist => artist.name === decodeURI(properCase[i])) // find artist in array of objects with name matching the initial search
-          if (realArtist !== undefined){  // if we have a hit on name matches in the objects & fetch search
+            if (realArtist.name == "Run-DMC"){
+              //console.log(realArtist, foundArtist.find(artist => artist.id == "3CQIn7N5CuRDP8wEI7FiDA"))
+               realArtist = foundArtist.find(artist => artist.id == "3CQIn7N5CuRDP8wEI7FiDA")
+            }
+            if (realArtist !== undefined){  // if we have a hit on name matches in the objects & fetch search
             artistsObjArr.push(realArtist)  // pushing the artist obj into array (possible for duplicates)
+            console.log(properCase[i], decodeURI(properCase[i]), foundArtist, realArtist)
           }
         }
-          uniqueArtistsObjs = uniqBy(artistsObjArr, JSON.stringify) // reducer -> will stringify the object & then search & return only unique values in array
-      
-     })
-     .then(() => {
-                                              // Sets State with unique array of Artists' Objects
-      this.setState({
-        artistsObjArr: uniqueArtistsObjs
+        uniqueArtistsObjs = uniqBy(artistsObjArr, JSON.stringify) // reducer -> will stringify the object & then search & return only unique values in array
+      })
+      .then(() => {
+        // Sets State with unique array of Artists' Objects
+        this.setState({
+          artistsObjArr: uniqueArtistsObjs
       })
     })
-    .then(()=>{
-      if(this.state.uniqueArtistsObjs.length < 140){
-        this.allNycBandsFetch()
-      }
-    })
-     .catch( err => console.log(err))
+    
+    .catch( err => console.log(err))
   }
 }
 
@@ -211,7 +211,11 @@ if (theDiv && theDiv.children.length >= 1) {
 theDiv.append(theP)}
 }
 
-
+reFetcher = () => {
+  while (`${this.state.artistsObjArr}`.length < 140){
+    this.allNycBandsFetch()
+  }
+}
 
 
   render(){
@@ -225,7 +229,7 @@ theDiv.append(theP)}
       <button id="Login-Spotify" onClick={()=> window.location= "http://localhost:8888/login"}>Log in With Spotify</button>
       </header></div>: <div>
       <Navbar token={codeIntake()} />   
-      
+      {/* {`${this.state.artistsObjArr}`.length < 140 ? this.reFetcher(): ''} */}
        <Route exact path="/" render= {routerProps=> <Home {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}/> }/>  
 
       <Route path='/artists' render={ routerProps => <ArtistContainer {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}/>}/>
