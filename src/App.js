@@ -110,7 +110,7 @@ allNycBandsFetch(){
             }
             if (realArtist !== undefined){  // if we have a hit on name matches in the objects & fetch search
             artistsObjArr.push(realArtist)  // pushing the artist obj into array (possible for duplicates)
-            console.log(properCase[i], decodeURI(properCase[i]), foundArtist, realArtist)
+            //console.log(properCase[i], decodeURI(properCase[i]), foundArtist, realArtist)
           }
         }
         uniqueArtistsObjs = uniqBy(artistsObjArr, JSON.stringify) // reducer -> will stringify the object & then search & return only unique values in array
@@ -218,7 +218,11 @@ setTimeout(() => {
 reFetcher = () => {
  setTimeout(() => {
   if(this.state.artistsObjArr.length < 140){
+    let k=1
+    while (k>0){
     this.allNycBandsFetch()
+    k--
+    }
   }
 }, 13000);}
 
@@ -234,7 +238,7 @@ reFetcher = () => {
       <button id="Login-Spotify" onClick={()=> window.location= "http://localhost:8888/login"}>Log in With Spotify</button>
       </header></div>: <div>
       <Navbar token={codeIntake()} />   
-      {this.delayFetch()}{this.reFetcher()}
+      {this.reFetcher()}
        <Route exact path="/" render= {routerProps=> <Home {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}/> }/>  
 
       <Route path='/artists' render={ routerProps => <ArtistContainer {...routerProps} artists={this.state.artistsObjArr} token={this.state.token}/>}/>
