@@ -1,4 +1,4 @@
-p## NYC Bands Showcase
+## NYC Bands Showcase
 <p>
     Hi there. Welcome to NYC Bands Showcase. The app allows you to see and get a taste of all the great local talent coming out of NYC. Make sure to Add Favorites to keep track Artists you'd like to check out in the future. Feel Free to Preview all the Artist's top tracks from the Spotify API. ~This App relies on artists that are on Spotify. </p>
 
