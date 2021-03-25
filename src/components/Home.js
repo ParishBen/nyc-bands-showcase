@@ -4,10 +4,8 @@ import React from 'react';
 import {connect} from 'react-redux'
 import {Route, Link} from 'react-router-dom'
 import Artist from './Artist'
-const codeIntake = () => {
-    if(window.location.href !== 'http://localhost:3000/' || 'http://localhost:3000'){
-     return  window.location.href.split('=')[1]  }  // AFTER login is initiated the Spotify API puts parameters in URL 'code' & 'access token'. This grabs the AccessToken info.
-  }
+
+
 
 
  class Home extends React.Component{
@@ -20,27 +18,17 @@ const codeIntake = () => {
         }
     }
 
-    // handleDivIt = () => {
-    //     let theDiv = document.getElementById('thisDiv')
-    //     let theP = <p>Rad {'&'} Random Generated NYC Bands Below. Use the Navbar up top to check out more!</p>
-    //   if ( theDiv.children.length >= 1) {
-    //   theDiv.append(theP)}
-    //   }
-      randomFetches(){
+  
+      randomFetches(){                          // Will fetch random Artist & display their content to DOM. Displays new Artist each time client visits "Home"
         if(this.props.artists.length >=140){
-            //let strObj = this.props.artists[Math.floor(Math.random()*(this.props.artists.length-1))]    // pulling object straight from state didn't allow for direct URL fetch so this workaround allowed it
-              //let stringified= JSON.stringify(strObj)
-              //console.log(stringified)
+            
             
               fetch(this.props.artists[Math.floor(Math.random()*140)].href, {
-    //fetch("https://api.spotify.com/v1/artists/0y0VESpVYa8xyNAxu77kcS", {
-                //let objHref = stringified.substring(stringified.indexOf("\"href\"\:\"")+8, stringified.indexOf("\",\"id\""))
-                //console.log(objHref)  
-                 //fetch(`${objHref}`, {
+    
             headers: {
               'Content-Type':'application/json',
               Accept:'application/json',
-              "Authorization": `Bearer ${this.props.token}`    //  codeIntake=> accesstoken auth
+              "Authorization": `Bearer ${this.props.token}`    //  auth given from props=> accesstoken 
             }
           })
           
@@ -75,7 +63,6 @@ const codeIntake = () => {
                      imgholder.append( myImg, p)
                     this.setState({artId: artist.id,
                     artTitle: artist.name})
-                    //this.setState({artTitle: artist.name})
                   }
                  
             }
@@ -83,7 +70,7 @@ const codeIntake = () => {
          }
        }  
               
-        index = (intake) => this.props.artists.map(e => e.id).indexOf(`${intake.id}`);
+        // index = (intake) => this.props.artists.map(e => e.id).indexOf(`${intake.id}`); No longer needed. Now pulling the fetched artist Id from State rather than find it by props.artists[index(fetchedArt)]
        
        
 
@@ -101,11 +88,7 @@ const codeIntake = () => {
             <div id='Home-Div'>
                 {this.props.currentUser && this.props.token ? <p>Welcome {`${this.props.currentUser.name}`}, to NYC Bands Showcase ~ Have fun discovering all this local talent! </p>: <p>Welcome to NYC Bands Showcase ~ Have fun discovering all this local talent!</p>}
                 {<div id="thisDiv">{ <Link  token={this.props.token}  to={`/artists/${this.state.artId}`} style={{marginRight: '15px', fontSize: '20pt', fontWeight: 'bold', color:'teal'}}>{`${this.state.artTitle}` }</Link>}{!document.getElementById('random-image') ? this.randomFetches() : ''}</div>}
-                
-                {/* {document.getElementById('random-image') ? '' : this.randomFetches()} */}
-                {/* {<Link to="/artists/2x9SpqnPi8rlE9pjHBwmSC"></Link>}{`/artists/${artistId.id}`}key={artistId.id} */}
-                {/* {`${document.getElementById('thisDiv').hasAttribute('h2')}` ? document.getElementById('thisDiv').append(<p>Rad {'&'} Random Generated Band Above!</p>) : ''} */}
-                {/* <li>{this.randomImager()}</li> */}
+              
             </div>
         )
     }

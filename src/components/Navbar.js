@@ -1,18 +1,14 @@
 import '../stylesheet/basis.css';
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-let codeIntake = window.location.href.split('=')[1]  // AFTER login is initiated the Spotify API puts parameters in URL 'code' & 'access token'. This grabs the AccessToken info.
 
-//{`/?access_token=${codeIntake}`}
 const NavBar = ({token, logged_in, current_user}) => {
-  //console.log(token, logged_in, current_user)
   return (
     <div style={{ borderBottom: '2px solid black', paddingBottom: '10px', marginBottom: '12px' }}>
       <NavLink 
         style={{ marginRight: '10px' }} 
         activeStyle={{background: 'darkblue', color: 'white'}}
-        //activeStyle={{background: 'darkblue', color: 'white'}}
         to='/'
         exact
       >
@@ -56,8 +52,8 @@ const logoutBtnClick = () => {
     }
 })
 .then(resp=>resp.json())
-.then(message=> alert(message.message))
+.then(message=> alert(message.message))  // Upon success alerts User that they have logged out & clears session on backend.
 .then(()=>
-window.location='http://localhost:3000')
+window.location='http://localhost:3000')   // Direct Client back to '/' Landing Page
 }
 export default NavBar;
