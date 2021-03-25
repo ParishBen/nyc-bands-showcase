@@ -99,7 +99,7 @@ const codeIntake = () => {
     render(){
         return(
             <div id='Home-Div'>
-                {this.props.currentUser && this.props.token ? <p>Welcome {`${this.props.currentUser.name}`}, to NYC Bands Showcase ~ Have fun discovering all this local talent! </p>: 'Mediocre welcoming'}
+                {this.props.currentUser && this.props.token ? <p>Welcome {`${this.props.currentUser.name}`}, to NYC Bands Showcase ~ Have fun discovering all this local talent! </p>: <p>Welcome to NYC Bands Showcase ~ Have fun discovering all this local talent!</p>}
                 {<div id="thisDiv">{ <Link  token={this.props.token}  to={`/artists/${this.state.artId}`} style={{marginRight: '15px', fontSize: '20pt', fontWeight: 'bold', color:'teal'}}>{`${this.state.artTitle}` }</Link>}{!document.getElementById('random-image') ? this.randomFetches() : ''}</div>}
                 
                 {/* {document.getElementById('random-image') ? '' : this.randomFetches()} */}

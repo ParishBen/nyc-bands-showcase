@@ -1,4 +1,4 @@
-const artistsReducer = (state = { toptracks: [], loading: false, favorites: [], token: null, currentUser: null }, action) => {
+const artistsReducer = (state = { toptracks: [], loading: false, favorites: [], token: null, currentUser: null, token: null }, action) => {
     switch(action.type) {
       case 'LOADING_TRACKS':
         return {
@@ -33,6 +33,11 @@ const artistsReducer = (state = { toptracks: [], loading: false, favorites: [], 
         return {
           ...state,
           currentUser: action.currentUser
+        }
+      case 'POST_TOKEN':
+        return {
+          ...state,
+          token: action.token
         }
 
       default:

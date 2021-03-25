@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TopTracks from './TopTracks'
 import {fetchTracks} from '../actions/artistActions'
+import {getSessionToken} from '../actions/getSessionToken'
 
 
 
@@ -44,7 +45,10 @@ findArtist = () => {
      componentDidMount(){
         this.checkforprops()
         let token = this.props.token
-        if(token !==undefined){
+        if(token ==undefined){
+          this.props.getSessionToken()
+        }
+        if (token && token !== undefined){
         this.props.fetchTracks({token})}
         console.log("we mounted!")  
         console.log(this.props.currentUser)      
@@ -68,7 +72,7 @@ render(){
             <h2 id="artist-title">{this.findArtist() !== undefined ? this.findArtist().name : ''}</h2>
             {this.findArtist() !== undefined ? <div> {this.grabArtImage()}</div> : ''} 
             {this.findArtist() !== undefined ? <div>{this.handleTopTracks()}</div> :''}
-            {/*&& this.props.token !== undefined */}
+            {this.props.token == undefined ? this.props.getSessionToken() : ''}
            
           </div>
         )
@@ -86,7 +90,8 @@ const mapStateToProps = state => {
   
   const mapDispatchToProps = dispatch => {
     return {
-      fetchTracks: (anyProp) => dispatch(fetchTracks(anyProp))
+      fetchTracks: (anyProp) => dispatch(fetchTracks(anyProp)),
+      getSessionToken: () => dispatch(getSessionToken())
     }
   }
 

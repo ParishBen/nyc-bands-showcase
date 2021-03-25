@@ -1,6 +1,6 @@
 import '../stylesheet/basis.css';
 import React from 'react'
-import { Link, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {fetchFaves} from '../actions/favoritesActions'
 

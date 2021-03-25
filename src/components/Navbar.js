@@ -6,7 +6,7 @@ let codeIntake = window.location.href.split('=')[1]  // AFTER login is initiated
 
 //{`/?access_token=${codeIntake}`}
 const NavBar = ({token, logged_in, current_user}) => {
-  console.log(token, logged_in, current_user)
+  //console.log(token, logged_in, current_user)
   return (
     <div style={{ borderBottom: '2px solid black', paddingBottom: '10px', marginBottom: '12px' }}>
       <NavLink 
