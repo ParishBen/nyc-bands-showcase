@@ -1,8 +1,9 @@
-import '../App.css';
+import '../stylesheet/basis.css';
 import React from 'react';
 import { Route } from 'react-router-dom';
 import ArtistList from './ArtistList';
 import Artist from '../components/Artist'
+import {connect} from 'react-redux'
 
 const componentDidMount = () => {
       destroyDiv()  
@@ -25,5 +26,9 @@ const ArtistContainer = ({match, artists, token}) =>  {
                  )             
         
 }
-
-export default ArtistContainer
+const mapStateToProps = state => {
+        return {
+          token: state.token
+        }
+      }
+export default connect(mapStateToProps)(ArtistContainer)

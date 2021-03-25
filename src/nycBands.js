@@ -182,7 +182,4 @@ const nycBands = [
     "X27",
     "Yeah Yeah Yeahs"
  ];
-
-
-
  export default nycBands

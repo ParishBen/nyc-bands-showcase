@@ -1,4 +1,4 @@
-import '../App.css';
+import '../stylesheet/basis.css';
 import React from 'react';
 import { connect } from 'react-redux';
 import TopTracks from './TopTracks'
@@ -10,9 +10,11 @@ class Artist extends React.Component{
  
 
 findArtist = () => {
-   let art = this.props.artists.find(art=> art.id === window.location.href.split('/')[4])
-   console.log(this.props)
-    return art
+   let artists = this.props.artists
+   if(artists){ 
+     let art = artists.find(art=> art.id === window.location.href.split('/')[4])
+     console.log(this.props)
+    return art }
     }
 
     
@@ -35,23 +37,27 @@ findArtist = () => {
        }     
       }
     
-        
+       checkforprops=()=>{
+         if(this.props.artists){ this.findArtist() }
+       } 
     
      componentDidMount(){
-         this.findArtist()
+        this.checkforprops()
         let token = this.props.token
-        this.props.fetchTracks({token})
-        console.log("we mounted!")        
+        if(token !==undefined){
+        this.props.fetchTracks({token})}
+        console.log("we mounted!")  
+        console.log(this.props.currentUser)      
         }
   
     handleTopTracks = () => {
         if (this.props.loading) {
             return <h2 id='loading-header'>Loading Tracks...</h2>
-             } else {
-            return <TopTracks toptracks={this.props.toptracks} />
+             } if(this.props.toptracks){
+            return <TopTracks currentUser={this.props.currentUser} toptracks={this.props.toptracks} />
           }
       }
-    
+     
     
 render(){
     
@@ -59,9 +65,11 @@ render(){
         
           <div id="artist-div">   
             {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : ''}
-            <h2 id="artist-title">{this.findArtist().name}</h2>
+            <h2 id="artist-title">{this.findArtist() !== undefined ? this.findArtist().name : ''}</h2>
             {this.findArtist() !== undefined ? <div> {this.grabArtImage()}</div> : ''} 
-            {this.handleTopTracks()}
+            {this.findArtist() !== undefined ? <div>{this.handleTopTracks()}</div> :''}
+            {/*&& this.props.token !== undefined */}
+           
           </div>
         )
     }
@@ -70,7 +78,9 @@ render(){
 const mapStateToProps = state => {
     return {
       toptracks: state.toptracks,
-      loading: state.loading
+      loading: state.loading,
+      token: state.token,
+      currentUser: state.currentUser
     }
   }
   

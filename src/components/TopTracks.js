@@ -1,10 +1,10 @@
-import '../App.css';
+import '../stylesheet/basis.css';
 import React from 'react'
+import {connect} from 'react-redux'
 
-
-const TopTracks = ({toptracks}) => {
+const TopTracks = ({toptracks, currentUser}) => {
    
-    const renderTracks = toptracks.map((track, index) => {
+    const renderTracks = toptracks && toptracks.map((track, index) => {
        if (track !== undefined)  return   <li key={track.name}> <button key={index} onClick={(event)=> handleClick(event)}>{track.name}</button></li>
         
     })
@@ -15,7 +15,7 @@ const favoriteArtist = (event) => {
     
     console.log(toptracks[0].artists[0], toptracks[0])
         
-    fetch('http://localhost:9000/artists', {
+    fetch(`http://localhost:9000/artists`, {  //http://localhost:9000/users/${currentUser.id}/artists --> When I nest artists under users to only show Current_User info
         method: 'POST',
         headers: {
             'Content-Type':'application/json',
@@ -26,6 +26,13 @@ const favoriteArtist = (event) => {
             "artist_id": trutrack.id
 
         })
+    })
+    .then(resp => resp.json())
+    .then(message => {
+        if(message.error){
+            console.log(message, message.error)
+            alert(message.error)
+        }
     })
     .then(function(){
         if (!document.getElementById('artist-title').innerHTML.includes("💛"))
@@ -61,6 +68,11 @@ const favoriteArtist = (event) => {
         <ul>{renderTracks}</ul>
         </div>
 )
-
-}
-export default TopTracks
+    }
+const mapStateToProps = state => {
+    return {
+      token: state.token,
+      currentUser: state.currentUser
+    }
+  }
+export default connect(mapStateToProps)(TopTracks)

@@ -1,8 +1,7 @@
-import '../App.css';
+import '../stylesheet/basis.css';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Route } from 'react-router-dom';
-import Artist from '../components/Artist'
+
 
 const ArtistList = ({  artists, token }) => {
 

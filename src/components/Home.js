@@ -1,4 +1,5 @@
-import '../App.css';
+
+import '../stylesheet/basis.css';
 import React from 'react';
 import {connect} from 'react-redux'
 import {Route, Link} from 'react-router-dom'
@@ -19,15 +20,14 @@ const codeIntake = () => {
         }
     }
 
-    handleDivIt = () => {
-        let theDiv = document.getElementById('thisDiv')
-        let theP = <p>Rad {'&'} Random Generated NYC Bands Below. Use the Navbar up top to check out more!</p>
-      if ( theDiv.children.length >= 1) {
-      theDiv.append(theP)}
-      }
-
+    // handleDivIt = () => {
+    //     let theDiv = document.getElementById('thisDiv')
+    //     let theP = <p>Rad {'&'} Random Generated NYC Bands Below. Use the Navbar up top to check out more!</p>
+    //   if ( theDiv.children.length >= 1) {
+    //   theDiv.append(theP)}
+    //   }
       randomFetches(){
-        if(this.props.artists.length >=141){
+        if(this.props.artists.length >=140){
             //let strObj = this.props.artists[Math.floor(Math.random()*(this.props.artists.length-1))]    // pulling object straight from state didn't allow for direct URL fetch so this workaround allowed it
               //let stringified= JSON.stringify(strObj)
               //console.log(stringified)
@@ -51,6 +51,7 @@ const codeIntake = () => {
                   let imgSrc;
                   let images= artist.images
                   if( `${images}`.length === 0){
+                    this.setState({})
                     this.state.artId = artist.id
                     this.state.artTitle = artist.name
                     return  imgholder.innerHTML+= `<h2>No Artist Images for ${artist.name}</h2>`}
@@ -72,8 +73,9 @@ const codeIntake = () => {
                   console.log(imgholder, myImg)
                   if(!document.getElementById('random-image')){
                      imgholder.append( myImg, p)
-                    this.setState({artId: artist.id})
-                    this.setState({artTitle: artist.name})
+                    this.setState({artId: artist.id,
+                    artTitle: artist.name})
+                    //this.setState({artTitle: artist.name})
                   }
                  
             }
@@ -97,7 +99,7 @@ const codeIntake = () => {
     render(){
         return(
             <div id='Home-Div'>
-                <p>Welcome to NYC Bands Showcase ~ Have fun discovering all this local talent! </p>
+                {this.props.currentUser && this.props.token ? <p>Welcome {`${this.props.currentUser.name}`}, to NYC Bands Showcase ~ Have fun discovering all this local talent! </p>: 'Mediocre welcoming'}
                 {<div id="thisDiv">{ <Link  token={this.props.token}  to={`/artists/${this.state.artId}`} style={{marginRight: '15px', fontSize: '20pt', fontWeight: 'bold', color:'teal'}}>{`${this.state.artTitle}` }</Link>}{!document.getElementById('random-image') ? this.randomFetches() : ''}</div>}
                 
                 {/* {document.getElementById('random-image') ? '' : this.randomFetches()} */}
@@ -108,4 +110,10 @@ const codeIntake = () => {
         )
     }
 }
-export default connect()(Home)
+const mapStateToProps = state => {
+  return {
+   
+    currentUser: state.currentUser
+  }
+}
+export default connect(mapStateToProps)(Home)
