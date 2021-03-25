@@ -10,7 +10,7 @@ import {getSessionToken} from '../actions/getSessionToken'
 class Artist extends React.Component{
  
 
-findArtist = () => {
+findArtist = () => {                           // Check for props coming from Redux State & then find artist based on the id in the URL
    let artists = this.props.artists
    if(artists){ 
      let art = artists.find(art=> art.id === window.location.href.split('/')[4])
@@ -26,7 +26,7 @@ findArtist = () => {
 //     song.play()
 //     }
       
-    grabArtImage = () => {
+    grabArtImage = () => {                                       // Ternary executed in render to see if props present & then grabbing Image of Artist 
       if (`${this.findArtist().images}`==[]){
         return <h3 style={{color:'red', textDecoration: 'underline dashed'}}>No Artist Image</h3>
       } if (`${this.findArtist().images}`.length === 1) {
@@ -42,7 +42,7 @@ findArtist = () => {
          if(this.props.artists){ this.findArtist() }
        } 
     
-     componentDidMount(){
+     componentDidMount(){                      //props check & then using token Props to fetch Artists' TopTracks
         this.checkforprops()
         let token = this.props.token
         if(token ==undefined){
@@ -54,7 +54,7 @@ findArtist = () => {
         console.log(this.props.currentUser)      
         }
   
-    handleTopTracks = () => {
+    handleTopTracks = () => {                      // returning loading if Redux Store is loading (while fetch is taking place) & then rendering TopTracks Component
         if (this.props.loading) {
             return <h2 id='loading-header'>Loading Tracks...</h2>
              } if(this.props.toptracks){
@@ -81,7 +81,7 @@ render(){
 
 const mapStateToProps = state => {
     return {
-      toptracks: state.toptracks,
+      toptracks: state.toptracks,             // Props Access of Redux State for toptracks/loading/token/current_user
       loading: state.loading,
       token: state.token,
       currentUser: state.currentUser
@@ -89,8 +89,8 @@ const mapStateToProps = state => {
   }
   
   const mapDispatchToProps = dispatch => {
-    return {
-      fetchTracks: (anyProp) => dispatch(fetchTracks(anyProp)),
+    return { 
+      fetchTracks: (anyProp) => dispatch(fetchTracks(anyProp)),      //Dispatch functions for fetching tracks & sessionToken
       getSessionToken: () => dispatch(getSessionToken())
     }
   }
