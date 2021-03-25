@@ -12,7 +12,8 @@ In your terminal cd into the backend & run Bundle Install the above gem list.
 
 Next execute rails s -p 9000. RAILS server should be running on Port 9000. 
 Then cd into the front end and run 'npm install' to install all dependencies.  
-Now run npm start to startup the web application to your browser & then navigate to localhost:3000!
+Run node src/theSpoilerBoilerplate.js to get the Express server running on port 8888 for Spotify API auth.
+Now run npm start to startup the web application to your browser & then navigate to localhost:3000!n
 
 Signup & go!
 </li>
