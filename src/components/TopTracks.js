@@ -2,7 +2,7 @@ import '../stylesheet/basis.css';
 import React from 'react'
 import {connect} from 'react-redux'
 
-const TopTracks = ({toptracks, currentUser}) => {
+const TopTracks = ({toptracks, currentUser, token}) => {
    
     const renderTracks = toptracks && toptracks.map((track, index) => {
        if (track !== undefined)  return   <li key={track.name}> <button key={index} onClick={(event)=> handleClick(event)}>{track.name}</button></li>       // checks for toptracks in props Then maps through tracks to create buttons
@@ -50,11 +50,12 @@ const favoriteArtist = (event) => {
        //console.log(event.target.innerHTML,trutrack.name)
         if (trutrack.preview_url !==undefined){
        let mp3 = trutrack.preview_url
-       
+       console.log(trutrack)
+ 
        let song = new Audio (mp3) 
         song.play()
-       }else {
-           let mp3 = trutrack.href
+       } else {
+           let mp3 = trutrack.preview_url
            console.log(mp3)
            let song = new Audio (mp3)
            song.play()

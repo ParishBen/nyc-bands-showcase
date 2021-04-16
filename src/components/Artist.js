@@ -45,7 +45,7 @@ findArtist = () => {                           // Check for props coming from Re
      componentDidMount(){                      //props check & then using token Props to fetch Artists' TopTracks
         this.checkforprops()
         let token = this.props.token
-        if(token ==undefined){
+        if(token == undefined){
           this.props.getSessionToken()
         }
         if (token && token !== undefined){

@@ -10,14 +10,14 @@ const ArtistList = ({  artists, token }) => {
     let index = (intake) => artists.map(e => e.id).indexOf(`${intake.id}`);    // This finds the Index of the artist put as 'Intake' within the entire state Artist Array based on unique ID.
 
     
-    const renderArtists = artists.map((artistId) => {
-        return <Link  token={token} key={artistId.id} to={`/artists/${artistId.id}`} style={{marginRight: '15px'}}>{artists[index(artistId)].name}</Link>    // Link to each Artist Displayed
+    const renderArtists = artists.map((artist) => {
+        return <Link  token={token} key={artist.id} to={`/artists/${artist.id}`} style={{marginRight: '15px'}}>{artists[index(artist)].name}</Link>    // Link to each Artist is rendered - Route defined in App.js
     })
     
    
         return (
       <div>
-        {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : ''}
+        {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : ''}                  {/*Will empty the Div of Home Page Component if present */}
         <h2>Choose a local NYC artist from the list below</h2>
         {renderArtists}
 
