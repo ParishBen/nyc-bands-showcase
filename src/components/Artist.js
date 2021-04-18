@@ -14,7 +14,7 @@ findArtist = () => {                           // Check for props coming from Re
    let artists = this.props.artists
    if(artists){ 
      let art = artists.find(art=> art.id === window.location.href.split('/')[4])
-     console.log(this.props)
+     //console.log(this.props)
     return art }
     }
 
@@ -45,13 +45,13 @@ findArtist = () => {                           // Check for props coming from Re
      componentDidMount(){                      //props check & then using token Props to fetch Artists' TopTracks
         this.checkforprops()
         let token = this.props.token
-        if(token == undefined){
+        if(token == null){
           this.props.getSessionToken()
         }
         if (token && token !== undefined){
         this.props.fetchTracks({token})}
-        console.log("we mounted!")  
-        console.log(this.props.currentUser)      
+        //console.log("we mounted!")  
+        //console.log(this.props.currentUser)      
         }
   
     handleTopTracks = () => {                      // returning loading if Redux Store is loading (while fetch is taking place) & then rendering TopTracks Component
@@ -72,7 +72,7 @@ render(){
             <h2 id="artist-title">{this.findArtist() !== undefined ? this.findArtist().name : ''}</h2>
             {this.findArtist() !== undefined ? <div> {this.grabArtImage()}</div> : ''} 
             {this.findArtist() !== undefined ? <div>{this.handleTopTracks()}</div> :''}
-            {this.props.token == undefined ? this.props.getSessionToken() : ''}
+            {/* {this.props.token == undefined ? this.props.getSessionToken() : ''} */}
            
           </div>
         )

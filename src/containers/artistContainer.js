@@ -5,24 +5,24 @@ import ArtistList from './ArtistList';
 import Artist from '../components/Artist'
 import {connect} from 'react-redux'
 
-const componentDidMount = () => {
-      destroyDiv()  
+ 
+const emptyDiv = () => {
+        return document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : '';   // Originally Displaying welcome message on App.js & don't want to persist that info for other Components.
 }
-const destroyDiv = () => {
-        document.getElementById('thisDiv').remove()   // Originally Displaying welcome message on App.js & don't want to persist that info for other Components.
-}
+
 const ArtistContainer = ({match, artists, token}) =>  {
         
-         
+         console.log(window.location, match.url)
 
         return (
-                
-               
-                        `${window.location.href}` === 'http://localhost:3000/artists' ?  <div> {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '': ''}
-                        <ArtistList artists={artists} token={token} /> 
-                          </div> :
-                         <div><Route path={`${match.url}/:artistId`} render={routerProps => <Artist {...routerProps} artists={artists} token={token}  /> }/>    {/*Defining Route for each unique Artist*/}
-                         </div>                  
+                // {`${window.location.href}` === `http://localhost:3000${match.url}` ?  <div></div>
+               <>
+                        {emptyDiv()}
+                         {/* {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '': ''} */}
+                         {window.location.href == `http://localhost:3000${match.url}` ? 
+                        <ArtistList artists={artists} token={token} /> :
+                        <Route path={`${match.url}/:artistId`} render={routerProps => <Artist {...routerProps} artists={artists} token={token}  /> }/>}    {/*Defining Route for each unique Artist*/}
+                         </>                 
                  )             
         
 }

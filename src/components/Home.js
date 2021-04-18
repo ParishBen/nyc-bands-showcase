@@ -63,14 +63,19 @@ import Artist from './Artist'
                  imgholder.append( myImg, p)
                 }
                 this.setState({artId: artist.id,             // Set the State to hold the Id & name of the Random Artist (for the Link path and title)
-                artTitle: artist.name})
-                 
+                artTitle: artist.name})        
         }
-      ).catch(err=> console.log(err))
+      )
+      .then(() => this.checkForImage())
+      .catch(err=> console.log(err))
          }
         }
-         
-      
+       
+      differentURL = setTimeout(() => {
+        if (window.location.href.includes('access_token')){
+          this.randomFetches()
+        }
+      }, 1500)
               
         // index = (intake) => this.props.artists.map(e => e.id).indexOf(`${intake.id}`); No longer needed. Now pulling the fetched artist Id from State rather than find it by props.artists[index(fetchedArt)]
        
@@ -78,17 +83,25 @@ import Artist from './Artist'
 
        componentDidMount(){
               // On mounting will perform the randomFetches() function 
+              //this.checkForImage()
            this.randomFetches()
        }
 
-     
+     checkForImage(){
+       if(document.getElementById('thisDiv') && document.getElementById('thisDiv').innerText.includes('No Artist Images')){
+         return
+       } if(document.getElementById('random-image') !== null) {
+         return 
+       } else { this.randomFetches()
+       }
+     }
      
     render(){
         return(
             <div id='Home-Div'>
-                {this.props.currentUser && this.props.token ? <p>Welcome {`${this.props.currentUser.name}`}, to NYC Bands Showcase ~ Have fun discovering all this local talent! </p>: <p>Welcome to NYC Bands Showcase ~ Have fun discovering all this local talent!</p>}
+                {this.props.currentUser ? <p>Welcome {`${this.props.currentUser.name}`}, to NYC Bands Showcase ~ Have fun discovering all this local talent! </p>: <p>Welcome to NYC Bands Showcase ~ Have fun discovering all this local talent!</p>}
                 {<div id="thisDiv">{ <Link  token={this.props.token}  to={`/artists/${this.state.artId}`} style={{marginRight: '15px', fontSize: '20pt', fontWeight: 'bold', color:'teal'}}>{`${this.state.artTitle}` }</Link>}</div>}
-              
+                {/* <div id="invisibleFetch" style={{display:'none'}}>{this.differentURL}</div> */}
             </div>
         )
     }
