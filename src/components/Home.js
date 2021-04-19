@@ -54,7 +54,6 @@ import {Link} from 'react-router-dom'
                 this.setState({artId: artist.id, // Set the State to hold the Id & name of the Random Artist (for the Link path and title)
                 artTitle: artist.name})        
               })
-              .then(() => this.checkForImage())
               .catch(err=> console.log(err))
           }
         }
@@ -62,25 +61,24 @@ import {Link} from 'react-router-dom'
        componentDidMount(){
            this.randomFetches()
        }
-
-     checkForImage(){
-       if(document.getElementById('thisDiv') && document.getElementById('thisDiv').innerText.includes('No Artist Images')){
-         return
-       } if(document.getElementById('random-image') !== null) {
-         return 
-       } else { this.randomFetches()
+      
+     checkForImage = setTimeout(() => {
+       if(document.getElementById('thisDiv') == null || ((document.getElementById('thisDiv') && !document.getElementById('thisDiv').innerText.includes('~No Artist Images')) && !document.getElementById('random-image')) ){
+       this.randomFetches() 
        }
-     }
+     }, 3000)
      
     render(){
         return(
             <div id='Home-Div'>
                 {this.props.currentUser ? <p>Welcome {`${this.props.currentUser.name}`}, to NYC Bands Showcase ~ Have fun discovering all this local talent! </p>: <p>Welcome to NYC Bands Showcase ~ Have fun discovering all this local talent!</p>}
-                {<div id="thisDiv">{ <Link  token={this.props.token}  to={`/artists/${this.state.artId}`} style={{marginRight: '15px', fontSize: '20pt', fontWeight: 'bold', color:'teal'}}>{`${this.state.artTitle}` }</Link>}</div>}
+                {<div id="thisDiv">{<Link  token={this.props.token}  to={`/artists/${this.state.artId}`} style={{marginRight: '15px', fontSize: '20pt', fontWeight: 'bold', color:'teal'}}>{`${this.state.artTitle}` }</Link>}</div>}
+                <div id='invisible-delay-fetch' style={{display:'none'}}>{this.checkForImage}</div>
             </div>
         )
     }
 }
+
 const mapStateToProps = state => {
   return {
    

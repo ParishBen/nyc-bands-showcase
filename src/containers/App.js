@@ -86,7 +86,7 @@ tokenProp = () => {
                 <SpotifyFetch artistsToState={this.artistsToState}/>
                 <Navbar token= {this.tokenProp()} />   
                 <Route exact path="/" render= {routerProps => <Home {...routerProps} artists={this.state.artistsObjArr} token= {this.tokenProp()}/> }/> 
-                <Route exact path="/access_token=/:token" render= {routerProps => <Home {...routerProps} artists={this.state.artistsObjArr} token= {this.tokenProp()}/> }/> 
+                <Route path="/access_token=/:token" render= {routerProps => <Home {...routerProps} artists={this.state.artistsObjArr} token= {this.tokenProp()}/> }/> 
                 <Route path='/artists' render={ routerProps => <ArtistContainer {...routerProps} artists={this.state.artistsObjArr} token= {this.tokenProp()}/>}/>
                 <Route path='/favorites' render={ routerProps => <FavoritesContainer {...routerProps} artists={this.state.artistsObjArr} token= {this.tokenProp()}/>}/>
             </div>:''}{this.props.token && this.dispatcherSession(this.state.token)}
