@@ -1,19 +1,15 @@
-//import './App.css';
 import '../stylesheet/basis.css'
 import React, { Component } from 'react';
-import nycBands from '../nycBands.js';
+import { BrowserRouter as Router, Route} from 'react-router-dom';
+import {connect} from 'react-redux';
 import ArtistContainer from './artistContainer'
 import Navbar from '../components/Navbar'
-import {  BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import {connect} from 'react-redux';
 import Home from '../components/Home'
 import FavoritesContainer from './FavoritesContainer'
-//import {addToken} from '../actions/add_token'
-import {getCurrentUser} from '../actions/addCurrentUser'
 import UserInput from '../components/UserInput'
-
-
-
+import SpotifyFetch from '../components/SpotifyFetch'
+import {getCurrentUser} from '../actions/addCurrentUser'
+import {setSessionToken} from '../actions/getSessionToken'
 
 
 const codeIntake = () => {
@@ -21,38 +17,13 @@ const codeIntake = () => {
    return  window.location.href.split('=/')[1]  }  // AFTER login is initiated the Spotify API puts parameters in URL  'access token'. This grabs the AccessToken info.
 }
 
-
-const properCase = // this goes through the imported list of Bands formed in NYC. Then URI encodes the non-alphabetical characters for the Fetch Request.
-  nycBands.map(artist => {
-      return artist.replaceAll(' ','%20').replaceAll("'","%27").replaceAll(":", "%3A").replaceAll('.',"+.")
-    })
-
-
-
-// const uniqBy = (arr, key) => {
-//   var seen = {}; // hash container for pushing unique objects into
-//   return arr.filter( function(item) {
-//     var k = key(item);   // REDUCE - will conduct function 'key' on each item in arr & assign value k
-//     return seen.hasOwnProperty(k) ? false : (seen[k] = true);  // if k is not unique to seen array then FALSE. if unique added to "seen" at index k. Using Json.stringify as key function to each item 
-//   })
-// }
-const finder = (newArt, artArray) => {
-  return artArray.find(artist=> artist.id === newArt.id)
-}
-
 class App extends Component {
 
   constructor(){
     super();
     this.state = {
-      currentUser: '',
-      name:'',
-      email: '',
-      password: '',
       artistsObjArr: [],
-      token: null,
-      sessionToken: null,
-      logged_in: window.location.href === 'http://localhost:3000/' ? false : true // if the Spotify access token info isn't present then User isn't logged in yet.  
+      logged_in: (window.location.href.includes('access_token')|| window.location.href.includes('artists') || window.location.href.includes('favorites')) ? true : false // if the Spotify access token info isn't present then User isn't logged in yet.  
     }
   }
 
@@ -63,187 +34,79 @@ setToken(){
  })
 }
 
-loggedInFetch(){
-  if(this.state.logged_in){
-     this.allNycBandsFetch()
-  }
- }
-
-
 componentDidMount(){
   console.log("we mounted!"+` ${this.state.logged_in}`) // Checking to see when & how many renders occur
- this.loggedInFetch()    // Goes through each artist in array & performs fetch to Spotify API. Saved to State
-  this.setToken()           // Sets the Token upon mounting & having access_token in the URL response from Spotify API
-  //this.tokenToSession()       // Sends the token data to the backend to store in session
-           
+  this.setToken()    // Sets the Token to State upon mounting & having access_token in the URL response from Spotify API
+  if(this.state.token && this.state.token != null){ this.dispatcherSession(this.state.token)  } // DISPATCHES an Action Creator to put Token Value into Backend Session & then into Redux Store   
   if (!window.location.href === 'http://localhost:3000'|| 'http://localhost:3000/'){    // if we have any other URL than the landing page => sending currentUser to Props & Store
   this.props.getCurrentUser()
-  this.setSessionToken()}       // Grabbing current_user from Backend and putting into Store.
-   
+  } 
 }
 
 
 tokenfunct = () => {                          // Grab Token from URL & send it to the Dispatch Action function for ADD_TOKEN
-//   if (!this.state.logged_in ) return
-//  if( window.location.href.includes('access_token') ){
-//    this.props.addToken({token})
-//    console.log('triggered token function')}
-let tokenVal = window.location.href.includes('=') ? window.location.href.split('=/')[1] : null     // If we had a correct landing page with Token data => perform function & store token in Store.
+let tokenVal = window.location.href.includes('=') ? window.location.href.split('=/')[1] : null     // If we have a correct landing page with Token data => perform function & store token in Store.
       if(tokenVal !== null){
-      this.props.addToken(tokenVal)
+      this.props.addToken(tokenVal)       // DISPATCHING the token value from URL to the Redux Store
     } 
   }
 
+ artistsToState = (artArr) => {
+  this.setState({
+    artistsObjArr: artArr
+  })
 
+ }
 
-allNycBandsFetch(){                                             
-  let artistsObjArr = []; // this will hold EVERY artist object return
-  //let uniqueArtistsObjs = []; // this will only hold unique artist objects
-
-  for (let i=0; i< properCase.length; i++){    // this loops through each uri encoded band-name & does get Fetch
-   
-    fetch(`https://api.spotify.com/v1/search?q=${properCase[i]}&type=artist`, {
-      headers: {
-          'Content-Type':'application/json',
-           Accept:'application/json',
-           "Authorization": `Bearer ${codeIntake()}`    //  codeIntake=> accesstoken auth
-      }
-     })
-     .then(resp=> resp.json())
-     .then(artObjs=> {                     // going to put this artist obj(s) response into another function which returns correct artist obj from results
-        let foundArtist = artObjs.artists.items               // this returns artist(s) item's array from Spotify
-        
-        if (foundArtist !== undefined && `${foundArtist.length}` > 0){  // if response isn't undef & has any length
-            let realArtist = foundArtist.find( artist => artist.name === decodeURI(properCase[i])) // find artist in array of objects with the exact name matching the initial unencoded band name.
-            //console.log(realArtist, foundArtist)
-            if (realArtist.name == "Run-DMC"){                            //Exception Case for Artist=> title: Run-D.M.C. posed problems in fetch due to '.' Will grab correct Artist.id now.
-               realArtist = foundArtist.find(artist => artist.id == "3CQIn7N5CuRDP8wEI7FiDA")   //Setting exception case ID for Run-D.M.C.
-            }
-            if (realArtist !== undefined){                       // if we have a hit on name matches in the objects & fetch search
-            if(!finder(realArtist, artistsObjArr)){
-              artistsObjArr.push(realArtist)
-             }
-            }                      // pushing the artist obj into array (possible for duplicates/wrong artists because search returns many artists similar to name searched in Spotify DB)
-          }
-          
-   //uniqueArtistsObjs = uniqBy(artistsObjArr, JSON.stringify)         // reducer -> will stringify the object & then search & return only unique values in array
-          //console.log(artistsObjArr, uniqueArtistsObjs)
-        //uniqueArtistsObjs = artistsObjArr
-      })
-      .then(() => {
-        // Sets State with unique array of Artists' Objects
-        this.setState({
-          artistsObjArr: artistsObjArr
-      })
-    })
+dispatcherSession = (someTokProp) => {
+  if(this.state.token !== null){
+    this.props.setSessionToken(someTokProp)
     
-    .catch( err => console.log(err))
   }
 }
-
-//  filterFunct = (inp, arr) => {         // not properly filtering array & pushing values
-//    let notUniq = arr.filter(artist => {
-//     if (artist.id === inp.id){
-//   return  
-//    } else {
-//      arr.push(inp)
-//    }
-// })
-//   return notUniq
-//  }
-
-
-
-
-
-
-
-     
-
-
-
-  delayed = setTimeout(() => {
-  if(this.state.artistsObjArr.length < 140 && this.state.logged_in){
-     this.allNycBandsFetch()
-   } else{console.log('full artists array!')}
- }, 7000)
-
-setSessionToken = () => {
-  fetch('http://localhost:9000/token', {
-    credentials: "include",
-    method: "POST",
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      token: codeIntake()
-    })
-  }).then(resp=> resp.json())
-  .then(token=> {
-    console.log(token)
-    //this.setState({sessionToken: token.token})
-    this.props.addToken(token.token)
-  }).catch(err=> console.log(err))
+tokenProp = () => {
+  if (this.state.token !== null)
+    return this.state.token
+  if(this.props.token !== null)
+    return this.props.token
+  if(this.props.sessionToken !== null)
+    return this.props.sessionToken
 }
-
-
-logout = event => {
-  event.preventDefault()
-  fetch('http://localhost:9000/logout', {
-    credentials: "include",
-    headers: {
-      method: "DELETE",
-      'Content-Type': 'application/json'
-    }
-  })
-  this.setState({
-    currentUser: null,
-  })
-}
-
-
   render(){
     //console.log(this.state)
   return (
         <Router>
             {!this.props.currentUser && !this.state.logged_in ? <div className="not-logged-in-App">
              <UserInput />
-                  {/* <header className="App-header"> <div><p>Hey there, please sign in below to get started!</p></div>      
-                  <button id="Login-Spotify" onClick={()=> window.location= "http://localhost:8888/login"}>Log in With Spotify</button>
-                  </header></div> :  */}
                   </div> : 
                    this.props.currentUser && !this.state.logged_in ? <div id='current-user-click-Spotify'><p>{`Welcome ${this.props.currentUser.name},  Please click below to get started!`}</p>      
                   <button id="Login-Spotify" onClick={()=> window.location= "http://localhost:8888/login"}>Complete your Login With Spotify</button> </div> : ''}
            { this.state.logged_in && this.props.currentUser !== null ? 
-                <div id='logged-in-user'><div id="invisibleFetch" style={{display:'none'}}>{this.delayed}{this.tokenfunct()}</div>
-                <Navbar token= {this.state.token} logged_in={this.state.logged_in} />   
-                 
-                <Route exact path="/" render= {routerProps => <Home {...routerProps} artists={this.state.artistsObjArr} token= {this.props.token && this.props.token !== null ? this.props.token : this.state.token}/> }/> 
-                <Route exact path="/access_token=/:token" render= {routerProps => <Home {...routerProps} artists={this.state.artistsObjArr} token= {this.props.token && this.props.token !== null ? this.props.token : this.state.token}/> }/> 
-                <Route path='/artists' render={ routerProps => <ArtistContainer {...routerProps} artists={this.state.artistsObjArr} token= {this.state.token && this.state.token != null ? this.state.token : ''}/>}/>
-                <Route path='/favorites' render={ routerProps => <FavoritesContainer {...routerProps} artists={this.state.artistsObjArr} token= {this.state.token && this.state.token != null ? this.state.token : ''}/>}/>
-            </div>:''}
+                <div id='logged-in-user'>{this.tokenfunct()} 
+                <SpotifyFetch artistsToState={this.artistsToState}/>
+                <Navbar token= {this.tokenProp()} />   
+                <Route exact path="/" render= {routerProps => <Home {...routerProps} artists={this.state.artistsObjArr} token= {this.tokenProp()}/> }/> 
+                <Route exact path="/access_token=/:token" render= {routerProps => <Home {...routerProps} artists={this.state.artistsObjArr} token= {this.tokenProp()}/> }/> 
+                <Route path='/artists' render={ routerProps => <ArtistContainer {...routerProps} artists={this.state.artistsObjArr} token= {this.tokenProp()}/>}/>
+                <Route path='/favorites' render={ routerProps => <FavoritesContainer {...routerProps} artists={this.state.artistsObjArr} token= {this.tokenProp()}/>}/>
+            </div>:''}{this.props.token && this.dispatcherSession(this.state.token)}
        </Router> 
    );
   }
 }
 
-
 const mapStateToProps = state => {          
   return { token: state.token,              // Access to Token & CurrentUser in Props          
-           currentUser: state.currentUser
+           currentUser: state.currentUser,
+           sessionToken: state.sessionToken
   }
 }
 
 const mapDispatchToProps = dispatch => ({
    
-    addToken: token => dispatch({type: 'ADD_TOKEN', token}),                    // sends Token Data to Action Creator allowing Token Info to be Dispatched to Store State
-   
-   getCurrentUser: () =>  dispatch(getCurrentUser())                  // sends CurrentUser data to Action Creator & stores in Redux state
-  
+  addToken: token => dispatch({type: 'ADD_TOKEN', token}),             // sends Token Data to Action Creator allowing Token Info to be Dispatched to Store State
+  getCurrentUser: () =>  dispatch(getCurrentUser()),                  // sends CurrentUser data to Action Creator & stores in Redux state
+  setSessionToken: (tokenProp) => dispatch(setSessionToken(tokenProp))
  })
 
-
 export default connect(mapStateToProps, mapDispatchToProps)(App);
-

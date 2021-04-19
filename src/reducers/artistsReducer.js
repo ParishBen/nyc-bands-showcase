@@ -1,5 +1,6 @@
-const artistsReducer = (state = { toptracks: [], loading: false, favorites: [], token: null, currentUser: null, token: null }, action) => {
-    switch(action.type) {
+const artistsReducer = (state = { toptracks: [], loading: false, favorites: [], token: null, sessionToken: null, currentUser: null, token: null }, action) => {
+    
+  switch(action.type) {
       case 'LOADING_TRACKS':
         return {
           ...state,
@@ -29,35 +30,19 @@ const artistsReducer = (state = { toptracks: [], loading: false, favorites: [], 
           ...state,
           token: action.token
         }
+      case 'ADD_SESSION_TOKEN':            // Grabbing Token from URL landing page & Dispatching Value to Redux Store State
+      return {
+        ...state,
+        sessionToken: action.token
+      }
       case 'CURRENT_USER':                // Fetching Current User data from Backend
         return {
           ...state,
           currentUser: action.currentUser
         }
-
       default:
         return state;
     }
  }
-   
-// const catsReducer = (state = { cats: [], loading: false }, action) => {
-//   switch(action.type) {
-//     case 'LOADING_CATS':
-//       return {
-//         ...state,
-//         cats: [...state.cats],
-//         loading: true
-//       }
-//     case 'ADD_CATS':
-//       return {
-//         ...state,
-//         cats: action.cats,
-//         loading: false
-//       }
-//     default:
-//       return state;
-//   }
-// }
- 
-// export default catsReducer;
-  export default artistsReducer;
+
+export default artistsReducer;

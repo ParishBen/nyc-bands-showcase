@@ -15,35 +15,6 @@ class UserInput extends React.Component {
     }
 
 
-
-tokenToSession = () => {                       // Sends POST request to backend SessionsController to create session[:token]
-    let tokenProps = this.props.token && this.props.token !== null ? this.props.token : null
-     if(tokenProps){
-     return fetch('http://localhost:9000/token', {
-       credentials: "include",
-       method: "POST",
-       headers: {
-         "Content-Type": "application/json",
-         "Accept": "application/json"
-       },
-       body: JSON.stringify({
-         token: tokenProps
-       })
-     })
-     .then(res=> res.json())
-     .then(backendToken => {
-       if (backendToken.error){
-         console.log(backendToken.error)
-         alert(backendToken.error)
-       } else {
-       console.log(backendToken, 'should be json_token', backendToken.token)
-       this.setState({sessionToken: backendToken.token})
-       }
-     }).catch(err=>console.log(err))
-    }
-   }
-
-
 handleUserInfoChange(event) {                                // Signing in to Landing Page handling value changes
     this.setState({
       [event.target.name]: event.target.value,
@@ -52,7 +23,6 @@ handleUserInfoChange(event) {                                // Signing in to La
   
   handleUserInfoSubmit(event) {                               // Handling Submit of user info to find/create a User in Backend => sets session to user.id
     event.preventDefault();
-    //this.props.addBand(this.state.bandName);
     fetch('http://localhost:9000/login', {
       method: 'POST',
       credentials: "include",
@@ -71,14 +41,11 @@ handleUserInfoChange(event) {                                // Signing in to La
       if(user.error) {
         alert(user.error)
       } else {
-        // this.setState({
-        //   currentUser: user  
-        // })
-        this.props.getCurrentUser()
-        console.log(this.state.currentUser, user)
+        this.props.getCurrentUser()  // Submits user info to backend & starts a current_user in Session. Then Dispatch the Action Creator function to Redux Store
+        console.log(this.props.currentUser, user)
       }
     })
-    .then(() => window.location= "http://localhost:8888/login")
+    .then(() => window.location= "http://localhost:8888/login") // Transports to Express Server on 8888 which is the defined callback route for Spotify to grant Access Token & route back to localhost:3000
     .catch(err=> alert(err))
     this.setState({
       name: '',
