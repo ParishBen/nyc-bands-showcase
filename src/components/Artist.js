@@ -36,21 +36,26 @@ findArtist = () => {                           // Check for props coming from Re
         this.checkforprops()
         let token = this.props.token
         let seshtoken = this.props.sessionToken
-          if(token == null){
-            this.props.getSessionToken()     // Will grab the session Token if not already passed in Props.
+        if (!(token && seshtoken)){
+          this.props.getSessionToken()
+        }
+          if(token == null && seshtoken !== null){
+            this.props.fetchTracks({seshtoken})     // Will grab the session Token if not already passed in Props.
          }
-          if (token && token !== undefined){
+          if (token && token !== null){
               this.props.fetchTracks({token})
-          }  
-          if (!token && seshtoken && seshtoken !== undefined){
-            this.props.fetchTracks({seshtoken})
-          }  
+          }
+          this.props.fetchTracks({seshtoken})  
         }
   
     handleTopTracks = () => {        // returning loading if Redux Store is loading (while fetch is taking place) & then rendering TopTracks Component
         if (this.props.loading) {
             return <h2 id='loading-header'>Loading Tracks...</h2>
              } if(this.props.toptracks){
+            return <TopTracks currentUser={this.props.currentUser} toptracks={this.props.toptracks} />
+          } if(!this.props.toptracks){
+            let seshtoken = this.props.sessionToken
+            this.props.fetchTracks({seshtoken})
             return <TopTracks currentUser={this.props.currentUser} toptracks={this.props.toptracks} />
           }
       }

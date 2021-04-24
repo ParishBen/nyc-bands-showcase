@@ -44,6 +44,7 @@ componentDidMount(){
 }
 
 
+
 tokenfunct = () => {                          // Grab Token from URL & send it to the Dispatch Action function for ADD_TOKEN
 let tokenVal = window.location.href.includes('=') ? window.location.href.split('=/')[1] : null     // If we have a correct landing page with Token data => perform function & store token in Store.
       if(tokenVal !== null){
@@ -55,7 +56,6 @@ let tokenVal = window.location.href.includes('=') ? window.location.href.split('
   this.setState({
     artistsObjArr: artArr
   })
-
  }
 
 dispatcherSession = (someTokProp) => {
