@@ -50,8 +50,10 @@ const logoutBtnClick = () => {
   })
     .then(resp=>resp.json())
     .then(res=> alert(res.message))  // Upon success alerts User that they have logged out & clears session on backend.
-    .then(()=>
-        window.location='http://localhost:3000')   // Direct Client back to '/' Landing Page
+    .then(()=> {
+        window.localStorage.removeItem('token')// Clear LocalStorage Token
+        window.location='http://localhost:3000'// Direct Client back to '/' Landing Page
+      })   
     .catch(err=> console.log()
   )}
 

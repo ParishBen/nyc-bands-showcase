@@ -4,7 +4,7 @@ const artistsReducer = (state = { toptracks: [], loading: false, favorites: [], 
       case 'LOADING_TRACKS':
         return {
           ...state,
-          toptracks: [...state.toptracks],                // Loading process for Artist Tracks Load
+          toptracks: [''],                // Loading process for Artist Tracks Load
           loading: true
         }
       case 'ADD_TRACKS':                              // Tracks have loaded and added to Redux State as array of tracks

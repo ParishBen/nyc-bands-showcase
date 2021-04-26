@@ -28,10 +28,13 @@ class App extends Component {
   }
 
 setToken(){
- if (!this.state.logged_in ) return
+  console.log('setTOKENING!-localstoraging!')
+ if (!this.state.logged_in || !window.location.href.includes('access_token')){ return
+} else { window.localStorage.setItem('token', codeIntake())
  this.setState({
    token: codeIntake()
  })
+}
 }
 
 componentDidMount(){
