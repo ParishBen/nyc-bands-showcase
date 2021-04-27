@@ -18,11 +18,12 @@ import {Link} from 'react-router-dom'
         
           if(this.props.artists.length > 0){
              let num = this.props.artists.length
+             let tokVal = this.props.token != null ? this.props.token : window.localStorage.getItem('token')
              fetch(this.props.artists[Math.floor(Math.random() * num)].href, {
                 headers: {
                 'Content-Type':'application/json',
                 Accept:'application/json',
-                "Authorization": `Bearer ${this.props.token}`    //  auth given from props=> accesstoken 
+                "Authorization": `Bearer ${tokVal}`    //  auth given from props=> accesstoken 
                   }
                 })
                 .then(resp=> resp.json())
