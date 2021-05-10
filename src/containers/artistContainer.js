@@ -8,12 +8,15 @@ import {connect} from 'react-redux'
 const emptyDiv = () => {
         return document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : '';   // Originally Displaying welcome message on App.js & don't want to persist that info for other Components.
 }
+const removeImg = () => {
+        document.querySelector('body').style.background = ''
+}
 
 const ArtistContainer = ({match, artists, token}) =>  {
         
         return (
                <>
-                        {emptyDiv()}
+                        {emptyDiv()}{removeImg()}
                          {window.location.href == `http://localhost:3000${match.url}` ? 
                         <ArtistList artists={artists} token={token} /> :
                         <Route path={`${match.url}/:artistId`} render={routerProps => <Artist {...routerProps} artists={artists} token={token}  /> }/>}    {/*Defining Route for each unique Artist*/}

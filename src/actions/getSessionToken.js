@@ -25,7 +25,7 @@ import React from 'react'
 
 
         export const setSessionToken = (tok) => {
-          let tokenProps = tok && tok !== null ? tok : null;
+          let tokenProps = tok && tok != null ? tok : null;
           console.log(tok, tokenProps)
             return (dispatch) => {
               return fetch('http://localhost:9000/token', {

@@ -34,19 +34,7 @@ findArtist = () => {                           // Check for props coming from Re
     
      componentDidMount(){                      //props check & then using token Props to fetch Artists' TopTracks
         this.checkforprops()
-        let token = this.props.token
-        let seshtoken = this.props.sessionToken
-       
-        //   if(token == null && seshtoken !== null){
-        //     this.props.fetchTracks(seshtoken)     // Will grab the session Token if not already passed in Props.
-        //  }
-        //   if (token && token !== null){
-        //       this.props.fetchTracks(token)
-        //   }
-         // if (!token && !seshtoken) {
-            this.props.fetchTracks(window.localStorage.getItem('token'))  
-          //}
-          //else{ this.props.getSessionToken()}
+        this.props.fetchTracks(window.localStorage.getItem('token'))  
         }
   
     handleTopTracks = () => {        // returning loading if Redux Store is loading (while fetch is taking place) & then rendering TopTracks Component
@@ -59,15 +47,22 @@ findArtist = () => {                           // Check for props coming from Re
             return <TopTracks currentUser={this.props.currentUser} toptracks={this.props.toptracks} />
           }
       }
-     
+     artBackGround = () => {
+       let src = document.querySelector('img').src
+       console.log(src)
+      document.querySelector('body').style.background = `url("${src}") no-repeat fixed center`
+      document.querySelector('body').style.backgroundSize = 'cover'
+
+     }
     
 render(){
     
     return(
         
-          <div id="artist-div">   
+          <div id="artist-div"> 
+            {document.querySelector('img') && this.artBackGround()}  
             {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : ''}
-            <h2 id="artist-title">{this.findArtist() !== undefined ? this.findArtist().name : ''}</h2>
+            <h2 id="artist-title" style={{textAlign:'center'}}><span style={{backgroundColor:'gray'}}>{this.findArtist() !== undefined ? this.findArtist().name : ''}</span> </h2>
             {this.findArtist() !== undefined ? <div> {this.grabArtImage()}</div> : ''} 
             {this.props.toptracks && this.findArtist() !== undefined  ? <div>{this.handleTopTracks()}</div> :''}           
           </div>
@@ -80,8 +75,7 @@ const mapStateToProps = state => {
       toptracks: state.toptracks,             // Props Access of Redux State for toptracks/loading/token/current_user
       loading: state.loading,
       token: state.token,
-      currentUser: state.currentUser,
-      sessionToken: state.sessionToken
+      currentUser: state.currentUser
     }
   }
   

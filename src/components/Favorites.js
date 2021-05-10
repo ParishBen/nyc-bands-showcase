@@ -42,9 +42,14 @@ componentDidMount(){
               }
             }
 
+        removeImg = () => {
+             document.querySelector('body').style.background = ''
+            }
+
         render(){
             return(
                 <>
+                    {this.removeImg()}
                     {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : ''}
                     <h1 id="head">NYC FAVES 💛 </h1>
                     <ul id='favorite-list'>{this.handleFaveTracks()}</ul> 

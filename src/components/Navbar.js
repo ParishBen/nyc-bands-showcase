@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 const NavBar = ({token, current_user}) => {
   return (
-    <div style={{ borderBottom: '2px solid black', paddingBottom: '10px', marginBottom: '12px' }}>
+    <div class='navbar' style={{ borderBottom: '2px solid black', paddingBottom: '10px', marginBottom: '12px' }}>
       <NavLink 
         style={{ marginRight: '10px' }} 
         activeStyle={{background: 'darkblue', color: 'white'}}
