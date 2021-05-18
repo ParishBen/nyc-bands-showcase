@@ -1,21 +1,70 @@
-import '../stylesheet/basis.css'
+import '../stylesheet/basis.css';
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route} from 'react-router-dom';
 import {connect} from 'react-redux';
-import ArtistContainer from './artistContainer'
-import Navbar from '../components/Navbar'
-import Home from '../components/Home'
-import FavoritesContainer from './FavoritesContainer'
-import UserInput from '../components/UserInput'
-import SpotifyFetch from '../components/SpotifyFetch'
-import {getCurrentUser} from '../actions/addCurrentUser'
-import {setSessionToken} from '../actions/getSessionToken'
+import ArtistContainer from './artistContainer';
+import Navbar from '../components/Navbar';
+import Home from '../components/Home';
+import FavoritesContainer from './FavoritesContainer';
+import UserInput from '../components/UserInput';
+import SpotifyFetch from '../components/SpotifyFetch';
+import {getCurrentUser} from '../actions/addCurrentUser';
+import { isExpired, decodeToken } from "react-jwt";
+import {dandy} from '../tokenSecret';
+var jwt = require('jsonwebtoken');
 
 
-const codeIntake = () => {
-  if(window.location.href.includes('access_token')){
+
+// var jwt = require('jsonwebtoken');
+
+
+// var dandySecret = "oh so secret";
+
+// //export const generateToken = (user) => {
+  //   //1. Dont use password and other sensitive fields
+  //   //2. Use fields that are useful in other parts of the     
+  //   //app/collections/models
+  //  let bogusTokes;
+  //   var u = {
+    //   //  name: user.name,
+//   //  username: user.username,
+//   //  admin: user.admin,
+//   //  _id: user._id.toString(),
+//   //  image: user.image
+//   spotify_token: codeIntake()
+//   }; 
+//    export const brokenToken = jwt.sign(u, dandySecret, {
+  //      expiresIn: 60 * 60 * 24 // expires in 24 hours
+  //   })
+  
+  //////window.localStorage.setItem('access_token', token)
+  //console.log(token)
+
+
+
+  
+  
+  const codeIntake = () => {
+    if(window.location.href.includes('access_token')){
    return  window.location.href.split('=/')[1]  }  // AFTER login is initiated the Spotify API puts parameters in URL  'access token'. This grabs the AccessToken info.
 }
+
+ 
+const generateToken = () => {
+    var u = {
+      spotify_token: codeIntake() 
+      }; 
+    let jwtToken = jwt.sign(u, dandy, {
+        expiresIn: 60 * 60 * 24 // expires in 24 hours
+       })
+    return jwtToken
+  }
+
+  const myDecodedToken =  decodeToken(generateToken());
+  const isMyTokenExpired =  isExpired(generateToken());
+
+//const deco = myDecodedToken.spotify_token
+export const deco = myDecodedToken.spotify_token
 
 class App extends Component {
 
@@ -30,20 +79,28 @@ class App extends Component {
 setToken(){
   console.log('setTOKENING!-localstoraging!')
  if (!this.state.logged_in || !window.location.href.includes('access_token')){ return
-} else { window.localStorage.setItem('token', codeIntake())
+} else { 
  this.setState({
    token: codeIntake()
  })
+ window.localStorage.setItem('access_token', generateToken())
 }
 }
 
 componentDidMount(){
   console.log("we mounted!"+` ${this.state.logged_in}`) // Checking to see when & how many renders occur
   this.setToken()    // Sets the Token to State upon mounting & having access_token in the URL response from Spotify API
-  if(this.state.token && this.state.token != null){ this.dispatcherSession(this.state.token)  } // DISPATCHES an Action Creator to put Token Value into Backend Session & then into Redux Store   
   if (!window.location.href === 'http://localhost:3000'|| 'http://localhost:3000/'){    // if we have any other URL than the landing page => sending currentUser to Props & Store
   this.props.getCurrentUser()
   } 
+  
+
+
+
+
+
+
+
 }
 
 
@@ -61,19 +118,18 @@ let tokenVal = window.location.href.includes('=') ? window.location.href.split('
   })
  }
 
-dispatcherSession = (someTokProp) => {
-  if(this.state.token !== null){
-    this.props.setSessionToken(someTokProp)
+// dispatcherSession = (someTokProp) => {
+//   if(this.state.token !== null){
+//     this.props.setSessionToken(someTokProp)
     
-  }
-}
+//   }
+//}
 tokenProp = () => {
   if (this.state.token !== null)
     return this.state.token
   if(this.props.token !== null)
     return this.props.token
-  if(this.props.sessionToken !== null)
-    return this.props.sessionToken
+  
 }
   render(){
     //console.log(this.state)
@@ -92,7 +148,7 @@ tokenProp = () => {
                 <Route path="/access_token=/:token" render= {routerProps => <Home {...routerProps} artists={this.state.artistsObjArr} token= {this.tokenProp()}/> }/> 
                 <Route path='/artists' render={ routerProps => <ArtistContainer {...routerProps} artists={this.state.artistsObjArr} token= {this.tokenProp()}/>}/>
                 <Route path='/favorites' render={ routerProps => <FavoritesContainer {...routerProps} artists={this.state.artistsObjArr} token= {this.tokenProp()}/>}/>
-            </div>:''}{this.props.token && this.dispatcherSession(this.state.token)}
+            </div>:''}
        </Router> 
    );
   }
@@ -109,7 +165,7 @@ const mapDispatchToProps = dispatch => ({
    
   addToken: token => dispatch({type: 'ADD_TOKEN', token}),             // sends Token Data to Action Creator allowing Token Info to be Dispatched to Store State
   getCurrentUser: () =>  dispatch(getCurrentUser()),                  // sends CurrentUser data to Action Creator & stores in Redux state
-  setSessionToken: (tokenProp) => dispatch(setSessionToken(tokenProp))
+  //setSessionToken: (tokenProp) => dispatch(setSessionToken(tokenProp))
  })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

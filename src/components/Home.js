@@ -1,8 +1,20 @@
-
 import '../stylesheet/basis.css';
 import React from 'react';
-import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
+import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
+import {deco} from '../containers/App';
+import { isExpired, decodeToken } from "react-jwt";
+
+const decoVal = () => {
+  if(deco && deco != null){
+    return deco
+  } else {
+      let newTok = window.localStorage.getItem('access_token')
+      const myDecodedToken =  decodeToken(newTok);
+   return myDecodedToken.spotify_token
+  }
+}
+
 
  class Home extends React.Component{
 
@@ -18,7 +30,7 @@ import {Link} from 'react-router-dom'
         
           if(this.props.artists.length > 0){
              let num = this.props.artists.length
-             let tokVal = this.props.token != null ? this.props.token : window.localStorage.getItem('token')
+             let tokVal = this.props.token != null ? this.props.token : decoVal()
              fetch(this.props.artists[Math.floor(Math.random() * num)].href, {
                 headers: {
                 'Content-Type':'application/json',

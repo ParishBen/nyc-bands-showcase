@@ -1,7 +1,6 @@
 import '../stylesheet/basis.css';
 import React from 'react'
-import 
-{connect} from 'react-redux'
+import {connect} from 'react-redux'
 import { SortedTracks } from './SortedTracks';
 
 

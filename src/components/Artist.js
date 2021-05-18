@@ -3,7 +3,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TopTracks from './TopTracks'
 import {fetchTracks} from '../actions/artistActions'
-import {getSessionToken} from '../actions/getSessionToken'
+//import {getSessionToken} from '../actions/getSessionToken'
+import {deco} from '../containers/App'
+import { isExpired, decodeToken } from "react-jwt";
 
 class Artist extends React.Component{
  
@@ -34,18 +36,29 @@ findArtist = () => {                           // Check for props coming from Re
     
      componentDidMount(){                      //props check & then using token Props to fetch Artists' TopTracks
         this.checkforprops()
-        this.props.fetchTracks(window.localStorage.getItem('token'))  
-        }
+        //this.props.fetchTracks(window.localStorage.getItem('token'))  
+        if(deco && deco != null){
+          console.log(deco)
+        this.props.fetchTracks(deco)  
+        } else {
+          let newTok = window.localStorage.getItem('access_token')
+          const myDecodedToken =  decodeToken(newTok);
+  //const isMyTokenExpired =  isExpired(generateToken());
+          console.log(newTok, myDecodedToken)
+          this.props.fetchTracks(myDecodedToken.spotify_token)
+//const deco = myDecodedToken.spotify_token
+    }}
   
     handleTopTracks = () => {        // returning loading if Redux Store is loading (while fetch is taking place) & then rendering TopTracks Component
         if (this.props.loading) {
             return <h2 id='loading-header'>Loading Tracks...</h2>
              } if(this.props.toptracks && this.props.toptracks != null){
             return <TopTracks currentUser={this.props.currentUser} toptracks={this.props.toptracks} />
-          } if(!this.props.toptracks){
-               this.props.fetchTracks(window.localStorage.getItem('token'))
-            return <TopTracks currentUser={this.props.currentUser} toptracks={this.props.toptracks} />
-          }
+          } 
+          // if(!this.props.toptracks){
+          //      this.props.fetchTracks(window.localStorage.getItem('token'))
+          //   return <TopTracks currentUser={this.props.currentUser} toptracks={this.props.toptracks} />
+          // }
       }
      artBackGround = () => {
        let src = document.querySelector('img').src
@@ -82,7 +95,7 @@ const mapStateToProps = state => {
   const mapDispatchToProps = dispatch => {
     return { 
       fetchTracks: (anyProp) => dispatch(fetchTracks(anyProp)),      //Dispatch functions for fetching tracks & sessionToken
-      getSessionToken: () => dispatch(getSessionToken())
+      //getSessionToken: () => dispatch(getSessionToken())
     }
   }
 

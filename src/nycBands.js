@@ -1,4 +1,3 @@
-
 const nycBands = [    
     "24-7 Spyz",
     "2 in a Room",
