@@ -12,7 +12,7 @@
                 if(user.error){
                     alert(user.error)
                 } else {
-                dispatch({type: 'CURRENT_USER', currentUser: user})     //Dispatching to Redux the Serialized User data from Backend.
+                dispatch({type: 'CURRENT_USER', currentUser: user})   //Dispatching to Redux the Serialized User data from Backend.
                 }
              })
           .catch(err=> console.log(err))

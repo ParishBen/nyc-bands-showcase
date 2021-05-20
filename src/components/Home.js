@@ -4,19 +4,40 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {deco} from '../containers/App';
 import { isExpired, decodeToken } from "react-jwt";
+import {dandy} from '../tokenSecret';
+var jwt = require('jsonwebtoken');
 
-const decoVal = () => {
-  if(deco && deco != null){
-    return deco
-  } else {
-      let newTok = window.localStorage.getItem('access_token')
-      const myDecodedToken =  decodeToken(newTok);
-   return myDecodedToken.spotify_token
-  }
-}
+//let tokenRet;
 
+// const generateToken = (tokenVal) => {
+//   var u = {
+//       spotify_token: tokenVal 
+//       }; 
+//       let jwtToken = jwt.sign(u, dandy, {
+//         expiresIn: 60 * 60 * 24 // expires in 24 hours
+//       })
+//       return jwtToken
+//     }
+    
+//     const myDecodedToken =  tokenRet && decodeToken(tokenRet);
+    //const isMyTokenExpired =  isExpired(generateToken());
+    
+    //export const deco = myDecodedToken && myDecodedToken.spotify_token
+    
+    class Home extends React.Component{
 
- class Home extends React.Component{
+       decoVal = () => {
+        if(deco && deco() != null){
+          console.log(deco())
+          return deco()
+        } else {
+            let newTok = window.localStorage.getItem('access_token')
+            if (newTok){
+            const myDecodedToken =  decodeToken(newTok);
+            console.log(decodeToken(newTok))
+         return myDecodedToken.spotify_token}
+        }
+      }
 
     constructor(){
         super();
@@ -30,7 +51,7 @@ const decoVal = () => {
         
           if(this.props.artists.length > 0){
              let num = this.props.artists.length
-             let tokVal = this.props.token != null ? this.props.token : decoVal()
+             let tokVal =  this.decoVal()
              fetch(this.props.artists[Math.floor(Math.random() * num)].href, {
                 headers: {
                 'Content-Type':'application/json',
@@ -73,8 +94,27 @@ const decoVal = () => {
         }
                     
        componentDidMount(){
+           console.log(deco(), this.decoVal())
            this.randomFetches()
        }
+
+      //  tokenFetch = () => {
+      //   fetch('http://localhost:8888/toke', {
+      //     headers: {
+      //     'Content-Type':'application/json',
+      //     Accept:'application/json',
+      //     credentials: "include"
+      //  }})
+      //  .then(resp=> resp.json())
+      //  .then(ressy=> {
+      //   tokenRet = this.generateToken(ressy.token)
+      
+      //    console.log(ressy.token, tokenRet)
+      //   })
+      //  .catch(err=> console.log(err))
+      // }
+      
+       
 
        artBackGround = () => {
         let src = document.querySelector('img').src
@@ -95,7 +135,7 @@ const decoVal = () => {
                 {document.querySelector('img') && this.artBackGround()}
                 {this.props.currentUser ? <p class='welcomeMSG' style={{backgroundColor:'beige', color:'chocolate'}}>Welcome {`${this.props.currentUser.name}`}, to NYC Bands Showcase ~ Have fun discovering all this local talent! </p>: <p>Welcome to NYC Bands Showcase ~ Have fun discovering all this local talent!</p>}
                 {<div id="thisDiv">{<Link  token={this.props.token}  to={`/artists/${this.state.artId}`} style={{marginRight: '15px', fontSize: '20pt', fontWeight: 'bold', color:'teal', backgroundColor:'white'}}>{`${this.state.artTitle}` }</Link>}</div>}
-                <div id='invisible-delay-fetch' style={{display:'none'}}>{this.checkForImage}</div>
+                <div id='invisible-delay-fetch' style={{display:'none'}}>{this.checkForImage}{/*this.megaFetch()*/}</div>
             </div>
         )
     }

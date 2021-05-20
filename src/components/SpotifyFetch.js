@@ -1,25 +1,62 @@
 import React from 'react'
 import nycBands from '../nycBands'
+import '../stylesheet/basis.css';
+import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
+import {deco} from '../containers/App';
+import { isExpired, decodeToken } from "react-jwt";
+import {dandy} from '../tokenSecret';
+var jwt = require('jsonwebtoken');
 
+//let tokenRet;
 
-
-const codeIntake = () => {
-    if(window.location.href.includes('access_token')){
-      return  window.location.href.split('=/')[1]    // AFTER login is initiated the Spotify API puts parameters in URL  'access token'. This grabs the AccessToken info.
+// const generateToken = (tokenVal) => {
+//   var u = {
+//       spotify_token: tokenVal 
+//       }; 
+//       let jwtToken = jwt.sign(u, dandy, {
+//         expiresIn: 60 * 60 * 24 // expires in 24 hours
+//       })
+//       return jwtToken
+//     }
+    
+//     const myDecodedToken =  tokenRet && decodeToken(tokenRet);
+    //const isMyTokenExpired =  isExpired(generateToken());
+    
+    //export const deco = myDecodedToken && myDecodedToken.spotify_token
+    
+    
+    
+    const codeIntake = () => {
+      if(window.location.href.includes('access_token')){
+        return  window.location.href.split('=/')[1]    // AFTER login is initiated the Spotify API puts parameters in URL  'access token'. This grabs the AccessToken info.
+      }
     }
-  }
-   
-const properCase =              // this goes through the imported list of Bands formed in NYC. Then URI encodes the non-alphabetical characters for the Fetch Request.
+    
+    const properCase =              // this goes through the imported list of Bands formed in NYC. Then URI encodes the non-alphabetical characters for the Fetch Request.
     nycBands.map(artist => {
-        return artist.replaceAll(' ','%20').replaceAll("'","%27").replaceAll(":", "%3A").replaceAll('.',"+.")
-      })
-  
-const artistArrReducer = (newArt, artArray) => {    // Takes in the Artist & Array & will check the array if the Artist Object is already in the Array based on unique ID.
+      return artist.replaceAll(' ','%20').replaceAll("'","%27").replaceAll(":", "%3A").replaceAll('.',"+.")
+    })
+    
+    const artistArrReducer = (newArt, artArray) => {    // Takes in the Artist & Array & will check the array if the Artist Object is already in the Array based on unique ID.
     return artArray.find(artist=> artist.id === newArt.id)
   }
-
-  
+ 
   export default class SpotifyFetch extends React.Component { 
+    
+    
+    decoVal = () => {
+     if(deco && deco() != null){
+       console.log(deco())
+       return deco()
+     } else {
+         let newTok = window.localStorage.getItem('access_token')
+         if (newTok){
+         const myDecodedToken =  decodeToken(newTok);
+         console.log(myDecodedToken)
+      return myDecodedToken.spotify_token}
+     }
+   }
     
     constructor(){
       super();
@@ -41,7 +78,7 @@ const artistArrReducer = (newArt, artArray) => {    // Takes in the Artist & Arr
             headers: {
                 'Content-Type':'application/json',
                  Accept:'application/json',
-                 "Authorization": `Bearer ${codeIntake()}`    //  codeIntake=> accesstoken auth
+                 "Authorization": `Bearer ${this.decoVal()}`    //  codeIntake=> accesstoken auth
                 }
               })
               .then(resp=> resp.json())

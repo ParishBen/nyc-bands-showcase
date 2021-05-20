@@ -36,15 +36,17 @@ findArtist = () => {                           // Check for props coming from Re
     
      componentDidMount(){                      //props check & then using token Props to fetch Artists' TopTracks
         this.checkforprops()
-        //this.props.fetchTracks(window.localStorage.getItem('token'))  
-        if(deco && deco != null){
+        //this.props.fetchTracks(window.localStorage.getItem('token')) 
+        console.log(deco) 
+        if(deco && deco() != null){
           console.log(deco)
-        this.props.fetchTracks(deco)  
+        this.props.fetchTracks(deco())  
         } else {
           let newTok = window.localStorage.getItem('access_token')
           const myDecodedToken =  decodeToken(newTok);
   //const isMyTokenExpired =  isExpired(generateToken());
           console.log(newTok, myDecodedToken)
+          if(myDecodedToken)
           this.props.fetchTracks(myDecodedToken.spotify_token)
 //const deco = myDecodedToken.spotify_token
     }}
@@ -77,7 +79,7 @@ render(){
             {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : ''}
             <h2 id="artist-title" style={{textAlign:'center'}}><span style={{backgroundColor:'gray'}}>{this.findArtist() !== undefined ? this.findArtist().name : ''}</span> </h2>
             {this.findArtist() !== undefined ? <div> {this.grabArtImage()}</div> : ''} 
-            {this.props.toptracks && this.findArtist() !== undefined  ? <div>{this.handleTopTracks()}</div> :''}           
+            {this.props.toptracks && this.findArtist() !== undefined  ? <div>{this.handleTopTracks()}</div> :''}{console.log(deco())}           
           </div>
         )
     }

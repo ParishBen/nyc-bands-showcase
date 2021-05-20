@@ -45,7 +45,9 @@ handleUserInfoChange(event) {                                // Signing in to La
         console.log(this.props.currentUser, user)
       }
     })
-    .then(() => window.location= "http://localhost:8888/login") // Transports to Express Server on 8888 which is the defined callback route for Spotify to grant Access Token & route back to localhost:3000
+    .then(() => {
+    this.props.stateLogin()
+    window.location= "http://localhost:8888/login"}) // Transports to Express Server on 8888 which is the defined callback route for Spotify to grant Access Token & route back to localhost:3000
     .catch(err=> alert(err))
     this.setState({
       name: '',
@@ -82,7 +84,7 @@ render() {
   }
 
 const mapStateToProps = state => {          
-    return {          // Access to Token & CurrentUser in Props          
+    return {          // Access to  CurrentUser in Props          
         currentUser: state.currentUser
     }
   }
