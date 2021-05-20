@@ -14,28 +14,31 @@ import {dandy} from '../tokenSecret';
 var jwt = require('jsonwebtoken');
 
 
- let tokenRet, entireTok;
 
 const generateToken = (tokenVal) => {   // Takes the Parameter of an Access Token value & then creates a JWT
-    var u = {
-      spotify_token: tokenVal 
-      }; 
-    let jwtToken = jwt.sign(u, dandy, {
-        expiresIn: 60 * 60 * 24 // expires in 24 hours
-       })
-    return jwtToken
-  }
+  var u = {
+    spotify_token: tokenVal 
+  }; 
+  let jwtToken = jwt.sign(u, dandy, {
+    expiresIn: 60 * 60 * 24 // expires in 24 hours
+  })
+  return jwtToken
+}
 
-  export const deco =  () => {              // If tokenRet has the fetched AccessToken value then decode the JWT & return just the Spotify Token value.
-    if(tokenRet != null){
+let tokenRet; 
+let entireTok;
+
+
+export const deco =  () => {              // If tokenRet has the fetched AccessToken value then decode the JWT & return just the Spotify Token value.
+  if(tokenRet != null){
     const myDecodedToken = decodeToken(entireTok)
-  
+    
     return myDecodedToken.spotify_token
   }
 }
 
 class App extends Component {
-
+  
   constructor(){
     super();
     this.state = {
@@ -43,11 +46,12 @@ class App extends Component {
       logged_in: window.localStorage.getItem('access_token') !== null ? true : false
     }
   }
-
-
+  
+  
 componentDidMount(){
   this.props.getCurrentUser()
   if(this.props.currentUser){
+    console.log('firing from CDM-tokenFetch')
     this.tokenFetch()// Fetches & Sets the Token in a JWT into LocalStorage upon mounting 
   }
   
@@ -83,8 +87,8 @@ componentDidMount(){
 
 
 tokenProp = () => {
-  if(deco && deco != null){
-    return deco
+  if(deco && deco() != null){
+    return deco()
   } else {
       let newTok = window.localStorage.getItem('access_token')
       const myDecodedToken =  decodeToken(newTok);

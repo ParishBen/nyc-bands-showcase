@@ -30,7 +30,7 @@ var jwt = require('jsonwebtoken');
          let newTok = window.localStorage.getItem('access_token')    // OR grabs it from the LocalStorage / Decodes it for the Token Value
          if (newTok){
          const myDecodedToken =  decodeToken(newTok);
-         console.log(myDecodedToken)
+        //  console.log(myDecodedToken)
       return myDecodedToken.spotify_token}
      }
    }

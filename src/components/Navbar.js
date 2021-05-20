@@ -5,8 +5,8 @@ import { NavLink } from 'react-router-dom';
 
 const NavBar = () => {
   return (
-    <div class='navbar' style={{ borderBottom: '2px solid black', paddingBottom: '10px', marginBottom: '12px' }}>
-      <NavLink 
+    <div className='navbar'  style={{position:'absolute', top: '15px', left: '15px',  textAlign:'left', paddingBottom: '10px', paddingLeft:'3pt' }}>
+      <span style={{backgroundColor:'floralwhite', borderBottom:'3px solid black'}}><NavLink 
         style={{ marginRight: '10px' }} 
         activeStyle={{background: 'darkblue', color: 'white'}}
         to='/home'
@@ -35,7 +35,7 @@ const NavBar = () => {
           onClick={logoutBtnClick}
         > Log Out  
       </button>
-    </div>
+    </span></div>
   );
 }
 

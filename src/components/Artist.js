@@ -22,10 +22,10 @@ findArtist = () => {                           // Check for props coming from Re
         return <h3 style={{color:'red', textDecoration: 'underline dashed'}}>No Artist Image</h3>
       } 
       if (`${this.findArtist().images}`.length === 1) { //IF only one image in array
-        return <img src={this.findArtist().images[0].url}                 
+        return <img className="Artistimage" src={this.findArtist().images[0].url}                 
         alt={this.findArtist().name}/>;
        } else {      // Will pull the second image in array otherwise
-            return <img src={this.findArtist().images[1].url}                 
+            return <img className="Artistimage" src={this.findArtist().images[1].url}                 
                   alt={this.findArtist().name}/>;
         }      
       }
@@ -38,11 +38,13 @@ findArtist = () => {                           // Check for props coming from Re
         this.checkforprops()
         //this.props.fetchTracks(window.localStorage.getItem('token')) 
         if(deco && deco() != null){
+          console.log('got deco'+deco())
         this.props.fetchTracks(deco())  
         } else {
           let newTok = window.localStorage.getItem('access_token')
           const myDecodedToken =  decodeToken(newTok);
           if(myDecodedToken)
+          console.log('no deco'+ myDecodedToken.spotify_token)
           this.props.fetchTracks(myDecodedToken.spotify_token)
     }}
   

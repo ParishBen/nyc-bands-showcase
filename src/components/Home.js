@@ -66,6 +66,7 @@ var jwt = require('jsonwebtoken');
                           myImg.src= imgSrc
                         }
                         myImg.alt = artist.name
+                        myImg.className = "Artistimage"
                           if((!document.getElementById('random-image') && images.length > 0)){   // IF the image isn't on the DOM yet go ahead & append the image to render.
                             imgholder.append( myImg, p)
                           }
