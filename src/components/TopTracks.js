@@ -57,8 +57,8 @@ state = {
             Accept:'application/json'
         },
         body: JSON.stringify({
-            "name": trutrack.name,
-            "artist_id": trutrack.id
+            "name": this.props.artistName,
+            "artist_id": this.props.artistId
         })
     })
     .then(resp => resp.json())

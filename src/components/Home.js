@@ -6,23 +6,6 @@ import {deco} from '../containers/App';
 import { isExpired, decodeToken } from "react-jwt";
 import {dandy} from '../tokenSecret';
 var jwt = require('jsonwebtoken');
-
-//let tokenRet;
-
-// const generateToken = (tokenVal) => {
-//   var u = {
-//       spotify_token: tokenVal 
-//       }; 
-//       let jwtToken = jwt.sign(u, dandy, {
-//         expiresIn: 60 * 60 * 24 // expires in 24 hours
-//       })
-//       return jwtToken
-//     }
-    
-//     const myDecodedToken =  tokenRet && decodeToken(tokenRet);
-    //const isMyTokenExpired =  isExpired(generateToken());
-    
-    //export const deco = myDecodedToken && myDecodedToken.spotify_token
     
     class Home extends React.Component{
 
@@ -98,31 +81,13 @@ var jwt = require('jsonwebtoken');
            this.randomFetches()
        }
 
-      //  tokenFetch = () => {
-      //   fetch('http://localhost:8888/toke', {
-      //     headers: {
-      //     'Content-Type':'application/json',
-      //     Accept:'application/json',
-      //     credentials: "include"
-      //  }})
-      //  .then(resp=> resp.json())
-      //  .then(ressy=> {
-      //   tokenRet = this.generateToken(ressy.token)
-      
-      //    console.log(ressy.token, tokenRet)
-      //   })
-      //  .catch(err=> console.log(err))
-      // }
-      
-       
-
        artBackGround = () => {
         let src = document.querySelector('img').src
         console.log(src)
        document.querySelector('body').style.background = `url("${src}") no-repeat fixed center`
        document.querySelector('body').style.backgroundSize = 'cover'
- 
       }
+
      checkForImage = setTimeout(() => {
        if(document.getElementById('thisDiv') == null || ((document.getElementById('thisDiv') && !document.getElementById('thisDiv').innerText.includes('~No Artist Images')) && !document.getElementById('random-image')) ){
        this.randomFetches() 

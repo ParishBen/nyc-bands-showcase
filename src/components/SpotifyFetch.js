@@ -7,31 +7,8 @@ import {deco} from '../containers/App';
 import { isExpired, decodeToken } from "react-jwt";
 import {dandy} from '../tokenSecret';
 var jwt = require('jsonwebtoken');
-
-//let tokenRet;
-
-// const generateToken = (tokenVal) => {
-//   var u = {
-//       spotify_token: tokenVal 
-//       }; 
-//       let jwtToken = jwt.sign(u, dandy, {
-//         expiresIn: 60 * 60 * 24 // expires in 24 hours
-//       })
-//       return jwtToken
-//     }
     
-//     const myDecodedToken =  tokenRet && decodeToken(tokenRet);
-    //const isMyTokenExpired =  isExpired(generateToken());
-    
-    //export const deco = myDecodedToken && myDecodedToken.spotify_token
-    
-    
-    
-    const codeIntake = () => {
-      if(window.location.href.includes('access_token')){
-        return  window.location.href.split('=/')[1]    // AFTER login is initiated the Spotify API puts parameters in URL  'access token'. This grabs the AccessToken info.
-      }
-    }
+  
     
     const properCase =              // this goes through the imported list of Bands formed in NYC. Then URI encodes the non-alphabetical characters for the Fetch Request.
     nycBands.map(artist => {
@@ -46,11 +23,11 @@ var jwt = require('jsonwebtoken');
     
     
     decoVal = () => {
-     if(deco && deco() != null){
+     if(deco && deco() != null){    // Returns the imported Token Value from App.js
        console.log(deco())
        return deco()
      } else {
-         let newTok = window.localStorage.getItem('access_token')
+         let newTok = window.localStorage.getItem('access_token')    // OR grabs it from the LocalStorage / Decodes it for the Token Value
          if (newTok){
          const myDecodedToken =  decodeToken(newTok);
          console.log(myDecodedToken)
@@ -78,7 +55,7 @@ var jwt = require('jsonwebtoken');
             headers: {
                 'Content-Type':'application/json',
                  Accept:'application/json',
-                 "Authorization": `Bearer ${this.decoVal()}`    //  codeIntake=> accesstoken auth
+                 "Authorization": `Bearer ${this.decoVal()}`    //  TokenValue=> To make a Fetch to Spotify to return artist data
                 }
               })
               .then(resp=> resp.json())
@@ -118,7 +95,7 @@ var jwt = require('jsonwebtoken');
         }, 8000)
 
     render(){
-
+//Invisible Fetch- to push Artists to App.js state
       return (
               <div id="delayed fetch" style={{display:'none'}}>{this.delayed}</div>  
             )
