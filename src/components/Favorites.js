@@ -7,13 +7,13 @@ import {fetchFaves} from '../actions/favoritesActions'
  class Favorites extends React.Component {
    
 componentDidMount(){
-    this.props.fetchFaves()          // Redux State grab of Favorites
+    this.props.currentUser && this.props.fetchFaves(this.props.currentUser)          // Redux State grab of Favorites
 }
 
     deleteArtist = (event) => {
         console.log(event.target.previousElementSibling.href.split('/')[4])            // Delete Fetch request to backend & then conducting this.props.fetchFaves()
         let delArtist = event.target.previousElementSibling.href.split('/')[4] // Grabbing the Unique Artist ID for Delete Request to backend.
-       fetch(`http://localhost:9000/artists/${delArtist}`, {
+       fetch(`http://localhost:9000/${this.props.currentUser.name}/artists/${delArtist}`, {
            method: "DELETE",
            headers: {
                Accept: 'application/json',
@@ -21,7 +21,7 @@ componentDidMount(){
            }
        })
           .then(() => {
-              this.props.fetchFaves()
+              this.props.fetchFaves(this.props.currentUser)
           })
           .catch(err=> console.log(err))
         }
@@ -61,13 +61,14 @@ componentDidMount(){
 const mapStateToProps = state => {     //Need access to Store State of Favorites & Loading
     return {
         favorites: state.favorites,
-        loading: state.loading
+        loading: state.loading,
+        currentUser: state.currentUser
     }
   }
    
   const mapDispatchToProps = dispatch => {             // Dispatch Action To Fetch Backend Favorites & put them into Store State
       return {
-      fetchFaves: () => dispatch(fetchFaves())
+      fetchFaves: (propper) => dispatch(fetchFaves(propper))
     }
 }
 

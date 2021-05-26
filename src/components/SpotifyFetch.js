@@ -30,7 +30,7 @@ var jwt = require('jsonwebtoken');
          let newTok = window.localStorage.getItem('access_token')    // OR grabs it from the LocalStorage / Decodes it for the Token Value
          if (newTok){
          const myDecodedToken =  decodeToken(newTok);
-        //  console.log(myDecodedToken)
+          console.log(myDecodedToken)
       return myDecodedToken.spotify_token}
      }
    }
@@ -59,7 +59,10 @@ var jwt = require('jsonwebtoken');
                 }
               })
               .then(resp=> resp.json())
-              .then(artObjs=> {                     // going to put this artist obj(s) response into another function which returns correct artist obj from results
+              .then(artObjs=> {  
+                if(artObjs.error) {
+                  console.log(artObjs.error)
+                }   else {               // going to put this artist obj(s) response into another function which returns correct artist obj from results
                   let foundArtist = artObjs.artists.items        // this returns artist(s) item's array from Spotify
                     if (foundArtist && `${foundArtist.length}` > 0){    // if response isn't undef & has any length
                       let realArtist = foundArtist.find( artist => artist.name === decodeURI(properCase[i])) // find artist in array of objects with the exact name matching the initial unencoded band name.
@@ -72,7 +75,8 @@ var jwt = require('jsonwebtoken');
                              artistsObjArr.push(realArtist)
                         }
                       }
-                    }  
+                    }
+                  }  
                  })
               .then(() => {
                 this.setState({

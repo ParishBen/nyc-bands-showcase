@@ -58,7 +58,8 @@ state = {
         },
         body: JSON.stringify({
             "name": this.props.artistName,
-            "artist_id": this.props.artistId
+            "artist_id": this.props.artistId,
+            "username": this.props.currentUser.name
         })
     })
     .then(resp => resp.json())
