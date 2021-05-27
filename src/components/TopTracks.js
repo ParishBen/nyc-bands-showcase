@@ -65,18 +65,25 @@ state = {
     .then(resp => resp.json())
     .then(message => {
         if(message.error){
-            alert(message.error)
-        }
-    })
-    .then(function(){                                                           // DOM CHANGES. For Client purposes -> adding Favorite Heart to Header & also Changing Button Color
-        if (!document.getElementById('artist-title').innerHTML.includes("💛"))
-             document.getElementById('artist-title').innerHTML +="💛" 
-     })
-    .then(function(){
-        let favbutton = document.getElementById('favButton')
-        favbutton.style.background = 'orange'
-        favbutton.style.fontWeight = "bold"
-     })
+             return alert(message.error)
+        } else {
+            let favbutton = document.getElementById('favButton')                                                       
+             if (!document.getElementById('artist-title').innerHTML.includes("💛")){
+                     document.getElementById('artist-title').innerHTML +="💛" 
+                    }
+                 favbutton.style.background = 'orange'
+                favbutton.style.fontWeight = "bold"        
+             }
+         })
+    // .then(function(){                                                           // DOM CHANGES. For Client purposes -> adding Favorite Heart to Header & also Changing Button Color
+    //     if (!document.getElementById('artist-title').innerHTML.includes("💛"))
+    //          document.getElementById('artist-title').innerHTML +="💛" 
+    //  })
+    // .then(function(){
+    //     let favbutton = document.getElementById('favButton')
+    //     favbutton.style.background = 'orange'
+    //     favbutton.style.fontWeight = "bold"
+    //  })
     .catch(err=>console.log(err)) 
   }
 
