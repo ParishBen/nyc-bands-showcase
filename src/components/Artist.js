@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TopTracks from './TopTracks'
 import {fetchTracks} from '../actions/artistActions'
-//import {getSessionToken} from '../actions/getSessionToken'
+import Concert from './Concerts'
 import {deco} from '../containers/App'
 import { isExpired, decodeToken } from "react-jwt";
 
@@ -72,7 +72,7 @@ render(){
             {document.querySelector('img') && this.artBackGround()}  
             {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : ''}
             <h2 id="artist-title" style={{textAlign:'center'}}><span style={{backgroundColor:'gray'}}>{this.findArtist() !== undefined ? this.findArtist().name : ''}</span> </h2>
-            {this.findArtist() !== undefined ? <div> {this.grabArtImage()}</div> : ''} 
+            {this.findArtist() !== undefined ? <div> {this.grabArtImage()}</div> : ''}{<Concert name={this.findArtist().name}/>} 
             {this.props.toptracks && this.findArtist() !== undefined  ? <div>{this.handleTopTracks()}</div> :''}         
           </div>
         )
