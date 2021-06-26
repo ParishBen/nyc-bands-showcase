@@ -30,7 +30,7 @@ var jwt = require('jsonwebtoken');
          let newTok = window.localStorage.getItem('access_token')    // OR grabs it from the LocalStorage / Decodes it for the Token Value
          if (newTok){
          const myDecodedToken =  decodeToken(newTok);
-          console.log(myDecodedToken)
+         console.log(myDecodedToken)
       return myDecodedToken.spotify_token}
      }
    }
@@ -46,12 +46,26 @@ var jwt = require('jsonwebtoken');
       if(this.state.artists.length < 140){
       this.allNycBandsFetch()
       }
+      //this.newfetchmcgee()
     }
+
+    // myduuudes = () => {
+    //     fetch('https://test-server.brapi.org/brapi/v2/commoncropnames',{
+    //         headers: {
+    //             Accept: 'application/json'
+    //     }})
+    //     // })
+         
+    //     .then(res=> res.json())
+    //     .then(resp=> console.log(resp))
+    //     .catch(err=>console.log(err))
+    // }
 
   allNycBandsFetch = () => {                                             
         let artistsObjArr = []; // this will hold Every Artist object return
         for (let i=0; i< properCase.length; i++){    // this loops through each uri encoded band-name & does get Fetch to Spotify
           fetch(`https://api.spotify.com/v1/search?q=${properCase[i]}&type=artist`, {
+            //credentials: "include",
             headers: {
                 'Content-Type':'application/json',
                  Accept:'application/json',
@@ -98,6 +112,18 @@ var jwt = require('jsonwebtoken');
           } 
         }, 8000)
 
+        newfetchmcgee = () => {
+          fetch('https://app.ticketmaster.com/discovery/v2/events.json?keyword=Lumineers&classificationName=music&locale=en-us&apikey=JcHBGDzcTW1CwZ7zgfznR4koIFNm8zmn')
+     
+      .then(resp=> resp.json())
+              .then(eventObj=> {  
+                if(eventObj.error) {
+                  console.log(eventObj.error)
+                }   else { 
+                  console.log(eventObj._embedded.events[0]._embedded.venues[0].name, ": ",eventObj._embedded.events[0]._embedded.venues[0].city.name+", "+eventObj._embedded.events[0]._embedded.venues[0].country.name)
+              }})
+                  .catch(err=> console.log(err))
+                }
     render(){
 //Invisible Fetch- to push Artists to App.js state
       return (

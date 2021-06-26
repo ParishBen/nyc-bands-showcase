@@ -53,6 +53,8 @@ const logoutBtnClick = () => {
     .then(()=> {
         
         window.localStorage.removeItem('access_token')// Clear LocalStorage Token
+        window.localStorage.removeItem('Name')
+        window.localStorage.removeItem('Email')
         window.location='http://localhost:3000'// Direct Client back to '/' Landing Page
       })   
     .catch(err=> console.log()

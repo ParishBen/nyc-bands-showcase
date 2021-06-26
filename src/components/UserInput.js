@@ -21,8 +21,17 @@ handleUserInfoChange(event) {                                // Signing in to La
     });
   }
   
+  userSerializer = (user) => {
+    let currentUser = { 
+      name: user.name,
+      email: user.email
+    }
+    return currentUser
+  }
   handleUserInfoSubmit(event) {                               // Handling Submit of user info to find/create a User in Backend => sets session to user.id
     event.preventDefault();
+    let name = this.state.name;
+    let email = this.state.email;
     fetch('http://localhost:9000/login', {
       method: 'POST',
       credentials: "include",
@@ -46,7 +55,9 @@ handleUserInfoChange(event) {                                // Signing in to La
       }
     })
     .then(() => {
-    this.props.stateLogin()
+    //this.props.stateLogin()
+    localStorage.setItem('Name', name)
+    localStorage.setItem('Email',email)
     window.location= "http://localhost:8888/login"}) // Transports to Express Server on 8888 which is the defined callback route for Spotify to grant Access Token & route back to localhost:3000
     .catch(err=> alert(err))
     this.setState({

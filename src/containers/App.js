@@ -49,8 +49,11 @@ class App extends Component {
   
   
 componentDidMount(){
+  // if(this.state.logged_in === true){
+  //   this.setState({ logged_in :false})}
+  
   this.props.getCurrentUser()
-  if(this.props.currentUser){
+  if(this.props.currentUser && !this.props.currentUser.error){
     console.log('firing from CDM-tokenFetch')
     this.tokenFetch()// Fetches & Sets the Token in a JWT into LocalStorage upon mounting 
   }
@@ -59,15 +62,15 @@ componentDidMount(){
 
  tokenFetch = () => {
         fetch('http://localhost:8888/toke', {
+          //credentials: "include",
           headers: {
           'Content-Type':'application/json',
           Accept:'application/json',
-          credentials: "include"
        }})
        .then(resp=> resp.json())
        .then(ressy=> {
-         console.log('generating token')
-         generateToken(ressy.token)
+         console.log('generating token base on',ressy)
+         if(ressy.keys !== null ){generateToken(ressy.token)
         tokenRet = ressy.token
         entireTok = generateToken(ressy.token)
         console.log('putting in localStorage')
@@ -75,7 +78,7 @@ componentDidMount(){
         console.log('state is logged in now')
         this.setState({ logged_in: true})
          console.log('tokenRet '+tokenRet,'entireTok '+ entireTok)
-        })
+       }})
        .catch(err=> console.log(err))
       }
 
@@ -107,10 +110,10 @@ stateLogin = () => {
   render(){
   return (
         <Router>
-            {this.props.currentUser == null && window.localStorage.getItem('access_token') == null ? <div className="not-logged-in-App">
+            { this.props.currentUser == null && window.localStorage.getItem('access_token') == null ? <div className="not-logged-in-App">
              <UserInput stateLogin = {this.stateLogin} />
                   </div> : ''}
-           {  this.props.currentUser !== null ? 
+           {  this.props.currentUser !== null && !this.props.currentUser.error ? 
                 <div id='logged-in-user'>{this.props.currentUser && window.localStorage.getItem('access_token') === null ? this.tokenFetch():''}
                 <SpotifyFetch artistsToState={this.artistsToState}/>
                 <Navbar  />   

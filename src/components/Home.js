@@ -44,6 +44,10 @@ var jwt = require('jsonwebtoken');
                 })
                 .then(resp=> resp.json())
                 .then(artist => {
+                  if(artist.error){
+                    alert(artist.error.message)
+                    console.log(artist.error)
+                  } else {
                     let imgholder = document.getElementById('thisDiv');
                     let imgSrc;
                     let images = artist.images;
@@ -72,7 +76,7 @@ var jwt = require('jsonwebtoken');
                           }
                 this.setState({artId: artist.id, // Set the State to hold the Id & name of the Random Artist (for the Link path and title)
                 artTitle: artist.name})        
-              })
+                }})
               .catch(err=> console.log(err))
           }
         }
