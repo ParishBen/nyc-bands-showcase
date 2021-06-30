@@ -3,7 +3,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {deco} from '../containers/App';
-import { isExpired, decodeToken } from "react-jwt";
+import { decodeToken } from "react-jwt";
 import {dandy} from '../tokenSecret';
 var jwt = require('jsonwebtoken');
     
@@ -102,6 +102,7 @@ var jwt = require('jsonwebtoken');
     render(){
         return(
             <div id='Home-Div'>
+              {<br></br>}
                 {document.querySelector('img') && this.artBackGround()}
                 {this.props.currentUser ? <p class='welcomeMSG' style={{backgroundColor:'beige', color:'chocolate'}}>Welcome {`${this.props.currentUser.name}`}, to NYC Bands Showcase ~ Have fun discovering all this local talent! </p>: <p>Welcome to NYC Bands Showcase ~ Have fun discovering all this local talent!</p>}
                 {<div id="thisDiv">{<Link  token={this.props.token}  to={`/artists/${this.state.artId}`} style={{marginRight: '15px', fontSize: '20pt', fontWeight: 'bold', color:'teal', backgroundColor:'white'}}>{`${this.state.artTitle}` }</Link>}</div>}

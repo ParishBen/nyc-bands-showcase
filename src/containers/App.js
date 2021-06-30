@@ -9,7 +9,7 @@ import FavoritesContainer from './FavoritesContainer';
 import UserInput from '../components/UserInput';
 import SpotifyFetch from '../components/SpotifyFetch';
 import {getCurrentUser} from '../actions/addCurrentUser';
-import { isExpired, decodeToken } from "react-jwt";
+import { decodeToken } from "react-jwt";
 import {dandy} from '../tokenSecret';
 var jwt = require('jsonwebtoken');
 
@@ -19,9 +19,9 @@ const generateToken = (tokenVal) => {   // Takes the Parameter of an Access Toke
   var u = {
     spotify_token: tokenVal 
   }; 
-  let jwtToken = jwt.sign(u, dandy, {
-    expiresIn: 60 * 60 * 24 // expires in 24 hours
-  })
+  let jwtToken = jwt.sign(u, dandy)
+    // expiresIn: 60 * 60 * 24 // expires in 24 hours
+  //})
   return jwtToken
 }
 

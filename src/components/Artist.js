@@ -5,7 +5,7 @@ import TopTracks from './TopTracks'
 import {fetchTracks} from '../actions/artistActions'
 import Concert from './Concerts'
 import {deco} from '../containers/App'
-import { isExpired, decodeToken } from "react-jwt";
+import { decodeToken } from "react-jwt";
 
 class Artist extends React.Component{
  
@@ -71,8 +71,8 @@ render(){
           <div id="artist-div"> 
             {document.querySelector('img') && this.artBackGround()}  
             {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : ''}
-            <h2 id="artist-title" style={{textAlign:'center'}}><span style={{backgroundColor:'gray'}}>{this.findArtist() !== undefined ? this.findArtist().name : ''}</span> </h2>
-            {this.findArtist() !== undefined ? <div> {this.grabArtImage()}</div> : ''}{<Concert name={this.findArtist().name}/>} 
+            <h2 id="artist-title" style={{textAlign:'center'}}><span style={{backgroundColor:'gray'}}>{this.props.artists && this.findArtist() !== undefined ? this.findArtist().name : ''}</span> </h2>
+            {this.props.artists && this.findArtist() !== undefined ? <div> {this.grabArtImage()}</div> : ''}{<Concert name={this.findArtist().name}/>} 
             {this.props.toptracks && this.findArtist() !== undefined  ? <div>{this.handleTopTracks()}</div> :''}         
           </div>
         )
@@ -83,7 +83,7 @@ const mapStateToProps = state => {
     return {
       toptracks: state.toptracks,             // Props Access of Redux State for toptracks/loading/token/current_user
       loading: state.loading,
-      currentUser: state.currentUser
+      //currentUser: state.currentUser
     }
   }
   

@@ -37,6 +37,7 @@ componentDidMount(){
                       </li>
                     }) 
                  } 
+                 
               else {
                   return <p>Go Add Some Favorites!</p>
               }

@@ -4,7 +4,7 @@ import '../stylesheet/basis.css';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {deco} from '../containers/App';
-import { isExpired, decodeToken } from "react-jwt";
+import { decodeToken } from "react-jwt";
 import {dandy} from '../tokenSecret';
 var jwt = require('jsonwebtoken');
     
