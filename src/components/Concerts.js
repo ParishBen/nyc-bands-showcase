@@ -13,12 +13,37 @@ class Concert extends React.Component{
             filteredConcerts: null
         }
     }
-
+    
+    
+    componentDidMount(){
+        this.newfetchmcgee()
+    }
+    
+newfetchmcgee = () => {
+    console.log(this.props.name)
+        fetch(`https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.props.name}&classificationName=music&locale=en-us&size=50&apikey=JcHBGDzcTW1CwZ7zgfznR4koIFNm8zmn`)
+        
+    .then(resp=> resp.json())
+        .then(eventObj=> {  
+            if(eventObj.error) {
+                console.log(eventObj.error)
+                 } else { 
+                  if(eventObj._embedded.events.length > 0){
+                      this.setState({ events: eventObj._embedded.events })
+                // eventObj._embedded.events[0]._embedded.venues[0].name,
+                // city: eventObj._embedded.events[0]._embedded.venues[0].city.name,
+                // country: eventObj._embedded.events[0]._embedded.venues[0].country.name,
+                // url: eventObj._embedded.events[0].url
+               console.log(eventObj, this.state.events)
+            }}
+        })
+        .then(() => {
+            this.state.events && this.eventsParse(this.state.events)
+        })
+        .catch(err=> console.log(err))
+    }
     
 
-componentDidMount(){
-    this.newfetchmcgee()
-}
 
 eventsParse = (concerts) => {
   let artname = this.props.name
@@ -44,31 +69,6 @@ eventsParse = (concerts) => {
         //return truConcerts
     //});
 
-
-newfetchmcgee = () => {
-        console.log(this.props.name)
-        fetch(`https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.props.name}&classificationName=music&locale=en-us&size=50&apikey=JcHBGDzcTW1CwZ7zgfznR4koIFNm8zmn`)
-   
-    .then(resp=> resp.json())
-        .then(eventObj=> {  
-            if(eventObj.error) {
-                console.log(eventObj.error)
-                 } else { 
-                  if(eventObj._embedded.events.length > 0){
-                this.setState({ events: eventObj._embedded.events })
-                // eventObj._embedded.events[0]._embedded.venues[0].name,
-                // city: eventObj._embedded.events[0]._embedded.venues[0].city.name,
-                // country: eventObj._embedded.events[0]._embedded.venues[0].country.name,
-                // url: eventObj._embedded.events[0].url
-               console.log(eventObj, this.state.events)
-            }}
-        })
-        .then(() => {
-            this.state.events && this.eventsParse(this.state.events)
-        })
-        .catch(err=> console.log(err))
-    }
-
     createList = (list) => {
         //this.state.filteredConcerts && console.log(this.state.filteredConcerts.length)
         if (list.length){
@@ -76,7 +76,8 @@ newfetchmcgee = () => {
             if(this.state.filteredConcerts.length > 5){
                 console.log('list is longer than 5')
            
-                 let listArr = this.state.filteredConcerts.map( concert => {
+                 let listArr = this.sorter(this.state.filteredConcerts)
+                 listArr = listArr.map( concert => {
                     return <li key={concert.name}>Date: {concert.dates.start.localDate} || Concert : {concert.name} || Location: {concert._embedded.venues[0].city ? concert._embedded.venues[0].city.name : concert._embedded.venues[0].address ? concert._embedded.venues[0].address.line1 : 'No City Address Listed'} <a href={concert.url} target={'_blank'} rel={'noreferrer'}> - Buy Tickets</a></li> 
                     //return <li key={this.state.filteredConcerts[i].name}>Date: {this.state.filteredConcerts[i].dates.start.localDate} || Concert : {this.state.filteredConcerts[i].name} || Location: {this.state.filteredConcerts[i]._embedded.venues[0].city ? this.state.filteredConcerts[i]._embedded.venues[0].city.name : this.state.filteredConcerts[i]._embedded.venues[0].address ? this.state.filteredConcerts[i]._embedded.venues[0].address.line1 : 'No City Address Listed'} <a href={this.state.filteredConcerts[i].url} target={'_blank'} rel={'noreferrer'}> - Buy Tickets</a></li> 
                  })
@@ -95,14 +96,31 @@ newfetchmcgee = () => {
           //let list = this.state.filteredConcerts[i] 
            //console.log(list)
            count--
-             return  this.state.filteredConcerts.map( concert => {
-             return <li key={this.state.filteredConcerts[count].name}>Concert : {concert.name} Date: {concert.dates.start.localDate} Location: {concert._embedded.venues[0].city ? concert._embedded.venues[0].city.name : concert._embedded.venues[0].address ? concert._embedded.venues[0].address.line1 : 'No City Address Listed'} <a href={concert.url}>Buy Tickets</a></li> 
+             return  this.sorter(this.state.filteredConcerts).map( concert => {
+             return <li style={{background:'light-gray'}} key={this.state.filteredConcerts[count].name}> Date: {concert.dates.start.localDate} || Concert : {concert.name} || Location: {concert._embedded.venues[0].city ? concert._embedded.venues[0].city.name : concert._embedded.venues[0].address ? concert._embedded.venues[0].address.line1 : 'No City Address Listed'} <a href={concert.url} target={'_blank'} rel={'noreferrer'}> - Buy Tickets</a></li> 
+
             })
         } 
        }
     }
 }
   
+sorter = (eventArr) => {
+    if (eventArr.length === 1){
+        return eventArr
+ }
+   let sorted = eventArr.sort(function(a, b){
+        if(a.dates.start.localDate < b.dates.start.localDate ){
+            return -1
+        }
+        if (a.dates.start.localDate > b.dates.start.localDate ){
+            return 1        
+        } else {
+            return 0
+        }
+    })
+    return sorted
+}
 
     render(){
         return(

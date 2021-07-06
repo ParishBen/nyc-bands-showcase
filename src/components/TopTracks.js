@@ -37,12 +37,12 @@ state = {
     if ((btn) && this.state.btnClass == '' || this.state.btnClass == 'unsorted'){
         console.log('changing class to sorted')
         btn.className = 'sorted'
-        btn.innerText = "DEalphabetize Tracks!"
+        btn.innerText = "Unsort Tracks!"
         this.setState({btnClass : 'sorted'})
     } else {
     console.log('changing to unsorted class')
     btn.className = 'unsorted'
-    btn.innerText = "Alphabetize Tracks!"
+    btn.innerText = "Sort Tracks!"
     this.setState({btnClass: 'unsorted'})
  }
 }
@@ -105,7 +105,7 @@ handleClick = (event) => {
     return(
         <div>
             <button id="favButton" onClick={(event) => this.favoriteArtist(event)}>Favorite</button>                 {/* Button to Add Artist to Favorites*/}
-             <button id="alphabetizer"onClick={() => this.justChangeTheState() }>Alphabetize Tracks!</button>        {/* Button to Alphabetize/Unsort Tracks*/}
+             <button id="alphabetizer"onClick={() => this.justChangeTheState() }>Sort Tracks!</button>        {/* Button to Alphabetize/Unsort Tracks*/}
             
             <h2><span style={{backgroundColor: 'gray'}}>Top Tracks</span></h2>
             <p>Click to preview</p>

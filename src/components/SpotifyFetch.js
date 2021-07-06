@@ -74,9 +74,13 @@ var jwt = require('jsonwebtoken');
               })
               .then(resp=> resp.json())
               .then(artObjs=> {  
-                if(artObjs.error) {
-                  console.log(artObjs.error)
-                }   else {               // going to put this artist obj(s) response into another function which returns correct artist obj from results
+                if(artObjs.error){if(artObjs.error.message === ("Invalid access token" || "The access token expired")){
+                  console.log(artObjs.error) 
+                  return window.location = "http://localhost:8888/login"
+                }}
+                // if(artObjs.error.details.includes("Invalid Access")) {
+                  // window.location = "http://localhost:8888/login"
+                   else {               // going to put this artist obj(s) response into another function which returns correct artist obj from results
                   let foundArtist = artObjs.artists.items        // this returns artist(s) item's array from Spotify
                     if (foundArtist && `${foundArtist.length}` > 0){    // if response isn't undef & has any length
                       let realArtist = foundArtist.find( artist => artist.name === decodeURI(properCase[i])) // find artist in array of objects with the exact name matching the initial unencoded band name.
