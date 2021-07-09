@@ -12,7 +12,20 @@ img.Artistimage:hover{
   border: 9px solid rgb(53, 231, 68);
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  img.Artistimage {
+    animation: Artist-logo-spin forwards 1s linear;
+  }
+}
 
+@keyframes Artist-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 /* .container:hover .overlay {
   transform: scale(1);     #7397df;
