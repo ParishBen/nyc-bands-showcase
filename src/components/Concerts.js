@@ -78,7 +78,7 @@ eventsParse = (concerts) => {
            
                  let listArr = this.sorter(this.state.filteredConcerts)
                  listArr = listArr.map( concert => {
-                    return <li key={concert.name}>Date: {concert.dates.start.localDate} || Concert : {concert.name} || Location: {concert._embedded.venues[0].city ? concert._embedded.venues[0].city.name : concert._embedded.venues[0].address ? concert._embedded.venues[0].address.line1 : 'No City Address Listed'} <a href={concert.url} target={'_blank'} rel={'noreferrer'}> - Buy Tickets</a></li> 
+                    return <li key={concert.name}><span style={{background:'lightgray', color:'black'}}>Date: {concert.dates.start.localDate} || Concert : {concert.name} || Location: {concert._embedded.venues[0].city ? concert._embedded.venues[0].city.name : concert._embedded.venues[0].address ? concert._embedded.venues[0].address.line1 : 'No City Address Listed'} <a href={concert.url} target={'_blank'} rel={'noreferrer'}> - Buy Tickets</a></span></li> 
                     //return <li key={this.state.filteredConcerts[i].name}>Date: {this.state.filteredConcerts[i].dates.start.localDate} || Concert : {this.state.filteredConcerts[i].name} || Location: {this.state.filteredConcerts[i]._embedded.venues[0].city ? this.state.filteredConcerts[i]._embedded.venues[0].city.name : this.state.filteredConcerts[i]._embedded.venues[0].address ? this.state.filteredConcerts[i]._embedded.venues[0].address.line1 : 'No City Address Listed'} <a href={this.state.filteredConcerts[i].url} target={'_blank'} rel={'noreferrer'}> - Buy Tickets</a></li> 
                  })
                  listArr.length = 5
@@ -97,7 +97,7 @@ eventsParse = (concerts) => {
            //console.log(list)
            count--
              return  this.sorter(this.state.filteredConcerts).map( concert => {
-             return <li style={{background:'light-gray'}} key={this.state.filteredConcerts[count].name}> Date: {concert.dates.start.localDate} || Concert : {concert.name} || Location: {concert._embedded.venues[0].city ? concert._embedded.venues[0].city.name : concert._embedded.venues[0].address ? concert._embedded.venues[0].address.line1 : 'No City Address Listed'} <a href={concert.url} target={'_blank'} rel={'noreferrer'}> - Buy Tickets</a></li> 
+             return <li key={this.state.filteredConcerts[count].name}><span style={{background:'lightgray', color:'black'}}> Date: {concert.dates.start.localDate} || Concert : {concert.name} || Location: {concert._embedded.venues[0].city ? concert._embedded.venues[0].city.name : concert._embedded.venues[0].address ? concert._embedded.venues[0].address.line1 : 'No City Address Listed'} <a href={concert.url} target={'_blank'} rel={'noreferrer'}> - Buy Tickets</a></span></li> 
 
             })
         } 
