@@ -32,15 +32,12 @@ state = {
 
 
  justChangeTheState = () => {
-     console.log('justChangeTheState working')
     let btn = document.getElementById('alphabetizer')
     if ((btn) && this.state.btnClass == '' || this.state.btnClass == 'unsorted'){
-        console.log('changing class to sorted')
         btn.className = 'sorted'
         btn.innerText = "Unsort Tracks!"
         this.setState({btnClass : 'sorted'})
     } else {
-    console.log('changing to unsorted class')
     btn.className = 'unsorted'
     btn.innerText = "Sort Tracks!"
     this.setState({btnClass: 'unsorted'})
@@ -48,7 +45,6 @@ state = {
 }
 
  favoriteArtist = (event) => {
-    console.log(event.target.innerHTML)
     let trutrack = this.props.toptracks[0].artists[0]        
     fetch(`http://localhost:9000/artists`, {  //http://localhost:9000/users/${currentUser.id}/artists --> When I nest artists under users to only show Current_User info
         method: 'POST',
@@ -89,7 +85,6 @@ state = {
 
 handleClick = (event) => {
        let truetrack = this.props.toptracks.find(track=> track.name === event.target.innerHTML.replace('&amp;', "&"))            // Cleansing some InnerHTML so the Tracks will properly Play.
-       console.log(event.target.innerHTML,truetrack.name)
         if (truetrack.preview_url !==undefined){
        let mp3 = truetrack.preview_url 
        let song = new Audio (mp3) 

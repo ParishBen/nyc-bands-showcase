@@ -11,22 +11,22 @@ class Artist extends React.Component{
  
 findArtist = () => {                           // Check for props coming from Redux State & then find artist based on the id in the URL
    let artists = this.props.artists
-   if(artists){ 
-     let art = artists.find(art=> art.id === window.location.href.split('/')[4])
-     //console.log(this.props)
-    return art }
+     if(artists){ 
+       let art = artists.find(art=> art.id === window.location.href.split('/')[4])
+       return art 
+      }
     }
       
     grabArtImage = () => {        // Ternary executed in render to see if props present & then grabbing Image of Artist 
       if (`${this.findArtist().images}`==[]){ // IF artist's image array is empty
-        return <h3 style={{color:'red', textDecoration: 'underline dashed'}}>No Artist Image</h3>
-      } 
+          return <h3 style={{color:'red', textDecoration: 'underline dashed'}}>No Artist Image</h3>
+       } 
       if (`${this.findArtist().images}`.length === 1) { //IF only one image in array
-        return <img className="Artistimage" src={this.findArtist().images[0].url}                 
-        alt={this.findArtist().name}/>;
+            return <img  className="Artistimage" src={this.findArtist().images[0].url}                 
+            alt={this.findArtist().name}/>;
        } else {      // Will pull the second image in array otherwise
-            return <img className="Artistimage" src={this.findArtist().images[1].url}                 
-                  alt={this.findArtist().name}/>;
+           return <img className="Artistimage" src={this.findArtist().images[1].url}                 
+           alt={this.findArtist().name}/>;
         }      
       }
     
@@ -38,13 +38,11 @@ findArtist = () => {                           // Check for props coming from Re
         this.checkforprops()
         //this.props.fetchTracks(window.localStorage.getItem('token')) 
         if(deco && deco() != null){
-          console.log('got deco'+deco())
         this.props.fetchTracks(deco())  
         } else {
           let newTok = window.localStorage.getItem('access_token')
           const myDecodedToken =  decodeToken(newTok);
           if(myDecodedToken)
-          console.log('no deco'+ myDecodedToken.spotify_token)
           this.props.fetchTracks(myDecodedToken.spotify_token)
     }}
   
@@ -58,10 +56,12 @@ findArtist = () => {                           // Check for props coming from Re
       }
      artBackGround = () => {
        let src = document.querySelector('img').src
-       console.log(src)
       document.querySelector('body').style.background = `url("${src}") no-repeat fixed center`
       document.querySelector('body').style.backgroundSize = 'cover'
 
+     }
+     handlegrabArtist = () => {
+       return this.props.artists && this.findArtist() != null ? this.findArtist().name : ''
      }
     
 render(){
@@ -69,10 +69,10 @@ render(){
     return(
         
           <div id="artist-div"> 
-            {document.querySelector('img') && this.artBackGround()}  
             {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : ''}
-            <h2 id="artist-title" style={{textAlign:'center'}}><span style={{backgroundColor:'gray'}}>{this.props.artists && this.findArtist() !== undefined ? this.findArtist().name : ''}</span> </h2>
-            {this.props.artists && this.findArtist() !== undefined ? <div> {this.grabArtImage()}</div> : ''}{<Concert name={this.findArtist().name}/>} 
+            {document.querySelector('img') && this.artBackGround()}  
+            <br></br><h2 id="artist-title" style={{textAlign:'center'}}><span style={{backgroundColor:'gray'}}>{  this.props.artists && this.handlegrabArtist() }</span> </h2>
+            {this.props.artists && this.findArtist() !== undefined ? <div> {this.grabArtImage()}</div> : ''}{this.props.artists && this.findArtist() !== undefined ? <Concert name={this.props.artists && this.findArtist().name}/>:''} 
             {this.props.toptracks && this.findArtist() !== undefined  ? <div>{this.handleTopTracks()}</div> :''}         
           </div>
         )
@@ -83,7 +83,7 @@ const mapStateToProps = state => {
     return {
       toptracks: state.toptracks,             // Props Access of Redux State for toptracks/loading/token/current_user
       loading: state.loading,
-      //currentUser: state.currentUser
+      currentUser: state.currentUser
     }
   }
   

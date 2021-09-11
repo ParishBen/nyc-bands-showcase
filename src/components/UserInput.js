@@ -51,7 +51,6 @@ handleUserInfoChange(event) {                                // Signing in to La
         alert(user.error)
       } else {
         this.props.getCurrentUser()  // Submits user info to backend & starts a current_user in Session. Then Dispatch the Action Creator function to Redux Store
-        console.log(this.props.currentUser, user)
       }
     })
     .then(() => {
@@ -71,6 +70,7 @@ handleUserInfoChange(event) {                                // Signing in to La
 render() {
     return (
       <div>
+        <h1 style={{color:'navajowhite', textDecoration:'underline dashed'}}>NYC Bands Showcase</h1>
               <p>Hey there, please sign in/up below!</p>
             <form onSubmit={(event) => this.handleUserInfoSubmit(event)} style={{border: '1pt solid white'}}>
           <label>Email: &nbsp; </label>

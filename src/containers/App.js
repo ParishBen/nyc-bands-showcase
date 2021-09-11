@@ -54,7 +54,6 @@ componentDidMount(){
   
   this.props.getCurrentUser()
   if(this.props.currentUser && !this.props.currentUser.error){
-    console.log('firing from CDM-tokenFetch')
     this.tokenFetch()// Fetches & Sets the Token in a JWT into LocalStorage upon mounting 
   }
   
@@ -69,15 +68,11 @@ componentDidMount(){
        }})
        .then(resp=> resp.json())
        .then(ressy=> {
-         console.log('generating token base on',ressy)
          if(ressy.keys !== null ){generateToken(ressy.token)
         tokenRet = ressy.token
         entireTok = generateToken(ressy.token)
-        console.log('putting in localStorage')
         window.localStorage.setItem('access_token', entireTok)
-        console.log('state is logged in now')
         this.setState({ logged_in: true})
-         console.log('tokenRet '+tokenRet,'entireTok '+ entireTok)
        }})
        .catch(err=> console.log(err))
       }

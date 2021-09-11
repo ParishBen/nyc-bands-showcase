@@ -11,13 +11,11 @@ var jwt = require('jsonwebtoken');
 
        decoVal = () => {
         if(deco && deco() != null){
-          console.log(deco())
           return deco()
         } else {
             let newTok = window.localStorage.getItem('access_token')
             if (newTok){
             const myDecodedToken =  decodeToken(newTok);
-            console.log(decodeToken(newTok))
          return myDecodedToken.spotify_token}
         }
       }
@@ -46,7 +44,6 @@ var jwt = require('jsonwebtoken');
                 .then(artist => {
                   if(artist.error){
                     alert(artist.error.message)
-                    console.log(artist.error)
                   } else {
                     let imgholder = document.getElementById('thisDiv');
                     let imgSrc;
@@ -82,13 +79,11 @@ var jwt = require('jsonwebtoken');
         }
                     
        componentDidMount(){
-           console.log(deco(), this.decoVal())
            this.randomFetches()
        }
 
        artBackGround = () => {
         let src = document.querySelector('img').src
-        console.log(src)
        document.querySelector('body').style.background = `url("${src}") no-repeat fixed center`
        document.querySelector('body').style.backgroundSize = 'cover'
       }

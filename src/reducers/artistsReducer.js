@@ -1,4 +1,4 @@
-const artistsReducer = (state = { toptracks: [], loading: false, favorites: [], token: null, sessionToken: null, currentUser: null, token: null }, action) => {
+const artistsReducer = (state = { toptracks: [], loading: false, favorites: [], token: null, sessionToken: null, currentUser: null }, action) => {
     
   switch(action.type) {
       case 'LOADING_TRACKS':

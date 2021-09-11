@@ -20,13 +20,10 @@ class Concert extends React.Component{
     }
     
 newfetchmcgee = () => {
-    console.log(this.props.name)
-        fetch(`https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.props.name}&classificationName=music&locale=en-us&size=50&apikey=JcHBGDzcTW1CwZ7zgfznR4koIFNm8zmn`)
-        
+        fetch(`https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.props.name}&classificationName=music&locale=en-us&size=50&apikey=JcHBGDzcTW1CwZ7zgfznR4koIFNm8zmn`)  
     .then(resp=> resp.json())
         .then(eventObj=> {  
             if(eventObj.error) {
-                console.log(eventObj.error)
                  } else { 
                   if(eventObj._embedded.events.length > 0){
                       this.setState({ events: eventObj._embedded.events })
@@ -34,7 +31,6 @@ newfetchmcgee = () => {
                 // city: eventObj._embedded.events[0]._embedded.venues[0].city.name,
                 // country: eventObj._embedded.events[0]._embedded.venues[0].country.name,
                 // url: eventObj._embedded.events[0].url
-               console.log(eventObj, this.state.events)
             }}
         })
         .then(() => {
@@ -54,13 +50,11 @@ eventsParse = (concerts) => {
                 return artist.name.toLowerCase() == artname.toLowerCase()
                }))
               {
-                  console.log(event)
                   return event
                 }  
             }
             //return funcerts
         }) 
-        console.log( funcerts, concerts)
         this.setState({filteredConcerts: funcerts }) //funcerts
         // let truConcerts = element._embedded.attactions.filter(artist => {
         //     return artist.name.toLowerCase() == artname.toLowerCase()
@@ -72,10 +66,7 @@ eventsParse = (concerts) => {
     createList = (list) => {
         //this.state.filteredConcerts && console.log(this.state.filteredConcerts.length)
         if (list.length){
-            console.log('got list filtered certs')
-            if(this.state.filteredConcerts.length > 5){
-                console.log('list is longer than 5')
-           
+            if(this.state.filteredConcerts.length > 5){           
                  let listArr = this.sorter(this.state.filteredConcerts)
                  listArr = listArr.map( concert => {
                     return <li key={concert.name}><span style={{background:'lightgray', color:'black'}}>Date: {concert.dates.start.localDate} || Concert : {concert.name} || Location: {concert._embedded.venues[0].city ? concert._embedded.venues[0].city.name : concert._embedded.venues[0].address ? concert._embedded.venues[0].address.line1 : 'No City Address Listed'} <a href={concert.url} target={'_blank'} rel={'noreferrer'}> - Buy Tickets</a></span></li> 
@@ -83,22 +74,13 @@ eventsParse = (concerts) => {
                  })
                  listArr.length = 5
                  return listArr
-                }
-            // let concertList =  this.state.filteredConcerts[i]
-            // console.log('concertListn but its not going through', concertList, i)
-            // }   
-        //} 
-       else {
+                } else {
         let count = this.state.filteredConcerts.length;
         //for(let i=0; i<count; i++){
             while (count > 0 ){
-            console.log('in list less than 5!', count)
-          //let list = this.state.filteredConcerts[i] 
-           //console.log(list)
            count--
              return  this.sorter(this.state.filteredConcerts).map( concert => {
              return <li key={this.state.filteredConcerts[count].name}><span style={{background:'lightgray', color:'black'}}> Date: {concert.dates.start.localDate} || Concert : {concert.name} || Location: {concert._embedded.venues[0].city ? concert._embedded.venues[0].city.name : concert._embedded.venues[0].address ? concert._embedded.venues[0].address.line1 : 'No City Address Listed'} <a href={concert.url} target={'_blank'} rel={'noreferrer'}> - Buy Tickets</a></span></li> 
-
             })
         } 
        }
@@ -126,7 +108,6 @@ sorter = (eventArr) => {
         return(
         <>
             <h3>Upcoming Concerts</h3>
-            {/* {this.state.events && console.log( this.eventsParse(this.state.events))} */}
            <ul>{ this.state.filteredConcerts && this.createList(this.state.filteredConcerts)}</ul>
         </>
         )

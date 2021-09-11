@@ -10,7 +10,7 @@
             .then(resp => resp.json())
             .then(user => {
                 if(user.error){
-                    alert(user.error)
+                    throw new Error (user.error)
                 } if(!user.error) {
                 dispatch({type: 'CURRENT_USER', currentUser: user})   //Dispatching to Redux the Serialized User data from Backend.
                 } 

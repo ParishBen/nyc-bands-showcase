@@ -24,13 +24,11 @@ var jwt = require('jsonwebtoken');
     
     decoVal = () => {
      if(deco && deco() != null){    // Returns the imported Token Value from App.js
-       console.log(deco())
        return deco()
      } else {
          let newTok = window.localStorage.getItem('access_token')    // OR grabs it from the LocalStorage / Decodes it for the Token Value
          if (newTok){
          const myDecodedToken =  decodeToken(newTok);
-         console.log(myDecodedToken)
       return myDecodedToken.spotify_token}
      }
    }
@@ -65,7 +63,6 @@ var jwt = require('jsonwebtoken');
         let artistsObjArr = []; // this will hold Every Artist object return
         for (let i=0; i< properCase.length; i++){    // this loops through each uri encoded band-name & does get Fetch to Spotify
           fetch(`https://api.spotify.com/v1/search?q=${properCase[i]}&type=artist`, {
-            //credentials: "include",
             headers: {
                 'Content-Type':'application/json',
                  Accept:'application/json',
@@ -74,8 +71,8 @@ var jwt = require('jsonwebtoken');
               })
               .then(resp=> resp.json())
               .then(artObjs=> {  
-                if(artObjs.error){if(artObjs.error.message === ("Invalid access token" || "The access token expired")){
-                  console.log(artObjs.error) 
+                if(artObjs.error){
+                  if(artObjs.error.message === "Invalid access token" || "The access token expired"){
                   return window.location = "http://localhost:8888/login"
                 }}
                 // if(artObjs.error.details.includes("Invalid Access")) {
@@ -84,7 +81,6 @@ var jwt = require('jsonwebtoken');
                   let foundArtist = artObjs.artists.items        // this returns artist(s) item's array from Spotify
                     if (foundArtist && `${foundArtist.length}` > 0){    // if response isn't undef & has any length
                       let realArtist = foundArtist.find( artist => artist.name === decodeURI(properCase[i])) // find artist in array of objects with the exact name matching the initial unencoded band name.
-                      //console.log(realArtist, foundArtist)
                       if (realArtist.name == "Run-DMC"){   //Exception Case for Artist=> title: Run-D.M.C. posed problems in fetch due to '.' Will grab correct Artist.id now.
                         realArtist = foundArtist.find(artist => artist.id == "3CQIn7N5CuRDP8wEI7FiDA")   //Setting exception case ID for Run-D.M.C.
                       }
@@ -116,18 +112,6 @@ var jwt = require('jsonwebtoken');
           } 
         }, 8000)
 
-        newfetchmcgee = () => {
-          fetch('https://app.ticketmaster.com/discovery/v2/events.json?keyword=Lumineers&classificationName=music&locale=en-us&apikey=JcHBGDzcTW1CwZ7zgfznR4koIFNm8zmn')
-     
-      .then(resp=> resp.json())
-              .then(eventObj=> {  
-                if(eventObj.error) {
-                  console.log(eventObj.error)
-                }   else { 
-                  console.log(eventObj._embedded.events[0]._embedded.venues[0].name, ": ",eventObj._embedded.events[0]._embedded.venues[0].city.name+", "+eventObj._embedded.events[0]._embedded.venues[0].country.name)
-              }})
-                  .catch(err=> console.log(err))
-                }
     render(){
 //Invisible Fetch- to push Artists to App.js state
       return (

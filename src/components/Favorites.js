@@ -10,8 +10,7 @@ componentDidMount(){
     this.props.currentUser && this.props.fetchFaves(this.props.currentUser)          // Redux State grab of Favorites
 }
 
-    deleteArtist = (event) => {
-        console.log(event.target.previousElementSibling.href.split('/')[4])            // Delete Fetch request to backend & then conducting this.props.fetchFaves()
+    deleteArtist = (event) => {   // Delete Fetch request to backend & then conducting this.props.fetchFaves()
         let delArtist = event.target.previousElementSibling.href.split('/')[4] // Grabbing the Unique Artist ID for Delete Request to backend.
        fetch(`http://localhost:9000/${this.props.currentUser.name}/artists/${delArtist}`, {
            method: "DELETE",
