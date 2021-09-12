@@ -33,7 +33,7 @@ state = {
 
  justChangeTheState = () => {
     let btn = document.getElementById('alphabetizer')
-    if ((btn) && this.state.btnClass == '' || this.state.btnClass == 'unsorted'){
+    if ( this.state.btnClass == '' || this.state.btnClass == 'unsorted'){
         btn.className = 'sorted'
         btn.innerText = "Unsort Tracks!"
         this.setState({btnClass : 'sorted'})

@@ -6,22 +6,21 @@ import {Link} from 'react-router-dom';
 import {deco} from '../containers/App';
 import { decodeToken } from "react-jwt";
 import {dandy} from '../tokenSecret';
+import UserInput from './UserInput';
 var jwt = require('jsonwebtoken');
-    
+
+const properCase =              // this goes through the imported list of Bands formed in NYC. Then URI encodes the non-alphabetical characters for the Fetch Request.
+nycBands.map(artist => {
+  return artist.replaceAll(' ','%20').replaceAll("'","%27").replaceAll(":", "%3A").replaceAll('.',"+.")
+})
+
+const artistArrReducer = (newArt, artArray) => {    // Takes in the Artist & Array & will check the array if the Artist Object is already in the Array based on unique ID.
+  return artArray.find(artist=> artist.id === newArt.id)
+}
+
+export default class SpotifyFetch extends React.Component { 
   
-    
-    const properCase =              // this goes through the imported list of Bands formed in NYC. Then URI encodes the non-alphabetical characters for the Fetch Request.
-    nycBands.map(artist => {
-      return artist.replaceAll(' ','%20').replaceAll("'","%27").replaceAll(":", "%3A").replaceAll('.',"+.")
-    })
-    
-    const artistArrReducer = (newArt, artArray) => {    // Takes in the Artist & Array & will check the array if the Artist Object is already in the Array based on unique ID.
-    return artArray.find(artist=> artist.id === newArt.id)
-  }
- 
-  export default class SpotifyFetch extends React.Component { 
-    
-    
+  
     decoVal = () => {
      if(deco && deco() != null){    // Returns the imported Token Value from App.js
        return deco()
@@ -73,7 +72,7 @@ var jwt = require('jsonwebtoken');
               .then(artObjs=> {  
                 if(artObjs.error){
                   if(artObjs.error.message === "Invalid access token" || "The access token expired"){
-                  return window.location = "http://localhost:8888/login"
+                  return history.push("http://localhost:8888/login")
                 }}
                 // if(artObjs.error.details.includes("Invalid Access")) {
                   // window.location = "http://localhost:8888/login"
