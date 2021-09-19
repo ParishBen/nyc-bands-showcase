@@ -52,7 +52,7 @@ import { decodeToken } from "react-jwt";
                       if (images.length===1){
                          imgSrc = images[0].url;
                       }
-                      if (images.length > 1){
+                      else {
                         imgSrc = images[1].url;
                       }
                         let myImg = document.createElement('img')
@@ -99,7 +99,7 @@ import { decodeToken } from "react-jwt";
                 {document.querySelector('img') && this.artBackGround()}
                 {this.props.currentUser ? <p class='welcomeMSG' style={{backgroundColor:'beige', color:'chocolate'}}>Welcome {`${this.props.currentUser.name}`}, to NYC Bands Showcase ~ Have fun discovering all this local talent! </p>: <p>Welcome to NYC Bands Showcase ~ Have fun discovering all this local talent!</p>}
                 {<div id="thisDiv">{<Link  token={this.props.token}  to={`/artists/${this.state.artId}`} style={{marginRight: '15px', fontSize: '20pt', fontWeight: 'bold', color:'teal', backgroundColor:'white'}}>{`${this.state.artTitle}` }</Link>}</div>}
-                <div id='invisible-delay-fetch' style={{display:'none'}}>{this.checkForImage}{/*this.megaFetch()*/}</div>
+                <div id='invisible-delay-fetch' style={{display:'none'}}>{this.checkForImage}</div>
             </div>
         )
     }

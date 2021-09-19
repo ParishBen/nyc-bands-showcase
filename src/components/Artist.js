@@ -35,22 +35,20 @@ findArtist = () => {                           // Check for props coming from Re
          if(this.props.artists){ this.findArtist() }
        } 
     
-     componentDidMount(){                      //props check & then using token Props to fetch Artists' TopTracks
+     componentDidMount(){   //props check & then using token Props to fetch Artists' TopTracks
         this.checkforprops()
-        //this.props.fetchTracks(window.localStorage.getItem('token')) 
         if(deco && deco() != null){
         this.props.fetchTracks(deco())  
         } else {
-          let newTok = window.localStorage.getItem('access_token')
+          let newTok = window.localStorage.getItem('access_token');
           const myDecodedToken =  decodeToken(newTok);
-          if(myDecodedToken)
           this.props.fetchTracks(myDecodedToken.spotify_token)
     }}
   
     handleTopTracks = () => {        // returning loading if Redux Store is loading (while fetch is taking place) & then rendering TopTracks Component
         if (this.props.loading) {
             return <h2 id='loading-header'>Loading Tracks...</h2>
-             } if(this.props.toptracks && this.props.toptracks != null){
+             } if(this.props.toptracks && this.props.toptracks !== null){
             return <TopTracks toptracks={this.props.toptracks} artistName = {this.findArtist().name} artistId={this.findArtist().id} />
           } 
         
@@ -91,7 +89,6 @@ const mapStateToProps = state => {
   const mapDispatchToProps = dispatch => {
     return { 
       fetchTracks: (anyProp) => dispatch(fetchTracks(anyProp)),      //Dispatch functions for fetching tracks & sessionToken
-      //getSessionToken: () => dispatch(getSessionToken())
     }
   }
 

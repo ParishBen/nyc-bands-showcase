@@ -47,7 +47,7 @@ state = {
  favoriteArtist = (event) => {
     fetch(`http://localhost:9000/artists`, {  //http://localhost:9000/users/${currentUser.id}/artists --> When I nest artists under users to only show Current_User info
         method: 'POST',
-        headers: {                                                                    // Sends POST to backend end /artists to ADD a Favorite Artist. 
+        headers: {                              // Sends POST to backend end /artists to ADD a Favorite Artist. 
             'Content-Type':'application/json',
             Accept:'application/json'
         },
@@ -63,22 +63,13 @@ state = {
              return alert(message.error)
         } else {
             let favbutton = document.getElementById('favButton')                                                       
-             if (!document.getElementById('artist-title').innerHTML.includes("💛")){
+             if (!document.getElementById('artist-title').innerHTML.includes("💛")){ // DOM CHANGES. For Client purposes -> adding Favorite Heart to Header & also Changing Button Color
                      document.getElementById('artist-title').innerHTML +="💛" 
                     }
                  favbutton.style.background = 'orange'
                 favbutton.style.fontWeight = "bold"        
              }
          })
-    // .then(function(){                                                           // DOM CHANGES. For Client purposes -> adding Favorite Heart to Header & also Changing Button Color
-    //     if (!document.getElementById('artist-title').innerHTML.includes("💛"))
-    //          document.getElementById('artist-title').innerHTML +="💛" 
-    //  })
-    // .then(function(){
-    //     let favbutton = document.getElementById('favButton')
-    //     favbutton.style.background = 'orange'
-    //     favbutton.style.fontWeight = "bold"
-    //  })
     .catch(err=>console.log(err)) 
   }
 

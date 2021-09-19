@@ -12,12 +12,20 @@ const removeImg = () => {
         document.querySelector('body').style.background = ''
 }
 
+const artBackGround = () => {
+        let src = document.createElement('img')
+        src.id = 'artist-container-img'
+        src.url = 'https://cdn.shortpixel.ai/spai2/w_301+q_lossy+ret_img+to_webp/https://www.nycinsiderguide.com/wp-content/uploads/2017/04/barclays-center-brooklyn.jpg'
+       document.querySelector('body').style.background = `url("${src.url}") no-repeat fixed center`
+       document.querySelector('body').style.backgroundSize = 'cover'
+      }
+
 const ArtistContainer = ({match, artists, token}) =>  {
         
         return (
                <>
-                        {emptyDiv()}{removeImg()}
-                         {window.location.href === `http://localhost:3000${match.url}` ? 
+                        {emptyDiv()}{removeImg()}{artBackGround()}
+                         {window.location.href === `http://localhost:3000${match.url}` ?  /* Path matching /artists will display ArtistList component*/
                         <ArtistList artists={artists} token={token} /> :
                         <Route path={`${match.url}/:artistId`} render={routerProps => <Artist {...routerProps} artists={artists} token={token}  /> }/>}    {/*Defining Route for each unique Artist*/}
                          </>                 

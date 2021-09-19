@@ -15,7 +15,7 @@ class UserInput extends React.Component {
     }
 
 
-handleUserInfoChange(event) {                                // Signing in to Landing Page handling value changes
+handleUserInfoChange(event) {                 // Signing in to Landing Page handling value changes
     this.setState({
       [event.target.name]: event.target.value,
     });
@@ -29,7 +29,7 @@ handleUserInfoChange(event) {                                // Signing in to La
     return currentUser
   }
   
-  handleUserInfoSubmit(event) {                               // Handling Submit of user info to find/create a User in Backend => sets session to user.id
+  handleUserInfoSubmit(event) {                // Handling Submit of user info to find/create a User in Backend => sets session to user.id
     event.preventDefault();
     let name = this.state.name;
     let email = this.state.email;
@@ -55,7 +55,6 @@ handleUserInfoChange(event) {                                // Signing in to La
       }
     })
     .then(() => {
-    //this.props.stateLogin()
     localStorage.setItem('Name', name)
     localStorage.setItem('Email',email)
     window.location= "http://localhost:8888/login"}) // Transports to Express Server on 8888 which is the defined callback route for Spotify to grant Access Token & route back to localhost:3000

@@ -41,20 +41,7 @@ export default class SpotifyFetch extends React.Component {
       this.allNycBandsFetch()
       }
 
-      //this.newfetchmcgee()
     }
-
-    // myduuudes = () => {
-    //     fetch('https://test-server.brapi.org/brapi/v2/commoncropnames',{
-    //         headers: {
-    //             Accept: 'application/json'
-    //     }})
-    //     // })
-         
-    //     .then(res=> res.json())
-    //     .then(resp=> console.log(resp))
-    //     .catch(err=>console.log(err))
-    // }
 
   allNycBandsFetch = () => {                                             
         let artistsObjArr = []; // this will hold Every Artist object return
@@ -71,16 +58,15 @@ export default class SpotifyFetch extends React.Component {
               .then(artObjs=> {  
                 if(artObjs.error){
                   if(artObjs.error.message === "Invalid access token" || "The access token expired"){
-                  return window.location ="http://localhost:8888/login"
-                }}
-                // if(artObjs.error.details.includes("Invalid Access")) {
-                  // window.location = "http://localhost:8888/login"
+                    return window.location ="http://localhost:8888/login"
+                  }
+                }
                    else {               // going to put this artist obj(s) response into another function which returns correct artist obj from results
-                  let foundArtist = artObjs.artists.items        // this returns artist(s) item's array from Spotify
-                    if (foundArtist && `${foundArtist.length}` > 0){    // if response isn't undef & has any length
-                      let realArtist = foundArtist.find( artist => artist.name === decodeURI(properCase[i])) // find artist in array of objects with the exact name matching the initial unencoded band name.
-                      if (realArtist.name === "Run-DMC"){   //Exception Case for Artist=> title: Run-D.M.C. posed problems in fetch due to '.' Will grab correct Artist.id now.
-                        realArtist = foundArtist.find(artist => artist.id === "3CQIn7N5CuRDP8wEI7FiDA")   //Setting exception case ID for Run-D.M.C.
+                      let foundArtist = artObjs.artists.items        // this returns artist(s) item's array from Spotify
+                        if (foundArtist && `${foundArtist.length}` > 0){    // if response isn't undef & has any length
+                          let realArtist = foundArtist.find( artist => artist.name === decodeURI(properCase[i])) // find artist in array of objects with the exact name matching the initial unencoded band name.
+                            if (realArtist.name === "Run-DMC"){   //Exception Case for Artist=> title: Run-D.M.C. posed problems in fetch due to '.' Will grab correct Artist.id now.
+                              realArtist = foundArtist.find(artist => artist.id === "3CQIn7N5CuRDP8wEI7FiDA")   //Setting exception case ID for Run-D.M.C.
                       }
                         if (realArtist !== undefined){         
                           if(!artistArrReducer(realArtist, artistsObjArr)){ // REDUCER - if we have a realArtist value it checks if that Artist object is in Array. IF not present will push to array.

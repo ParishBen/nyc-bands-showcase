@@ -10,6 +10,8 @@ componentDidMount(){
     this.props.currentUser && this.props.fetchFaves(this.props.currentUser)          // Redux State grab of Favorites
 }
 
+
+      
     deleteArtist = (event) => {   // Delete Fetch request to backend & then conducting this.props.fetchFaves()
         let delArtist = event.target.previousElementSibling.href.split('/')[4] // Grabbing the Unique Artist ID for Delete Request to backend.
        fetch(`http://localhost:9000/${this.props.currentUser.name}/artists/${delArtist}`, {
@@ -31,7 +33,7 @@ componentDidMount(){
                }
             if(this.props.favorites && this.props.favorites.length > 0) {
                 return this.props.favorites.map(artist=> {
-                      return <li key={artist.artist_id}><Link to={`artists/${artist.artist_id}`} key={artist.artist_id} style={{marginRight: '5px', border: 'dashed 1pt gold', color: 'brown', fontWeight: 'bold'}}> {artist.name}</Link>
+                      return <li key={artist.artist_id}><span style={{backgroundColor:'blanchedalmond'}}> <Link to={`artists/${artist.artist_id}`} key={artist.artist_id} style={{marginRight: '5px', border: 'dashed 1pt gold', color: 'brown', fontWeight: 'bold'}}> {artist.name}</Link></span>
                       <button id="DelfavButton" onClick={(event) => this.deleteArtist(event)}>Delete</button>
                       </li>
                     }) 
@@ -42,14 +44,11 @@ componentDidMount(){
               }
             }
 
-        removeImg = () => {
-             document.querySelector('body').style.background = ''
-            }
+       
 
         render(){
             return(
                 <>
-                    {this.removeImg()}
                     {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : ''}
                     <h1 id="head">NYC FAVES 💛 </h1>
                     <ul id='favorite-list'>{this.handleFaveTracks()}</ul> 

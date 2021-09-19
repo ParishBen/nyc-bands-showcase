@@ -94,7 +94,7 @@ sorter = (eventArr) => {
     render(){
         return(
         <>
-            <h3><span style={{backgroundColor:'GrayText'}}>Upcoming Concerts</span></h3>
+            <h3><span style={{backgroundColor:'GrayText'}}>{this.props.name.toLowerCase().endsWith('s') ? this.props.name+"'" : this.props.name+"'s"} Upcoming Concerts</span></h3>
            <ul>{ this.state.filteredConcerts && this.createList(this.state.filteredConcerts)}</ul>
         </>
         )

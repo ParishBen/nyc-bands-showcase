@@ -25,16 +25,7 @@ const artistsReducer = (state = { toptracks: [], loading: false, favorites: [], 
             favorites: action.favorites,
             loading: false
       }
-      // case 'ADD_TOKEN':            // Grabbing Token from URL landing page & Dispatching Value to Redux Store State
-      //   return {
-      //     ...state,
-      //     token: action.token
-      //   }
-      // case 'ADD_SESSION_TOKEN':            // Grabbing Token from URL landing page & Dispatching Value to Redux Store State
-      // return {
-      //   ...state,
-      //   sessionToken: action.token
-      // }
+     
       case 'CURRENT_USER':                // Fetching Current User data from Backend
         return {
           ...state,
