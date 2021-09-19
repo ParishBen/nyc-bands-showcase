@@ -10,7 +10,7 @@ import UserInput from '../components/UserInput';
 import SpotifyFetch from '../components/SpotifyFetch';
 import {getCurrentUser} from '../actions/addCurrentUser';
 import { decodeToken } from "react-jwt";
-import {dandy} from '../tokenSecret';
+import dandy from '../tokenSecret';
 var jwt = require('jsonwebtoken');
 
 
@@ -68,9 +68,9 @@ componentDidMount(){
        }})
        .then(resp=> resp.json())
        .then(ressy=> {
-         if(ressy.keys !== null ){generateToken(ressy.token)
+         if(ressy.keys !== null ){
         tokenRet = ressy.token
-        entireTok = generateToken(ressy.token)
+        entireTok = generateToken(tokenRet)
         window.localStorage.setItem('access_token', entireTok)
         this.setState({ logged_in: true})
        }})
@@ -95,9 +95,6 @@ tokenProp = () => {
   } 
 }
 
-loggerOut = () => {
-  this.setState({logged_in: false})
-}
 stateLogin = () => {
   this.setState({logged_in: true})
 }

@@ -1,13 +1,9 @@
 import React from 'react'
 import nycBands from '../nycBands'
 import '../stylesheet/basis.css';
-import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
 import {deco} from '../containers/App';
 import { decodeToken } from "react-jwt";
-import {dandy} from '../tokenSecret';
-import UserInput from './UserInput';
-var jwt = require('jsonwebtoken');
+
 
 const properCase =              // this goes through the imported list of Bands formed in NYC. Then URI encodes the non-alphabetical characters for the Fetch Request.
 nycBands.map(artist => {
@@ -18,8 +14,15 @@ const artistArrReducer = (newArt, artArray) => {    // Takes in the Artist & Arr
   return artArray.find(artist=> artist.id === newArt.id)
 }
 
+
 export default class SpotifyFetch extends React.Component { 
   
+  constructor(){
+    super();
+    this.state = {
+      artists: []
+    }
+  }
   
     decoVal = () => {
      if(deco && deco() != null){    // Returns the imported Token Value from App.js
@@ -32,17 +35,12 @@ export default class SpotifyFetch extends React.Component {
      }
    }
     
-    constructor(){
-      super();
-      this.state = {
-        artists: []
-      }
-    }
     
     componentDidMount(){
       if(this.state.artists.length < 140){
       this.allNycBandsFetch()
       }
+
       //this.newfetchmcgee()
     }
 
@@ -60,6 +58,7 @@ export default class SpotifyFetch extends React.Component {
 
   allNycBandsFetch = () => {                                             
         let artistsObjArr = []; // this will hold Every Artist object return
+        console.log('in the Fetch', this.decoVal())
         for (let i=0; i< properCase.length; i++){    // this loops through each uri encoded band-name & does get Fetch to Spotify
           fetch(`https://api.spotify.com/v1/search?q=${properCase[i]}&type=artist`, {
             headers: {
@@ -72,7 +71,7 @@ export default class SpotifyFetch extends React.Component {
               .then(artObjs=> {  
                 if(artObjs.error){
                   if(artObjs.error.message === "Invalid access token" || "The access token expired"){
-                  return history.push("http://localhost:8888/login")
+                  return window.location ="http://localhost:8888/login"
                 }}
                 // if(artObjs.error.details.includes("Invalid Access")) {
                   // window.location = "http://localhost:8888/login"
@@ -80,8 +79,8 @@ export default class SpotifyFetch extends React.Component {
                   let foundArtist = artObjs.artists.items        // this returns artist(s) item's array from Spotify
                     if (foundArtist && `${foundArtist.length}` > 0){    // if response isn't undef & has any length
                       let realArtist = foundArtist.find( artist => artist.name === decodeURI(properCase[i])) // find artist in array of objects with the exact name matching the initial unencoded band name.
-                      if (realArtist.name == "Run-DMC"){   //Exception Case for Artist=> title: Run-D.M.C. posed problems in fetch due to '.' Will grab correct Artist.id now.
-                        realArtist = foundArtist.find(artist => artist.id == "3CQIn7N5CuRDP8wEI7FiDA")   //Setting exception case ID for Run-D.M.C.
+                      if (realArtist.name === "Run-DMC"){   //Exception Case for Artist=> title: Run-D.M.C. posed problems in fetch due to '.' Will grab correct Artist.id now.
+                        realArtist = foundArtist.find(artist => artist.id === "3CQIn7N5CuRDP8wEI7FiDA")   //Setting exception case ID for Run-D.M.C.
                       }
                         if (realArtist !== undefined){         
                           if(!artistArrReducer(realArtist, artistsObjArr)){ // REDUCER - if we have a realArtist value it checks if that Artist object is in Array. IF not present will push to array.

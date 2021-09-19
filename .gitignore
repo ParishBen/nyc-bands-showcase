@@ -24,4 +24,4 @@ yarn-error.log*
 tokenSecret.js
 theSpoilerBoilerPlate.js
 junkishCommentedCode.js
-playaround.js
+/tokenSecret.js

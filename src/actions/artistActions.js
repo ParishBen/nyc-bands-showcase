@@ -1,4 +1,3 @@
-import React from 'react'
 
 export const fetchTracks = (token) => {    //Intakes Token Prop for Spotify Auth. Prior/During the act of Fetch, the ReduxState is 'Loading'. Then all Artists' Tracks are dispatched to Redux State.
     return (dispatch) => {

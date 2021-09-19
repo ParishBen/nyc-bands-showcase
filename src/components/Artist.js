@@ -18,7 +18,8 @@ findArtist = () => {                           // Check for props coming from Re
     }
       
     grabArtImage = () => {        // Ternary executed in render to see if props present & then grabbing Image of Artist 
-      if (`${this.findArtist().images}`==[]){ // IF artist's image array is empty
+      if (`${this.findArtist().images}`== []){ // IF artist's image array is empty
+        console.log(`${this.findArtist().images}`)
           return <h3 style={{color:'red', textDecoration: 'underline dashed'}}>No Artist Image</h3>
        } 
       if (`${this.findArtist().images}`.length === 1) { //IF only one image in array

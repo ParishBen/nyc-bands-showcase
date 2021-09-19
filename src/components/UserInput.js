@@ -28,6 +28,7 @@ handleUserInfoChange(event) {                                // Signing in to La
     }
     return currentUser
   }
+  
   handleUserInfoSubmit(event) {                               // Handling Submit of user info to find/create a User in Backend => sets session to user.id
     event.preventDefault();
     let name = this.state.name;

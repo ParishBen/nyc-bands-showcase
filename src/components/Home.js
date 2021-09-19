@@ -4,8 +4,6 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {deco} from '../containers/App';
 import { decodeToken } from "react-jwt";
-import {dandy} from '../tokenSecret';
-var jwt = require('jsonwebtoken');
     
     class Home extends React.Component{
 

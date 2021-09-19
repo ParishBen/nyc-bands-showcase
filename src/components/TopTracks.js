@@ -33,7 +33,7 @@ state = {
 
  justChangeTheState = () => {
     let btn = document.getElementById('alphabetizer')
-    if ( this.state.btnClass == '' || this.state.btnClass == 'unsorted'){
+    if ( this.state.btnClass === '' || this.state.btnClass === 'unsorted'){
         btn.className = 'sorted'
         btn.innerText = "Unsort Tracks!"
         this.setState({btnClass : 'sorted'})
@@ -45,7 +45,6 @@ state = {
 }
 
  favoriteArtist = (event) => {
-    let trutrack = this.props.toptracks[0].artists[0]        
     fetch(`http://localhost:9000/artists`, {  //http://localhost:9000/users/${currentUser.id}/artists --> When I nest artists under users to only show Current_User info
         method: 'POST',
         headers: {                                                                    // Sends POST to backend end /artists to ADD a Favorite Artist. 
@@ -104,7 +103,7 @@ handleClick = (event) => {
             
             <h2><span style={{backgroundColor: 'gray'}}>Top Tracks</span></h2>
             <p>Click to preview</p>
-            <ul id = 'tracklister'>{this.state.btnClass == "sorted" ? <SortedTracks toptracks = {this.sorter()} handleClick= {this.handleClick}/> : <SortedTracks toptracks= {this.props.toptracks} handleClick= {this.handleClick}/>}</ul>
+            <ul id = 'tracklister'>{this.state.btnClass === "sorted" ? <SortedTracks toptracks = {this.sorter()} handleClick= {this.handleClick}/> : <SortedTracks toptracks= {this.props.toptracks} handleClick= {this.handleClick}/>}</ul>
         </div>
        )
      }

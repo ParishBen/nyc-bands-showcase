@@ -25,7 +25,6 @@ const NavBar = () => {
       <NavLink
         style={{ marginRight: '10px' }} 
         activeStyle={{background: 'darkblue', color: 'white'}}
-        style={{ marginRight: '10px' }} 
         to="/favorites"
         exact
         >

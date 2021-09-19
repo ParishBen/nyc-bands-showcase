@@ -1,7 +1,6 @@
 import '../stylesheet/basis.css';
 import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+
 
 class Concert extends React.Component{
 
@@ -47,7 +46,7 @@ eventsParse = (concerts) => {
      let funcerts = concerts.filter(event => {
           if(event._embedded.attractions){
              if( event._embedded.attractions.find(artist => {
-                return artist.name.toLowerCase() == artname.toLowerCase()
+                return artist.name.toLowerCase() === artname.toLowerCase()
                }))
               {
                   return event
@@ -69,20 +68,20 @@ eventsParse = (concerts) => {
             if(this.state.filteredConcerts.length > 5){           
                  let listArr = this.sorter(this.state.filteredConcerts)
                  listArr = listArr.map( concert => {
-                    return <li key={concert.name}><span style={{background:'lightgray', color:'black'}}>Date: {concert.dates.start.localDate} || Concert : {concert.name} || Location: {concert._embedded.venues[0].city ? concert._embedded.venues[0].city.name : concert._embedded.venues[0].address ? concert._embedded.venues[0].address.line1 : 'No City Address Listed'} <a href={concert.url} target={'_blank'} rel={'noreferrer'}> - Buy Tickets</a></span></li> 
+                    return <li key={`${concert.name+" - "+concert._embedded.venues[0].city.name}`}><span style={{background:'lightgray', color:'black'}}>Date: {concert.dates.start.localDate} || Concert : {concert.name} || Location: {concert._embedded.venues[0].city ? concert._embedded.venues[0].city.name : concert._embedded.venues[0].address ? concert._embedded.venues[0].address.line1 : 'No City Address Listed'} <a href={concert.url} target={'_blank'} rel={'noreferrer'}> - Buy Tickets</a></span></li> 
                     //return <li key={this.state.filteredConcerts[i].name}>Date: {this.state.filteredConcerts[i].dates.start.localDate} || Concert : {this.state.filteredConcerts[i].name} || Location: {this.state.filteredConcerts[i]._embedded.venues[0].city ? this.state.filteredConcerts[i]._embedded.venues[0].city.name : this.state.filteredConcerts[i]._embedded.venues[0].address ? this.state.filteredConcerts[i]._embedded.venues[0].address.line1 : 'No City Address Listed'} <a href={this.state.filteredConcerts[i].url} target={'_blank'} rel={'noreferrer'}> - Buy Tickets</a></li> 
                  })
                  listArr.length = 5
                  return listArr
                 } else {
-        let count = this.state.filteredConcerts.length;
+       // let count = this.state.filteredConcerts.length;
         //for(let i=0; i<count; i++){
-            while (count > 0 ){
-           count--
+           // while (count > 0 ){
+          // count--
              return  this.sorter(this.state.filteredConcerts).map( concert => {
-             return <li key={this.state.filteredConcerts[count].name}><span style={{background:'lightgray', color:'black'}}> Date: {concert.dates.start.localDate} || Concert : {concert.name} || Location: {concert._embedded.venues[0].city ? concert._embedded.venues[0].city.name : concert._embedded.venues[0].address ? concert._embedded.venues[0].address.line1 : 'No City Address Listed'} <a href={concert.url} target={'_blank'} rel={'noreferrer'}> - Buy Tickets</a></span></li> 
+             return <li key={concert.name}><span style={{background:'lightgray', color:'black'}}> Date: {concert.dates.start.localDate} || Concert : {concert.name} || Location: {concert._embedded.venues[0].city ? concert._embedded.venues[0].city.name : concert._embedded.venues[0].address ? concert._embedded.venues[0].address.line1 : 'No City Address Listed'} <a href={concert.url} target={'_blank'} rel={'noreferrer'}> - Buy Tickets</a></span></li> 
             })
-        } 
+         
        }
     }
 }
@@ -107,7 +106,7 @@ sorter = (eventArr) => {
     render(){
         return(
         <>
-            <h3>Upcoming Concerts</h3>
+            <h3><span style={{backgroundColor:'GrayText'}}>Upcoming Concerts</span></h3>
            <ul>{ this.state.filteredConcerts && this.createList(this.state.filteredConcerts)}</ul>
         </>
         )

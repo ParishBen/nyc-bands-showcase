@@ -1,4 +1,3 @@
-import React from 'react'
 
 export const fetchFaves = (currentusr) => {
     return (dispatch) => {                              // Loading phase prior to resolving Fetch & then adding all favorites from backend to Redux Store State.

@@ -11,7 +11,11 @@ img.Artistimage:hover{
   filter: grayscale(100%);
   border: 9px solid rgb(53, 231, 68);
 }
-
+button:hover{
+  font-weight:bold;
+  border-width: 3pt;
+  border-color:blanchedalmond;
+}
 @media (prefers-reduced-motion: no-preference) {
   img.Artistimage {
     animation: Artist-logo-spin forwards 1s linear;

@@ -17,7 +17,7 @@ const ArtistContainer = ({match, artists, token}) =>  {
         return (
                <>
                         {emptyDiv()}{removeImg()}
-                         {window.location.href == `http://localhost:3000${match.url}` ? 
+                         {window.location.href === `http://localhost:3000${match.url}` ? 
                         <ArtistList artists={artists} token={token} /> :
                         <Route path={`${match.url}/:artistId`} render={routerProps => <Artist {...routerProps} artists={artists} token={token}  /> }/>}    {/*Defining Route for each unique Artist*/}
                          </>                 
