@@ -2,9 +2,8 @@ import React from 'react'
 import {getCurrentUser} from '../actions/addCurrentUser'
 import {connect} from 'react-redux'
 
-
 class UserInput extends React.Component {
-
+  
     constructor(){
       super();
       this.state = {
@@ -13,7 +12,14 @@ class UserInput extends React.Component {
         password: '',
       }
     }
-
+    
+     artBackGround = () => {
+      let src = document.createElement('img')
+      src.id = 'UserLanding-container-img'
+      src.url = 'https://images.pexels.com/photos/3742472/pexels-photo-3742472.jpeg?cs=srgb&dl=pexels-rombo-3742472.jpg&fm=jpg'
+     document.querySelector('body').style.background = `url("${src.url}") no-repeat fixed center`
+     document.querySelector('body').style.backgroundSize = 'cover'
+    }
 
 handleUserInfoChange(event) {                 // Signing in to Landing Page handling value changes
     this.setState({
@@ -70,6 +76,7 @@ handleUserInfoChange(event) {                 // Signing in to Landing Page hand
 render() {
     return (
       <div>
+        {this.artBackGround()}
         <h1 style={{color:'navajowhite', textDecoration:'underline dashed'}}>NYC Bands Showcase</h1>
               <p>Hey there, please sign in/up below!</p>
             <form onSubmit={(event) => this.handleUserInfoSubmit(event)} style={{border: '1pt solid white'}}>
