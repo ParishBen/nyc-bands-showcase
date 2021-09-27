@@ -13,7 +13,9 @@ componentDidMount(){
 
       
     deleteArtist = (event) => {   // Delete Fetch request to backend & then conducting this.props.fetchFaves()
-        let delArtist = event.target.previousElementSibling.href.split('/')[4] // Grabbing the Unique Artist ID for Delete Request to backend.
+        let artist = event.target.previousElementSibling.innerHTML.toString()//.split('/')[4] // Grabbing the Unique Artist ID for Delete Request to backend.
+        let first = artist.substring(0,artist.indexOf('ts/'));
+        let delArtist = artist.substring(artist.indexOf(first), artist.indexOf('" style')).split('/')[2]
        fetch(`http://localhost:9000/${this.props.currentUser.name}/artists/${delArtist}`, {
            method: "DELETE",
            headers: {
