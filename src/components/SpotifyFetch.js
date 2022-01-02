@@ -58,7 +58,7 @@ export default class SpotifyFetch extends React.Component {
               .then(artObjs=> {  
                 if(artObjs.error){
                   console.log(artObjs, " ",artObjs.error)
-                  if(artObjs.error.message === "Invalid access token" || "The access token expired"){
+                  if(artObjs.error.message === ("Invalid access token" || "The access token expired")){
                     return window.location ="http://localhost:8888/login"
                   }
                   if(artObjs.error.status === 429){

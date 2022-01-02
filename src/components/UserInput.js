@@ -84,12 +84,14 @@ render() {
           <input
             type="text" name="email"
             value={this.state.email}
-            onChange={(event) => this.handleUserInfoChange(event)} /><br/>
+            onChange={(event) => this.handleUserInfoChange(event)} />
+            <br/>
             <label>Name:&nbsp; </label>
             <input
             type="text" name="name"
             value= {this.state.name}
-            onChange={(event)=> this.handleUserInfoChange(event)} /><br/>
+            onChange={(event)=> this.handleUserInfoChange(event)} />
+            <br/>
             <label>Password:</label>
             <input
             type="password" name="password"
