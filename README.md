@@ -6,14 +6,14 @@
 # Installation
 <li>
 Travel to https://github.com/ParishBen/nyc-bands-showcase to clone the frontend repo. 
-Then replicate this for the backend at: https://github.com/ParishBen/nyc-bands-backend
+Then replicate this for the backend at: https://github.com/ParishBen/nyc-bands-showcase-backend
 . Reach Out to me at ParishBen13@gmail.com or SlackId: U0152HS07CP. To receive secrets. 
 In your terminal cd into the backend & run Bundle Install the above gem list.
 
 Next execute rails s -p 9000. RAILS server should be running on Port 9000. 
 Then cd into the front end and run 'npm install' to install all dependencies.  
 Run node src/theSpoilerBoilerplate.js to get the Express server running on port 8888 for Spotify API auth.
-Now run npm start to startup the web application to your browser & then navigate to localhost:3000!n
+Now run npm start to startup the web application to your browser & then navigate to localhost:3000!
 
 Signup & go!
 </li>
