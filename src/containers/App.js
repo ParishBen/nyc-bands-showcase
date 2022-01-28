@@ -10,32 +10,30 @@ import UserInput from '../components/UserInput';
 import SpotifyFetch from '../components/SpotifyFetch';
 import {getCurrentUser} from '../actions/addCurrentUser';
 import { decodeToken } from "react-jwt";
-import dandy from '../tokenSecret';
+import mySecret from '../tokenSecret';
 var jwt = require('jsonwebtoken');
 
 
 
 const generateToken = (tokenVal) => {   // Takes the Parameter of an Access Token value & then creates a JWT
-  var u = {
-    spotify_token: tokenVal 
-  }; 
-  let jwtToken = jwt.sign(u, dandy)
-    // expiresIn: 60 * 60 * 24 // expires in 24 hours
-  //})
+    var u = {
+      spotify_token: tokenVal 
+    }; 
+    let jwtToken = jwt.sign(u, mySecret)
   return jwtToken
 }
+
 
 let tokenRet; 
 let entireTok;
 
-
-export const deco =  () => {              // If tokenRet has the fetched AccessToken value then decode the JWT & return just the Spotify Token value.
-  if(tokenRet != null){
-    const myDecodedToken = decodeToken(entireTok)
-    
-    return myDecodedToken.spotify_token
+  export const deco =  () => {   // If tokenRet has the fetched AccessToken value then decode the JWT & return just the Spotify Token value.
+    if(tokenRet != null){
+      const myDecodedToken = decodeToken(entireTok) 
+      
+      return myDecodedToken.spotify_token  // will return the valid Spotify token value
+    }
   }
-}
 
 class App extends Component {
   
@@ -48,49 +46,48 @@ class App extends Component {
   }
   
   
-componentDidMount(){
-  // if(this.state.logged_in === true){
-  //   this.setState({ logged_in :false})}
+  componentDidMount(){
   
-  this.props.getCurrentUser()
-  if(this.props.currentUser && !this.props.currentUser.error){
-    this.tokenFetch()// Fetches & Sets the Token in a JWT into LocalStorage upon mounting 
+    this.props.getCurrentUser()
+    if(this.props.currentUser && !this.props.currentUser.error){
+      this.tokenFetch()// Fetches & Sets the Token in a JWT into LocalStorage upon mounting 
+    }
   }
-  
-}
 
- tokenFetch = () => {
-        fetch('http://localhost:8888/toke', {
+  tokenFetch = () => {
+      fetch('http://localhost:8888/toke', {  //Spotify's defined callback address (running express server). I set up cors to receive /toke then it will send back token
           //credentials: "include",
-          headers: {
-          'Content-Type':'application/json',
-          Accept:'application/json',
-       }})
+        headers: {
+        'Content-Type':'application/json',
+        Accept:'application/json',
+        }
+      })
        .then(resp=> resp.json())
-       .then(ressy=> {
-         if(ressy.keys !== null ){
-        tokenRet = ressy.token
-        entireTok = generateToken(tokenRet)
-        window.localStorage.setItem('access_token', entireTok)
-        this.setState({ logged_in: true})
-       }})
+       .then(resp=> {
+         if(resp.keys !== null ){
+            tokenRet = resp.token  // Setting var tokenRet to Spotify access token
+            entireTok = generateToken(tokenRet) // Now a JWT to place into localStorage.
+            window.localStorage.setItem('access_token', entireTok)
+            this.setState({ logged_in: true})
+          }
+        })
        .catch(err=> console.log(err))
       }
 
- artistsToState = (artArr) => {
+ artistsToState = (artArr) => { // Callback to have State of all the fetched Artists
   this.setState({
     artistsObjArr: artArr
   })
  }
 
 
-tokenProp = () => {
-  if(deco && deco() != null){
+tokenProp = () => {   // Checks for token value first then if there was refresh or it was cleared - 
+  if(deco && deco() != null){ // Can pull from localStorage
     return deco()
   } else {
       let newTok = window.localStorage.getItem('access_token')
       const myDecodedToken =  decodeToken(newTok);
-      if(myDecodedToken)
+        if(myDecodedToken)
    return myDecodedToken.spotify_token
   } 
 }
@@ -127,8 +124,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
    
-  //addToken: token => dispatch({type: 'ADD_TOKEN', token}),             // sends Token Data to Action Creator allowing Token Info to be Dispatched to Store State
-  getCurrentUser: () =>  dispatch(getCurrentUser()),                  // sends CurrentUser data to Action Creator & stores in Redux state
+  //addToken: token => dispatch({type: 'ADD_TOKEN', token}),  //No longer storing token in React/Redux state
+  getCurrentUser: () =>  dispatch(getCurrentUser()),   // sends CurrentUser data to Action Creator & stores in Redux state
  })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
