@@ -55,7 +55,7 @@ findArtist = () => {     // Check for props passed in from ArtistsContainer & th
 
      artBackGround = () => {  // Sets background image to Artist Image
        let src = document.querySelector('img').src
-        cument.querySelector('body').style.background = `url("${src}") no-repeat fixed center`
+        document.querySelector('body').style.background = `url("${src}") no-repeat fixed center`
         document.querySelector('body').style.backgroundSize = 'cover'
      }
 
