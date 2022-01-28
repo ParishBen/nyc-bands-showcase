@@ -6,12 +6,15 @@ export const fetchFaves = (currentusr) => {
             headers: {
                 "Content-type": "Application/json",
                 Accept: "Application/json"          
-              }
-        }).then(response => {
+            }
+        })
+        .then(response => {
             return response.json()
-          }).then(respJSON => {
+        })
+        .then(respJSON => {
             dispatch({ type: 'ADD_FAVES', favorites: respJSON })
-          }).catch(err=> console.log(err))
-    }
+        })
+        .catch(err=> console.log(err))
+     }
   }
 
