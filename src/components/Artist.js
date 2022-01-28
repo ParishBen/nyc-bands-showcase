@@ -9,7 +9,7 @@ import { decodeToken } from "react-jwt";
 
 class Artist extends React.Component{
  
-findArtist = () => {                           // Check for props coming from Redux State & then find artist based on the id in the URL
+findArtist = () => {     // Check for props passed in from ArtistsContainer & then find artist based on the id in the URL
    let artists = this.props.artists
      if(artists){ 
        let art = artists.find(art=> art.id === window.location.href.split('/')[4])
@@ -17,9 +17,8 @@ findArtist = () => {                           // Check for props coming from Re
       }
     }
       
-    grabArtImage = () => {        // Ternary executed in render to see if props present & then grabbing Image of Artist 
+    grabArtImage = () => {     
       if (`${this.findArtist().images}`== []){ // IF artist's image array is empty
-        console.log(`${this.findArtist().images}`)
           return <h3 style={{color:'red', textDecoration: 'underline dashed'}}>No Artist Image</h3>
        } 
       if (`${this.findArtist().images}`.length === 1) { //IF only one image in array
@@ -38,28 +37,29 @@ findArtist = () => {                           // Check for props coming from Re
      componentDidMount(){   //props check & then using token Props to fetch Artists' TopTracks
         this.checkforprops()
         if(deco && deco() != null){
-        this.props.fetchTracks(deco())  
+        this.props.fetchTracks(deco())  // if deco() returning valid token can Fetch Tracks OR grab it from localStorage
         } else {
           let newTok = window.localStorage.getItem('access_token');
           const myDecodedToken =  decodeToken(newTok);
           this.props.fetchTracks(myDecodedToken.spotify_token)
     }}
   
-    handleTopTracks = () => {        // returning loading if Redux Store is loading (while fetch is taking place) & then rendering TopTracks Component
+    handleTopTracks = () => {   // returning loading if Redux Store is loading (while fetch is taking place) & then rendering TopTracks Component
         if (this.props.loading) {
             return <h2 id='loading-header'>Loading Tracks...</h2>
-             } if(this.props.toptracks && this.props.toptracks !== null){
-            return <TopTracks toptracks={this.props.toptracks} artistName = {this.findArtist().name} artistId={this.findArtist().id} />
           } 
-        
-      }
-     artBackGround = () => {
-       let src = document.querySelector('img').src
-      document.querySelector('body').style.background = `url("${src}") no-repeat fixed center`
-      document.querySelector('body').style.backgroundSize = 'cover'
+        if(this.props.toptracks && this.props.toptracks !== null){
+            return <TopTracks toptracks={this.props.toptracks} artistName = {this.findArtist().name} artistId={this.findArtist().id} />
+          }  
+    }
 
+     artBackGround = () => {  // Sets background image to Artist Image
+       let src = document.querySelector('img').src
+        cument.querySelector('body').style.background = `url("${src}") no-repeat fixed center`
+        document.querySelector('body').style.backgroundSize = 'cover'
      }
-     handlegrabArtist = () => {
+
+     handlegrabArtist = () => { //Simply returns Artist name once props are in.
        return this.props.artists && this.findArtist() != null ? this.findArtist().name : ''
      }
     
@@ -70,9 +70,10 @@ render(){
           <div id="artist-div"> 
             {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : ''}
             {document.querySelector('img') && this.artBackGround()}  
-            <br></br><h2 id="artist-title" style={{textAlign:'center'}}><span style={{backgroundColor:'gray'}}>{  this.props.artists && this.handlegrabArtist() }</span> </h2>
-            {this.props.artists && this.findArtist() !== undefined ? <div> {this.grabArtImage()}</div> : ''}{this.props.artists && this.findArtist() !== undefined ? <Concert name={this.props.artists && this.findArtist().name}/>:''} 
-            {this.props.toptracks && this.findArtist() !== undefined  ? <div>{this.handleTopTracks()}</div> :''}         
+            <br></br>
+             <h2 id="artist-title" style={{textAlign:'center'}}><span style={{backgroundColor:'gray'}}>{  this.props.artists && this.handlegrabArtist() }</span> </h2>
+             {this.props.artists && this.findArtist() !== undefined ? <div> {this.grabArtImage()}</div> : ''}{this.props.artists && this.findArtist() !== undefined ? <Concert name={this.props.artists && this.findArtist().name}/>:''} 
+             {this.props.toptracks && this.findArtist() !== undefined  ? <div>{this.handleTopTracks()}</div> :''}         
           </div>
         )
     }
