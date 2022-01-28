@@ -11,9 +11,9 @@ const ArtistList = ({  artists, token }) => {
     })
     
    
-        return (
+    return (
       <div style={{paddingLeft:'4pt'}}>
-        {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : ''}                  {/*Will empty the Div of Home Page Component if present */}
+        {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : ''}    {/*Will empty the Div of Home Page Component if present */}
         <h2 style={{textAlign:'center', textDecoration:'underline'}}>Choose a local NYC artist from the list below</h2>
         {renderArtists}
       </div>
