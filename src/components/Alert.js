@@ -24,7 +24,7 @@ function execute() {
             A simple primary alert—check it out!
             </div>
             <div id="liveAlertPlaceholder"></div>
-            <button type="button" class="btn btn-warning" id="liveAlertBtn" onClick={()=> execute()}>Show live alert</button>
+            <button type="button" class="btn btn-danger" id="liveAlertBtn" onClick={()=> execute()}>Show live alert</button>
             </>
         )
     }
