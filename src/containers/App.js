@@ -11,8 +11,9 @@ import SpotifyFetch from '../components/SpotifyFetch';
 import {getCurrentUser} from '../actions/addCurrentUser';
 import { decodeToken } from "react-jwt";
 import mySecret from '../tokenSecret';
+import ThemeSwitcher from '../components/themeSwitcher';
+import Salert from '../components/Alert';
 var jwt = require('jsonwebtoken');
-
 
 
 const generateToken = (tokenVal) => {   // Takes the Parameter of an Access Token value & then creates a JWT
@@ -105,7 +106,9 @@ stateLogin = () => {
            {  this.props.currentUser !== null && !this.props.currentUser.error ? 
                 <div id='logged-in-user'>{this.props.currentUser && window.localStorage.getItem('access_token') === null ? this.tokenFetch():''}
                 <SpotifyFetch artistsToState={this.artistsToState}/>
-                <Navbar  />   
+                <Navbar  />
+                <ThemeSwitcher/> 
+                <Salert/>  
                 <Route path="/home" render= {routerProps => <Home {...routerProps} artists={this.state.artistsObjArr} token= {this.tokenProp()}/> }/> 
                 <Route exact path="/" render= {routerProps => <Home {...routerProps} artists={this.state.artistsObjArr} token= {this.tokenProp()}/> }/> 
                 <Route path='/artists' render={ routerProps => <ArtistContainer {...routerProps} artists={this.state.artistsObjArr} token= {this.tokenProp()}/>}/>
