@@ -130,7 +130,7 @@ gem "active_model_serializers", "~> 0.10.12"
 
 
 # Author
-<li> Benjamin T Parish</li>
+<li> Benjamin Parish</li>
 
 # License
 
