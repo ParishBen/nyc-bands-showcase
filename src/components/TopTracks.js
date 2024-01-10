@@ -7,7 +7,8 @@ import { SortedTracks } from './SortedTracks';
 class TopTracks extends React.Component {
     
     state = {
-        btnClass: ''
+        btnClass: '',
+        songPlaying: false
     }
 
     renderTracks = this.props.toptracks && this.props.toptracks.map((track, index) => {
@@ -15,19 +16,37 @@ class TopTracks extends React.Component {
      })
 
 
+
      sorter = () => {
-        let unSortedArrInp = this.props.toptracks.slice()
+        let unSortedArrInp = this.props.toptracks.slice();
+        console.log(unSortedArrInp);
+        
         let sortedArr = unSortedArrInp.sort(function(a, b){
-            if(a.name < b.name){
+            let strA =  a.name+"";
+            let strB =  b.name+"";
+            
+            if(strA.toLowerCase() < strB.toLowerCase()){
                 return -1
                }
-            if(a.name > b.name ){
+            if(strA.toLowerCase() > strB.toLowerCase() ){
                 return 1
             }
             return 0
             }
         )
     return sortedArr
+   }
+
+   fortySecondPlayTime = () => {
+    if(!this.state.songPlaying){
+        return true;
+    } else {
+        setTimeout(() => {
+            console.log("in timeout...")
+            this.setState({songPlaying:false})
+            }, 40000)
+    return false;
+    }
    }
 
 
@@ -77,15 +96,23 @@ class TopTracks extends React.Component {
 
     handleClick = (event) => {
         let truetrack = this.props.toptracks.find(track=> track.name === event.target.innerHTML.replace('&amp;', "&"))            // Cleansing some InnerHTML so the Tracks will properly Play.
-            if (truetrack.preview_url !==undefined){
+        if (truetrack.preview_url !==undefined){
             let mp3 = truetrack.preview_url 
-                let song = new Audio (mp3) 
+            let song = new Audio (mp3)     
+                if(!this.state.songPlaying){
                 song.play()
-            } else {
-            let mp3 = truetrack.preview_url
-            let song = new Audio (mp3)
-            song.play()
-        } 
+                this.setState({songPlaying:true});
+                setTimeout(()=> {
+                    this.setState({songPlaying:false})
+                },31000)  
+                }
+            }
+        //     } else {
+        //     let mp3 = truetrack.preview_url
+        //     let song = new Audio (mp3)
+        //     song.play()
+        //     this.setState({songPlaying:true});
+        // } 
     }
 
      render(){
