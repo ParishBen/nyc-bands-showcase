@@ -14,7 +14,6 @@ import mySecret from '../tokenSecret';
 var jwt = require('jsonwebtoken');
 
 
-
 const generateToken = (tokenVal) => {   // Takes the Parameter of an Access Token value & then creates a JWT
     var u = {
       spotify_token: tokenVal 
@@ -103,9 +102,11 @@ stateLogin = () => {
              <UserInput stateLogin = {this.stateLogin} />
                   </div> : ''}
            {  this.props.currentUser !== null && !this.props.currentUser.error ? 
-                <div id='logged-in-user'>{this.props.currentUser && window.localStorage.getItem('access_token') === null ? this.tokenFetch():''}
+                <div class="logged" id='logged-in-user'>{this.props.currentUser && window.localStorage.getItem('access_token') === null ? this.tokenFetch():''}
+                <Navbar  />
                 <SpotifyFetch artistsToState={this.artistsToState}/>
-                <Navbar  />   
+                {/* <ThemeSwitcher/> 
+                <Salert/>   */}
                 <Route path="/home" render= {routerProps => <Home {...routerProps} artists={this.state.artistsObjArr} token= {this.tokenProp()}/> }/> 
                 <Route exact path="/" render= {routerProps => <Home {...routerProps} artists={this.state.artistsObjArr} token= {this.tokenProp()}/> }/> 
                 <Route path='/artists' render={ routerProps => <ArtistContainer {...routerProps} artists={this.state.artistsObjArr} token= {this.tokenProp()}/>}/>
