@@ -29,19 +29,28 @@ const NavBar = () => {
     <div class ="container-fluid" style={{position:'absolute', width:'100%', top: '15px', left: '15px',  textAlign:'left', paddingBottom: '10px', paddingLeft:'3pt' }}>
     <nav class="navbar navbar-expand-lg navbar-dark bg-success" >
       <div class="container-fluid">
-       <a class="navbar-brand" href="#">Brand</a>
+       <a class="navbar-brand" href="/home">Home</a>
        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"  aria-expanded="false" aria-label="Toggle navigation">
            <span class="navbar-toggler-icon"></span>
        </button>
        <div class="collapse navbar-collapse" id="main_nav">
        <ul class="navbar-nav">
-         <li class="nav-item active"> <a class="nav-link" href="#">Home </a> </li>
-         <li class="nav-item"><a class="nav-link" href="#"> About </a></li>
-         <li class="nav-item"><a class="nav-link" href="#"> Services </a></li>
+         {/* <li class="nav-item active"> <a class="nav-link" href="/home">Home</a> </li> */}
+         <li class="nav-item"><a class="nav-link" href="/artists"> Artists </a></li>
+         <li class="nav-item"><a class="nav-link" href="/favorites"> Favorites </a></li>
          <li class="nav-item"><a class="nav-link" onClick={logoutBtnClick}> Logout </a></li>
+        
 
          </ul></div></div>
      {/* <div className='navbar2'  style={{position:'absolute', top: '15px', left: '15px',  textAlign:'left', paddingBottom: '10px', paddingLeft:'3pt' }}>
+         <NavLink 
+           activeStyle={{background: 'darkblue', color: 'white'}}
+           style={{ marginRight: '10px' }} 
+           to="/artists"
+           exact
+         >
+            Artists
+         </NavLink>  
       <span style={{backgroundColor:'floralwhite', borderBottom:'3px solid black'}}>
         <NavLink  */}
   {/* //         style={{ marginRight: '10px' }} 
