@@ -11,6 +11,8 @@ import SpotifyFetch from '../components/SpotifyFetch';
 import {getCurrentUser} from '../actions/addCurrentUser';
 import { decodeToken } from "react-jwt";
 import mySecret from '../tokenSecret';
+import ThemeSwitcher from '../components/themeSwitcher';
+import Salert from '../components/Alert';
 var jwt = require('jsonwebtoken');
 
 
