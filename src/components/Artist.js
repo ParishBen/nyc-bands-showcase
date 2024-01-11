@@ -6,7 +6,7 @@ import {fetchTracks} from '../actions/artistActions'
 import Concert from './Concerts'
 import {deco} from '../containers/App'
 import { decodeToken } from "react-jwt";
-
+import sAlert from './Alert'
 class Artist extends React.Component{
  
 findArtist = () => {     // Check for props passed in from ArtistsContainer & then find artist based on the id in the URL
@@ -70,7 +70,7 @@ render(){
           <div id="artist-div"> 
             {document.getElementById('thisDiv') ? document.getElementById('thisDiv').innerHTML = '' : ''}
             {document.querySelector('img') && this.artBackGround()}  
-            <br></br>
+            <br></br><sAlert someWord={"OHBOY!"}/>
              <h2 id="artist-title" style={{textAlign:'center'}}><span style={{backgroundColor:'gray'}}>{  this.props.artists && this.handlegrabArtist() }</span> </h2>
              {this.props.artists && this.findArtist() !== undefined ? <div> {this.grabArtImage()}</div> : ''}{this.props.artists && this.findArtist() !== undefined ? <Concert name={this.props.artists && this.findArtist().name}/>:''} 
              {this.props.toptracks && this.findArtist() !== undefined  ? <div>{this.handleTopTracks()}</div> :''}         
